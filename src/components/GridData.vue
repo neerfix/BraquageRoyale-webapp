@@ -11,11 +11,11 @@ export default {
   name: 'GridData',
   mounted() {
     // Create grid
-    this.setupFromJSON(dataMap);
+    this.createGridFromJSON(dataMap);
   },
   methods: {
     // Create grid
-    setupFromJSON(data) {
+    createGridFromJSON(data) {
       const width = data.width; // Map width
       let currentRow = []; // Contains our future cells
       for(let i = 0 ; i < data.layers[0].data.length; i++){
