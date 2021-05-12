@@ -1,37 +1,34 @@
 <template>
-  <div>
+  <div class="gridData">
   </div>
 </template>
 
 <script>
-
+// Get json map
 import dataMap from '../assets/map.json';
 
 export default {
   name: 'GridData',
   mounted() {
+    // Create grid
     this.setupFromJSON(dataMap);
   },
   methods: {
+    // Create grid
     setupFromJSON(data) {
-      console.log(data)
-      const width = data.width;
-      console.log(width)
-      let currentRow = [];
+      const width = data.width; // Map width
+      let currentRow = []; // Contains our future cells
       for(let i = 0 ; i < data.layers[0].data.length; i++){
-        // if(i % width == 0 && i !== 0){
-        //   this.cells.push(currentRow);
-        //   currentRow = [];
-        // }
+        // Crate our data cell
         let x = i % width;
         let y = Math.floor(i/width);
         let backgroundTile = data.layers[0].data[i] - 1;
-
+        // Construct current cell
         let cell = {};
         cell['x'] = x;
         cell['y'] = y;
         cell['backgroundTile'] = backgroundTile;
-
+        // Push our cell inside our current row
         currentRow.push(cell);
       }
       console.table(currentRow)
@@ -42,18 +39,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
 </style>
