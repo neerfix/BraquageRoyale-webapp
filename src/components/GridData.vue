@@ -5,13 +5,13 @@
 
 <script>
 // Get json map
-import dataMap from '../assets/map.json';
+// import dataMap from '../assets/map.json';
 
 export default {
   name: 'GridData',
   mounted() {
     // Create grid
-    this.createGridFromJSON(dataMap);
+    // this.createGridFromJSON(dataMap);
   },
   methods: {
     // Create grid
