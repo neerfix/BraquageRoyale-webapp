@@ -1,13 +1,14 @@
 <template>
-  <div class="hello">
+  <div>
   </div>
 </template>
 
 <script>
+
 import dataMap from '../assets/map.json';
 
 export default {
-  name: 'HelloWorld',
+  name: 'GridData',
   mounted() {
     this.setupFromJSON(dataMap);
   },
@@ -16,16 +17,24 @@ export default {
       console.log(data)
       const width = data.width;
       console.log(width)
-      // let currentRow = [];
+      let currentRow = [];
       for(let i = 0 ; i < data.layers[0].data.length; i++){
-        if(i % width == 0 && i !== 0){
-          // this.cells.push(currentRow);
-          // currentRow = [];
-        }
-        // const cell = new CellData(i % width, Math.floor(i/width),data.layers[0].data[i] - 1, data.layers[1].data[i] - 1)
-        // currentRow.push(cell);
+        // if(i % width == 0 && i !== 0){
+        //   this.cells.push(currentRow);
+        //   currentRow = [];
+        // }
+        let x = i % width;
+        let y = Math.floor(i/width);
+        let backgroundTile = data.layers[0].data[i] - 1;
+
+        let cell = {};
+        cell['x'] = x;
+        cell['y'] = y;
+        cell['backgroundTile'] = backgroundTile;
+
+        currentRow.push(cell);
       }
-      // this.cells.push(currentRow);
+      console.table(currentRow)
     }
   }
 }
