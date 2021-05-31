@@ -1,16 +1,16 @@
 <template>
   <div id="app">
-    <GridData/>
+    <Grid/>
   </div>
 </template>
 
 <script>
-import GridData from './components/GridData.vue'
+import Grid from './components/Grid.vue'
 
 export default {
   name: 'App',
   components: {
-    GridData
+    Grid
   }
 }
 </script>
