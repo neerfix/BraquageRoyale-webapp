@@ -1,8 +1,11 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/">Accueil</router-link> |
+      <router-link to="/auth">Authentication</router-link>|
+      <router-link to="/dashboard">Tableau de bord</router-link>|
+      <router-link to="/create_new_game">Créer une nouvelle partie</router-link>|
+      <router-link to="/game_in_progress">Voir la.les partie.s en cours</router-link>|
     </div>
     <router-view/>
   </div>
