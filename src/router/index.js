@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-import Authentication from '../views/Authentication'
-import Dashboard from '../views/Dashboard'
+import Home from "@/views/Home";
+import Authentication from '@/views/Authentication'
+import Dashboard from '@/views/Dashboard'
 import CreateNewGame from "@/views/CreateNewGame";
 import GameInProgress from "@/views/GameInProgress";
 
