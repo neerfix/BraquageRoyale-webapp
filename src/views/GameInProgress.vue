@@ -1,6 +1,6 @@
 <template>
   <div class="gameInProgress">
-    <h1>Game in prorgess page</h1>
+    <h1>Game in progress page</h1>
     <Grid/>
   </div>
 </template>

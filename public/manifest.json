@@ -1,0 +1,18 @@
+{
+  "name": "BraquageRoyal",
+  "short_name": "BraqR",
+  "description": "New battle royal from PWA/VueJs",
+  "lang": "en",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#ff5733",
+  "background_color": "#ff5733",
+  "icons": [
+    {
+      "src": "/braquageroyale.png",
+      "sizes": "200x200",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
