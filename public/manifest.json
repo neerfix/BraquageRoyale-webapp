@@ -13,6 +13,11 @@
       "sizes": "200x200",
       "type": "image/png",
       "purpose": "any maskable"
+    },
+    {
+      "src": "/bank.png",
+      "sizes": "512x512",
+      "type": "image/png"
     }
   ]
 }
