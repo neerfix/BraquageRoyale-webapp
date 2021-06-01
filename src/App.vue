@@ -1,20 +1,24 @@
 <template>
-  <div id="app">
-    <Grid/>
-  </div>
+  <v-app id="inspire">
+    <Navbar/>
+    <v-main>
+      <v-container>
+        <router-view/>
+      </v-container>
+    </v-main>
+  </v-app>
 </template>
 
 <script>
-import Grid from './components/map/Grid.vue'
+  import Navbar from "@/components/Navbar";
 
-export default {
-  name: 'App',
-  components: {
-    Grid
-  }
-}
+  export default {
+    name: 'App',
+    components: {
+      Navbar,
+    },
+    data: () => ({
+      //
+    }),
+  };
 </script>
-
-<style>
-
-</style>

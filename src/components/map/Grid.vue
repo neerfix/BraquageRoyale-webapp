@@ -74,7 +74,7 @@ export default {
   display : flex;
   flex-direction : row;
 }
-.constainer {
+.container {
   display : flex;
   flex-direction : column;
 }
