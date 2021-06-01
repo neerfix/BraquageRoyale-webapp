@@ -1,0 +1,12 @@
+{
+  "name": "Braquage Royal",
+  "short_name": "Braqroyale",
+  "lang": "fr",
+  "start_url": "/",
+  "display": "fullscreen",
+  "icons": [
+    {
+      "src": "braquage.png"
+    }
+  ]
+}

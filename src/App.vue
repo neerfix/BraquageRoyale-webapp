@@ -6,13 +6,20 @@
 </template>
 
 <script>
+import json from "../manifest.json";
 import HelloWorld from './components/HelloWorld.vue'
 
 export default {
   name: 'App',
   components: {
     HelloWorld
-  }
+  },
+  data() {
+    return {
+      myJson: json,
+      msg: "Manifest:"
+    };
+  },
 }
 </script>
 
