@@ -1,34 +1,56 @@
-// service-worker.js
+const PRECACHE = 'precache-v1';
+const RUNTIME = 'runtime';
 
-workbox.core.setCacheNameDetails({ prefix: 'd4' })//Change this value every time before you build
-const LATEST_VERSION = 'v1.5';
+// A list of local resources we always want to be cached.
+const PRECACHE_URLS = [
+  "/index.html",
+  "/src",
+  "/manifest.json"
+];
 
-self.addEventListener('activate', (event) => {
-  console.log(`%c ${LATEST_VERSION} `, 'background: #ddd; color: #0000ff')
-  if (caches) {
-    caches.keys().then((arr) => {
-      arr.forEach((key) => {
-        if (key.indexOf('d4-precache') < -1) {
-          caches.delete(key).then(() => console.log(`%c Cleared ${key}`, 'background: #333; color: #ff0000'))
-        } else {
-          caches.open(key).then((cache) => {
-            cache.match('version').then((res) => {
-              if (!res) {
-                cache.put('version', new Response(LATEST_VERSION, { status: 200, statusText: LATEST_VERSION }))
-              } else if (res.statusText !== LATEST_VERSION) {
-                caches.delete(key).then(() => console.log(`%c Cleared Cache ${LATEST_VERSION}`, 'background: #333; color: #ff0000'))
-              } else console.log(`%c Great you have the latest version ${LATEST_VERSION}`, 'background: #333; color: #00ff00')
-            })
-          })
+// The install handler takes care of precaching the resources we always need.
+self.addEventListener('install', event => {
+  event.waitUntil(
+    caches.open(PRECACHE)
+      .then(cache => cache.addAll(PRECACHE_URLS))
+      .then(self.skipWaiting())
+  );
+});
+
+// The activate handler takes care of cleaning up old caches.
+self.addEventListener('activate', event => {
+  const currentCaches = [PRECACHE, RUNTIME];
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return cacheNames.filter(cacheName => !currentCaches.includes(cacheName));
+    }).then(cachesToDelete => {
+      return Promise.all(cachesToDelete.map(cacheToDelete => {
+        return caches.delete(cacheToDelete);
+      }));
+    }).then(() => self.clients.claim())
+  );
+});
+
+// The fetch handler serves responses for same-origin resources from a cache.
+// If no response is found, it populates the runtime cache with the response
+// from the network before returning it to the page.
+self.addEventListener('fetch', event => {
+  // Skip cross-origin requests, like those for Google Analytics.
+  if (event.request.url.startsWith(self.location.origin)) {
+    event.respondWith(
+      caches.match(event.request).then(cachedResponse => {
+        if (cachedResponse) {
+          return cachedResponse;
         }
+        return caches.open(RUNTIME).then(cache => {
+          return fetch(event.request).then(response => {
+            // Put a copy of the response in the runtime cache.
+            return cache.put(event.request, response.clone()).then(() => {
+              return response;
+            });
+          });
+        });
       })
-    })
+    );
   }
-})
-
-workbox.skipWaiting()
-workbox.clientsClaim()
-
-self.__precacheManifest = [].concat(self.__precacheManifest || [])
-workbox.precaching.suppressWarnings()
-workbox.precaching.precacheAndRoute(self.__precacheManifest, {})
+});
