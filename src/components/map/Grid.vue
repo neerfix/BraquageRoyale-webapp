@@ -27,20 +27,13 @@ export default {
     }
   },
   methods: {
-    setupRandom(width, height, obstacleProbability) {
-      for(let y = 0; y < height; y++) {
-        let row = []
-        for(let x = 0; x < width; x++) {
-          const isObstacle = Math.random() < obstacleProbability;
-          row.push({
-            x: x,
-            y: y,
-            backgroundTile: 23,
-            obstacleTile: isObstacle ? 285 : -1
-          });
-        }
-        this.rows.push(row)
-      }
+    setupObstables(obstacleProbability) {
+      this.rows.map(row => {
+        row.map(cell => {
+          const isObstacle = Math.random() < obstacleProbability
+          cell.obstacleTile = isObstacle ? 285 : -1
+        })
+      })
     },
     createGridFromJSON(data) {
       console.log(data);
@@ -64,7 +57,7 @@ export default {
   },
   mounted() {
     this.createGridFromJSON(dataMap)
-    this.setupRandom(20, 20, 0.1)
+    this.setupObstables(0.1)
   }
 }
 </script>
