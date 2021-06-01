@@ -14,7 +14,6 @@
 
 <script>
 import dataMap from '../../assets/json/village.json';
-// import GridData from "@/components/GridData";
 import Cell from './Cell';
 
 export default {
