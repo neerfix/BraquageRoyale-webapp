@@ -4,12 +4,12 @@
     <div class="obstacle">
         <slot name="obstacle"></slot>
     </div>
-    <div class="highlight"></div>
+    <div class="highlight" :class="obstacleTile === 285 ? 'red' : null"></div>
   </div>
 </template>
 
 <script>
-import bgImage from '../assets/Atlas.png'
+import bgImage from '../../assets/img/tilesheet.png'
 const tileSize = 32
 const tileSetWidth = 19
 export default {
@@ -18,6 +18,7 @@ export default {
     x: Number,
     y: Number,
     tileNumber: Number,
+    obstacleTile: Number,
   },
   data() {
     return {
@@ -34,7 +35,7 @@ export default {
   mounted() {
     const coordinates = this.getTileCoordinates();
     this.styleBackground = {
-      backgroundPosition: `${-coordinates.x*tileSize}px ${-coordinates.y*tileSize}px`,
+      backgroundPosition: `-${coordinates.x * tileSize}px -${coordinates.y * tileSize}px`,
       height: '100%',
       width: '100%',
       backgroundImage: `url(${this.bgImage})`
@@ -42,8 +43,11 @@ export default {
   },
   methods: {
     getTileCoordinates(){
-      return { x : this.tileNumber % tileSetWidth, y : Math.floor(this.tileNumber/tileSetWidth)}
-    }
+      return {
+        x : this.tileNumber % tileSetWidth,
+        y : Math.floor(this.tileNumber / tileSetWidth)
+      }
+    },
   }
 }
 </script>
