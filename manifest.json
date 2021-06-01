@@ -1,13 +1,14 @@
 {
   "name": "Braquage Royal",
-  "short_name": "Braqroyale",
-  "lang": "fr",
-  "start_url": "/public/index.html",
+  "short_name": "BraqR",
+  "lang": "en_US",
+  "start_url": "/",
   "display": "standalone",
   "theme_color": "#ff5733",
+  "background_color": "#ff5733",
   "icons": [
     {
-      "src": "braquage.png",
+      "src": "/src/assets/braquageroyale.png",
       "sizes": "192x192",
       "type": "image/png"
     }
