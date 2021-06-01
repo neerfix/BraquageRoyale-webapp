@@ -2,11 +2,12 @@
   "name": "Braquage Royal",
   "short_name": "Braqroyale",
   "lang": "fr",
-  "start_url": "/",
+  "start_url": "/src/App.Vue",
   "display": "fullscreen",
   "icons": [
     {
       "src": "braquage.png"
     }
-  ]
+  ],
+  "scope": "/app/"
 }
