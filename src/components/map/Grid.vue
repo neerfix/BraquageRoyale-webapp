@@ -27,7 +27,7 @@ export default {
     }
   },
   methods: {
-    setupObstables(obstacleProbability) {
+    setupObstacles(obstacleProbability) {
       this.rows.map(row => {
         row.map(cell => {
           const isObstacle = Math.random() < obstacleProbability
@@ -57,7 +57,7 @@ export default {
   },
   mounted() {
     this.createGridFromJSON(dataMap)
-    this.setupObstables(0.1)
+    this.setupObstacles(0.1)
   }
 }
 </script>
