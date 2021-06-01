@@ -3,8 +3,9 @@
     <div class="container">
       <div class="row" v-for="(row, i) in rows" :key="i">
         <cell v-for="(cell, j) in row" :key="j"
-          :x="cell.x" :y="cell.y" :tileNumber="cell.backgroundTile" :obstacleTile="cell.obstacleTile">
-            <cell v-if="cell.obstacleTile === 285" slot="obstacle" :tileNumber="cell.obstacleTile"></cell>
+          :x="cell.x" :y="cell.y" :tileNumber="cell.backgroundTile" :obstacleTile="cell.obstacleTile" :decorationTile="cell.decorationTile">
+            <cell v-if="cell.obstacleTile !== -1" slot="obstacle" :tileNumber="cell.obstacleTile"></cell>
+            <cell v-if="cell.decorationTile !== -1" slot="decoration" :tileNumber="cell.decorationTile"></cell>
           </cell>
       </div>
     </div>
@@ -12,7 +13,7 @@
 </template>
 
 <script>
-import dataMap from '../../assets/json/Tileset.json';
+import dataMap from '../../assets/json/village.json';
 // import GridData from "@/components/GridData";
 import Cell from './Cell';
 
@@ -31,7 +32,13 @@ export default {
       this.rows.map(row => {
         row.map(cell => {
           const isObstacle = Math.random() < obstacleProbability
-          cell.obstacleTile = isObstacle ? 285 : -1
+          if(isObstacle) {
+            //console.log(cell)
+          }
+          if(cell.obstacleTile !== -1) {
+            //cell.backgroundTile = cell.obstacleTile
+          }
+          //cell.obstacleTile = isObstacle ? 285 : -1
         })
       })
     },
@@ -47,9 +54,10 @@ export default {
         // Push our cell inside our current row
         currentRow.push({
           x: i % width,
-          y: Math.floor(i/width),
+          y: Math.floor(i / width),
           backgroundTile: data.layers[0].data[i] - 1,
-          obstacleTile: data.layers[1].data[i] - 1
+          obstacleTile: data.layers[1].data[i] - 1,
+          decorationTile: data.layers[2].data[i] - 1
         });
       }
       this.rows.push(currentRow)

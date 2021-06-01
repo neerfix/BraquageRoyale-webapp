@@ -4,12 +4,15 @@
     <div class="obstacle">
         <slot name="obstacle"></slot>
     </div>
-    <div class="highlight" :class="obstacleTile === 285 ? 'red' : null"></div>
+    <div class="decoration">
+      <slot name="decoration"></slot>
+    </div>
+    <div class="highlight" :class="(obstacleTile !== -1 && decorationTile === -1) ? 'red' : null"></div>
   </div>
 </template>
 
 <script>
-import bgImage from '../../assets/img/tilesheet.png'
+import bgImage from '../../assets/img/village.png'
 const tileSize = 32
 const tileSetWidth = 19
 export default {
@@ -19,6 +22,7 @@ export default {
     y: Number,
     tileNumber: Number,
     obstacleTile: Number,
+    decorationTile: Number,
   },
   data() {
     return {
@@ -57,7 +61,7 @@ export default {
   position : relative;
   display : block;
 }
-.highlight, .obstacle {
+.highlight, .obstacle, .decoration {
   position : absolute;
   height : 100%;
   width : 100%;
@@ -70,6 +74,10 @@ export default {
 }
 .obstacle {
   z-index : 2;
+  pointer-events : none;
+}
+.decoration {
+  z-index : 3;
   pointer-events : none;
 }
 
