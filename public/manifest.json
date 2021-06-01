@@ -7,6 +7,7 @@
   "display": "standalone",
   "theme_color": "#ff5733",
   "background_color": "#ff5733",
+  "prefer_related_applications": true,
   "icons": [
     {
       "src": "/braquageroyale.png",

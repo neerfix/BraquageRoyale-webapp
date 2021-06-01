@@ -6,6 +6,26 @@ import './registerServiceWorker'
 
 Vue.config.productionTip = false
 
+// if ('serviceWorker' in navigator) {
+//   navigator.serviceWorker.register('/service-worker.js')
+//     .then(function(registration) {
+//       console.log('Registration successful, scope is:', registration.scope);
+//     })
+//     .catch(function(error) {
+//       console.log('Service worker registration failed, error:', error);
+//     });
+// }
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/service-worker.js', {
+    scope: '/'
+  }).then(function(registration) {
+    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+  }, function(err) {
+    console.log('ServiceWorker registration failed: ', err);
+  });
+}
+
 new Vue({
   router,
   vuetify,
