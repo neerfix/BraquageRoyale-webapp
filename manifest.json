@@ -1,7 +1,7 @@
 {
   "name": "Braquage Royal",
   "short_name": "BraqR",
-  "lang": "en_US",
+  "lang": "en",
   "start_url": "/",
   "display": "standalone",
   "theme_color": "#ff5733",
