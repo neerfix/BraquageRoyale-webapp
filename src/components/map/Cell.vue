@@ -7,7 +7,7 @@
     <div class="decoration">
       <slot name="decoration"></slot>
     </div>
-    <div class="highlight" :class="(obstacleTile !== -1 && decorationTile === -1) ? 'red' : null"></div>
+    <div class="highlight" :class="(obstacleTile !== -1 && decorationTile === -1) ? 'red_obstacle' : null"></div>
   </div>
 </template>
 
@@ -85,7 +85,7 @@ export default {
   background-color : rgba(68,206,262,0.5);
   border : 1px solid rgba(68,206,262,1);
 }
-.red:hover {
+.red_obstacle:hover {
   background-color : rgba(252,65,55,0.5);
   border : 1px solid rgba(252,65,55,1);
 }
