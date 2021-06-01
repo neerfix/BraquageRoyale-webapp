@@ -2,12 +2,14 @@
   "name": "Braquage Royal",
   "short_name": "Braqroyale",
   "lang": "fr",
-  "start_url": "/src/App.Vue",
-  "display": "fullscreen",
+  "start_url": "/public/index.html",
+  "display": "standalone",
+  "theme_color": "#ff5733",
   "icons": [
     {
-      "src": "braquage.png"
+      "src": "braquage.png",
+      "sizes": "192x192",
+      "type": "image/png"
     }
-  ],
-  "scope": "/app/"
+  ]
 }
