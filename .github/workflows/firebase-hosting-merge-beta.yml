@@ -24,6 +24,6 @@ jobs:
       - name: install vue cli
         run: npm install -g @vue/cli
       - name: Build
-          run: npm run build
+        run: npm run build
       - name: deploy
         run: firebase deploy --only hosting:beta --token ${{ secrets.FIREBASE_TOKEN }}
