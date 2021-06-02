@@ -2,14 +2,21 @@
   <div class="navigationGame">
     <v-app-bar app>
       <!-- Add this class (class="d-flex d-sm-none") to show menu icon only on small screen -->
-      <v-app-bar-nav-icon @click="drawer = true" class="d-flex d-sm-none"></v-app-bar-nav-icon>
-      <v-toolbar-title>Navigation Game</v-toolbar-title>
+      <v-app-bar-nav-icon @click="drawer = true" class="d-flex d-md-none"></v-app-bar-nav-icon>
+      <v-toolbar-title>Braquage Royal</v-toolbar-title>
+      <v-img
+      src="../assets/img/bank.png"
+      max-width="30"
+      class="ml-2"
+      >
+
+      </v-img>
 
       <v-spacer></v-spacer>
 
       <!-- Add this class (class="d-none d-sm-flex") to show tabs only on medium screen and above -->
       <template v-slot:extension>
-        <v-tabs v-model="tab" align-with-title class="d-none d-sm-flex">
+        <v-tabs v-model="tab" align-with-title class="d-none d-md-flex ">
         <v-tabs-slider color="info"></v-tabs-slider>
         <v-tab v-for="item in itemsNav" :key="item.title" link @click="redirect(item.path)">
           {{ item.title }}
