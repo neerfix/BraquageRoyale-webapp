@@ -4,7 +4,7 @@
       <p>Création d'une nouvelle partie</p>
       <v-divider></v-divider>
     </v-col>
-
+    <!-- Create new game form -->
     <v-form
         ref="form"
         v-model="valid"
@@ -24,10 +24,15 @@
         ></v-text-field>
       </v-col>
       <!-- Max player -->
-  <!--    <v-col xs="12">-->
-  <!--      <p>Nombre de joueurs maximum</p>-->
-  <!--      <vue-number-input v-model="value" :min="1" :max="10" inline controls></vue-number-input>-->
-  <!--    </v-col>-->
+      <v-col xs="12">
+        <p>Nombre de joueurs maximum</p>
+        <v-text-field
+            v-model="playersMax"
+            label="Nombre de joueurs max"
+            :rules="[playersMaxRules]"
+            outlined
+        />
+      </v-col>
       <!-- Map choice -->
       <v-col xs="12">
         <p>Choix de la map</p>
@@ -64,9 +69,7 @@
       </v-col>
       <!-- Actions buttons -->
       <v-col xs="12">
-        <v-btn
-            elevation="2"
-        >Annuler</v-btn>
+        <v-btn elevation="2">Annuler</v-btn>
         <v-btn
             elevation="2"
             color="error"
@@ -75,7 +78,7 @@
         >Créer la partie</v-btn>
       </v-col>
     </v-form>
-
+    <!-- End create new game form -->
   </div>
 </template>
 
@@ -92,6 +95,12 @@
           v => !!v || 'Nom de la partie obligatoire',
           v => (v && v.length <= 15) || 'Le nom ne doit pas depasser 15 caractères',
         ],
+        playersMax: '',
+        playersMaxRules: v  => {
+          if (!v.trim()) return true;
+          if (!isNaN(parseFloat(v)) && v >= 0 && v <= 5) return true;
+          return 'Nombre maximum : 5 joueurs';
+        },
         codeJoinGame: '',
         codeJoinGameRules: [
           v => !!v || 'Code de la partie obligatoire',
@@ -103,7 +112,7 @@
       validate () {
         // console.log("Private game " + this.privateGame)
         // console.log("Code value " + this.codeJoinGame)
-        // console.log("Form " + this.$refs.form.validate())
+        console.log("Form " + this.$refs.form.validate())
         // this.$refs.form.validate()
       },
     }
