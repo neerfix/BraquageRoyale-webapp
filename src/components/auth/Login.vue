@@ -22,6 +22,8 @@
     <v-btn
         color="success"
         class="mr-4"
+        :disabled="!valid"
+        @click="loginFirebase()"
     >
       Se connecter
     </v-btn>
@@ -34,11 +36,15 @@ export default {
   data: () => ({
     password: '',
     pseudo: '',
-    valid: false
+    valid: true
   }),
   methods: {
-    register() {
-
+    loginFirebase() {
+      if (this.$refs.form.validate() === true) {
+        // API
+      } else {
+        console.log('tg')
+      }
     }
   }
 }
