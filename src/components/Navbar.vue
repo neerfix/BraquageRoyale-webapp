@@ -49,10 +49,10 @@
         tab: null,
         itemsNav: [
           {title: 'Accueil', path: '/'},
-          {title: 'Connexion/Inscription', path: '/auth'},
-          {title: 'Mes parties', path: '/dashboard'},
-          {title: 'Créer une nouvelle partie', path: '/create_new_game'},
-          {title: 'Partie en cours', path: 'game_in_progress'}
+          {title: 'Dashboard', path: '/dashboard'},
+          {title: 'Créer une nouvelle partie', path: '/create'},
+          {title: 'Rejoindre une partie privée', path: '/join'},
+          {title: 'Mon profil', path: '/profil'}
         ],
       }
     },
@@ -64,3 +64,16 @@
     }
   }
 </script>
+
+<style scoped lang="scss">
+::v-deep {
+  .v-toolbar__content {
+      background-color: #4a86e8;
+      color: #FFF;
+
+      .v-app-bar__nav-icon {
+        color: #FFF !important;
+      }
+  }
+}
+</style>
