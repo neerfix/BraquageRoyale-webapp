@@ -6,8 +6,8 @@
   "start_url": "/",
   "scope": "/",
   "display": "fullscreen",
-  "theme_color": "#ff5733",
-  "background_color": "#ff5733",
+  "theme_color": "transparent",
+  "background_color": "#4a86e8",
   "orientation" : "landscape",
   "prefer_related_applications": true,
   "icons": [
