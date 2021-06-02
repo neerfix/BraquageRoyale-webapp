@@ -3,17 +3,17 @@
     <v-app-bar app>
       <!-- Add this class (class="d-flex d-sm-none") to show menu icon only on small screen -->
       <v-app-bar-nav-icon @click="drawer = true" class="d-flex d-sm-none"></v-app-bar-nav-icon>
-      <v-toolbar-title>Navigation Game</v-toolbar-title>
+      <v-toolbar-title>Braquage Royale</v-toolbar-title>
 
       <v-spacer></v-spacer>
 
       <!-- Add this class (class="d-none d-sm-flex") to show tabs only on medium screen and above -->
       <template v-slot:extension>
         <v-tabs v-model="tab" align-with-title class="d-none d-sm-flex">
-        <v-tabs-slider color="info"></v-tabs-slider>
-        <v-tab v-for="item in itemsNav" :key="item.title" link @click="redirect(item.path)">
-          {{ item.title }}
-        </v-tab>
+          <v-tabs-slider color="info"></v-tabs-slider>
+          <v-tab v-for="item in itemsNav" :key="item.title" link @click="redirect(item.path)">
+            {{ item.title }}
+          </v-tab>
         </v-tabs>
       </template>
     </v-app-bar>
@@ -41,10 +41,10 @@
         tab: null,
         itemsNav: [
           {title: 'Accueil', path: '/'},
-          {title: 'Connexion/Inscription', path: '/auth'},
-          {title: 'Mes parties', path: '/dashboard'},
-          {title: 'Créer une nouvelle partie', path: '/create_new_game'},
-          {title: 'Partie en cours', path: 'game_in_progress'}
+          {title: 'Dashboard', path: '/dashboard'},
+          {title: 'Créer une nouvelle partie', path: '/create'},
+          {title: 'Rejoindre une partie privée', path: '/join'},
+          {title: 'Mon profil', path: '/profil'}
         ],
       }
     },
@@ -56,3 +56,16 @@
     }
   }
 </script>
+
+<style scoped lang="scss">
+::v-deep {
+  .v-toolbar__content {
+      background-color: #4a86e8;
+      color: #FFF;
+
+      .v-app-bar__nav-icon {
+        color: #FFF !important;
+      }
+  }
+}
+</style>
