@@ -9,7 +9,6 @@ const PRECACHE_URLS = [
 ];
 
 self.addEventListener('install', event => {
-  console.log('coucou')
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => cache.addAll(PRECACHE_URLS))
@@ -18,7 +17,6 @@ self.addEventListener('install', event => {
 });
 
 self.addEventListener('activate', event => {
-  console.log('coucou2')
   const currentCaches = [CACHE_NAME, RUNTIME];
   event.waitUntil(
     caches.keys().then(cacheNames => {
@@ -32,7 +30,6 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-  console.log('yo')
   if (event.request.url.startsWith(self.location.origin)) {
     event.respondWith(
       caches.match(event.request).then(cachedResponse => {
