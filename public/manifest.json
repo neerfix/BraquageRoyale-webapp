@@ -1,14 +1,14 @@
 {
-  "name": "BraquageRoyal",
-  "short_name": "BraqR",
-  "description": "New battle royal from PWA/VueJs",
+  "name": "Braquage Royal!",
+  "short_name": "Braquage Royal",
+  "description": "New battle royal to play with friends ! :)",
   "lang": "en",
   "start_url": "/",
   "scope": "/",
-  "display": "standalone",
+  "display": "fullscreen",
   "theme_color": "#ff5733",
   "background_color": "#ff5733",
-  "orientation" : "portrait",
+  "orientation" : "landscape",
   "prefer_related_applications": true,
   "icons": [
     {
