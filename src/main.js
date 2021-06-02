@@ -8,6 +8,9 @@ import '/service-worker'
 // CSS / SCSS
 import './assets/scss/main.scss'
 
+// CSS / SCSS
+import './assets/scss/main.scss'
+
 Vue.config.productionTip = false
 
 if ('serviceWorker' in navigator) {
