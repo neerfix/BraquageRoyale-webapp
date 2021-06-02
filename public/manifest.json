@@ -4,9 +4,11 @@
   "description": "New battle royal from PWA/VueJs",
   "lang": "en",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "theme_color": "#ff5733",
   "background_color": "#ff5733",
+  "orientation" : "portrait",
   "prefer_related_applications": true,
   "icons": [
     {

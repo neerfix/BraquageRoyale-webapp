@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import vuetify from './plugins/vuetify'
 import './registerServiceWorker'
+import '/service-worker'
 
 Vue.config.productionTip = false
 
@@ -15,6 +16,7 @@ if ('serviceWorker' in navigator) {
     console.log('ServiceWorker registration failed: ', err);
   });
 }
+
 
 new Vue({
   router,
