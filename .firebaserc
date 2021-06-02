@@ -1,5 +1,17 @@
 {
   "projects": {
     "default": "braquage-royale"
+  },
+  "targets": {
+    "braquage-royale": {
+      "hosting": {
+        "prod": [
+          "braquage-royale"
+        ],
+        "beta": [
+          "beta-braquage-royale"
+        ]
+      }
+    }
   }
 }

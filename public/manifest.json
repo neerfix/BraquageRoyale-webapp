@@ -1,0 +1,26 @@
+{
+  "name": "Braquage Royal!",
+  "short_name": "Braquage Royal",
+  "description": "New battle royal to play with friends ! :)",
+  "lang": "en",
+  "start_url": "/",
+  "scope": "/",
+  "display": "fullscreen",
+  "theme_color": "transparent",
+  "background_color": "#4a86e8",
+  "orientation" : "landscape",
+  "prefer_related_applications": true,
+  "icons": [
+    {
+      "src": "/braquageroyale.png",
+      "sizes": "200x200",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/bank.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

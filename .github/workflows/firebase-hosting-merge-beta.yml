@@ -1,9 +1,9 @@
-name: Deploy prod & beta to Google
+name: Deploy beta to Google
 
 # Run this workflow every time a new commit pushed to your repository
 on:
   push:
-    branches: [ main ]
+    branches: [ develop ]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,4 +26,4 @@ jobs:
       - name: Build
         run: npm run build
       - name: deploy
-        run: firebase deploy --token ${{ secrets.FIREBASE_TOKEN }}
+        run: firebase deploy --only hosting:beta --token ${{ secrets.FIREBASE_TOKEN }}
