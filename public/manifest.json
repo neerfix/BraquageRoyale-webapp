@@ -4,15 +4,23 @@
   "description": "New battle royal from PWA/VueJs",
   "lang": "en",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "theme_color": "#ff5733",
   "background_color": "#ff5733",
+  "orientation" : "portrait",
+  "prefer_related_applications": true,
   "icons": [
     {
       "src": "/braquageroyale.png",
       "sizes": "200x200",
       "type": "image/png",
       "purpose": "any maskable"
+    },
+    {
+      "src": "/bank.png",
+      "sizes": "512x512",
+      "type": "image/png"
     }
   ]
 }
