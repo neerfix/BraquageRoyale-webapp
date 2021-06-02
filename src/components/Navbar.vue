@@ -19,6 +19,7 @@
         <v-tabs v-model="tab" dark align-with-title class="d-none d-md-flex ">
         <v-tabs-slider color="secondary"></v-tabs-slider>
         <v-tab v-for="item in itemsNav" :key="item.title" link dark @click="redirect(item.path)">
+
           {{ item.title }}
         </v-tab>
         </v-tabs>
