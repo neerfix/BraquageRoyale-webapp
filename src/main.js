@@ -1,9 +1,12 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
+import store from './store'
 import vuetify from './plugins/vuetify'
 import './registerServiceWorker'
 import '/service-worker'
+import firebase from 'firebase/app'
+require('firebase/auth')
 
 Vue.config.productionTip = false
 
@@ -27,6 +30,13 @@ if ('serviceWorker' in navigator) {
   });
 }
 
+firebase.initializeApp(firebaseConfig)
+
+firebase.auth().onAuthStateChanged(user => {
+  store.dispatch('fetchUser', user)
+})
+
+export const db = firebase
 
 new Vue({
   router,
