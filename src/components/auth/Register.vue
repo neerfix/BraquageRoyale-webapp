@@ -170,26 +170,32 @@ export default {
         }
       }
       if (this.isFormValid) {
-        axios({
-          method: 'post',
-          url: url,
-          data: body
-        }).then(() => {
-          console.log('ok')
-          db.auth()
-              .signInWithEmailAndPassword(this.email, this.password)
-              .then((resp) => {
-                if (resp.user !== undefined) {
-                  localStorage.setItem("isLogged", 'true');
-                  this.$router.go(this.$router.push('/'))
-                }
+        if (this.password.length < 6) {
+          this.loader = false;
+          this.snackbar = true;
+          this.message = "Il doit y avoir au minimum 6 caractère dans votre mot de passe"
+        } else {
+          axios({
+            method: 'post',
+            url: url,
+            data: body
+          }).then(() => {
+            console.log('ok')
+            db.auth()
+                .signInWithEmailAndPassword(this.email, this.password)
+                .then((resp) => {
+                  if (resp.user !== undefined) {
+                    localStorage.setItem("isLogged", 'true');
+                    this.$router.go(this.$router.push('/'))
+                  }
+                })
+          })
+              .catch(() => {
+                this.loader = false;
+                this.snackbar = true;
+                this.message = "Une erreur est survenue."
               })
-        })
-            .catch(() => {
-              this.loader = false;
-              this.snackbar = true;
-              this.message = "Une erreur est survenue."
-            })
+        }
       } else {
         this.loader = false;
         this.snackbar = true;
