@@ -125,6 +125,9 @@
 </template>
 
 <script>
+import axios from "axios";
+import { db } from "@/main"
+
 export default {
   name: "Register",
   data: () => ({
@@ -145,6 +148,9 @@ export default {
   }),
   computed: {
     isFormValid: function () {
+      if (this.password !== this.confirmPassword) {
+        return console.log('error')
+      }
       return this.email !== ''
           && this.password !== ''
           && this.pseudo !== ''
@@ -161,16 +167,36 @@ export default {
   methods: {
     register: function () {
       if (this.isFormValid) {
-        // Verify if password are same
-        if (this.password === this.confirmPassword) {
-          console.log(this.password, this.confirmPassword)
-        } else {
-          this.snackbar = true
-          this.message = 'Les mots de passe doivent être identiques'
-        }
+        db.auth()
+            .createUserWithEmailAndPassword(this.email, this.password)
+            .then((userCredential) => {
+              const url = 'https://api.braquage-royale.xyz/users'
+              const body = {
+                id: userCredential.user.uid,
+                email: userCredential.user.email,
+                date: {
+                  createdAt: userCredential.user.metadata.creationTime,
+                  updateAt: userCredential.user.metadata.lastSignInTime,
+                  lastSignInTime: userCredential.user.metadata.lastSignInTime
+                }
+              }
+              axios({
+                method: 'post',
+                url: url,
+                data: body
+              }).then(r => {
+                console.log(r)
+                this.$router.push('/')
+              }).catch(e => {
+                console.log(e.response)
+              })
+            })
+            .catch((error) => {
+              console.error(error)
+            })
       } else {
         this.snackbar = true;
-        this.message = "Veuillez remplir tous les champs"
+        this.message = "Mots de passe non identiques ou remplir tous les champs svp"
       }
     }
   }
