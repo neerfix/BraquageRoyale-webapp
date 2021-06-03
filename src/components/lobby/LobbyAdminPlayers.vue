@@ -4,8 +4,8 @@
       <p>Salon de la partie : {{ nameGame }}</p>
       <p>Code d'invitation : {{ invitationCode }}</p>
 
-      <v-btn @click="showAdminListPlayers">Liste des joueurs</v-btn>
-      <v-btn @click="showAdminOptions">Options</v-btn>
+      <v-btn class="btn_choice" :class="{is_active: showPlayersList === true}" @click="showAdminListPlayers">Liste des joueurs</v-btn>
+      <v-btn class="btn_choice" :class="{is_active: showOptions === true}" @click="showAdminOptions">Options</v-btn>
 
       <!-- PLayers list -->
       <div v-if="showPlayersList" id="players_list" class="mb-12"><PlayersList/></div>
@@ -55,10 +55,12 @@ export default {
     }
   },
   methods: {
+    // If list players is clicked
     showAdminListPlayers(){
       this.showPlayersList = true
       this.showOptions = false
     },
+    // If options admin is clicked
     showAdminOptions(){
       this.showPlayersList = false
       this.showOptions = true
@@ -68,10 +70,24 @@ export default {
 </script>
 
 <style scoped>
+  .is_active{
+    border: 1px solid black;
+    border-bottom-color: white;
+  }
+  .btn_choice{
+    background-color: transparent !important;
+    box-shadow: none !important;
+    text-transform: initial;
+    border-radius: 2px;
+  }
   #players_list,
   #options_admin{
     height: 40vh;
     overflow-y: scroll;
+    border-top: 1px solid black;
+    margin-top: -1px;
+    margin-left: 2px;
+    padding-top: 1em;
   }
   .separator{
     border-color: black !important;
