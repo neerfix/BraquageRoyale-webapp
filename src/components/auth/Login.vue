@@ -4,19 +4,27 @@
       v-model="valid"
       lazy-validation
       class="sm4 md4"
+
   >
     <v-text-field
         v-model="email"
-        :rules="[v => !!v || 'E-mail obligatoire'] && emailRules"
+        :rules="[v => !!v || 'E-mail obligatoire'] || emailRules"
         label="E-mail"
+        placeholder="Votre e-mail"
         required
+        outlined
+        clearable
     ></v-text-field>
 
     <v-text-field
         v-model="password"
+        placeholder="Votre mot de passe"
         :rules="[v => !!v || 'Mot de passe obligatoire']"
         label="Mot de passe"
+        type="password"
         required
+        outlined
+        clearable
     ></v-text-field>
 
     <v-btn
@@ -72,7 +80,7 @@ export default {
         db.auth()
             .signInWithEmailAndPassword(this.email, this.password)
             .then((userCredential) => {
-              const url = 'https://api.braquage-royale.xyz/'
+              const url = 'https://api.braquage-royale.xyz/users'
               const body = {
                 id: userCredential.user.uid,
                 email: userCredential.user.email,
