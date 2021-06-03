@@ -29,7 +29,7 @@
         <v-text-field
             v-model="playersMax"
             label="Nombre de joueurs max"
-            :rules="[playersMaxRules]"
+            :rules="playersMaxRules"
             outlined
         />
       </v-col>
@@ -38,7 +38,9 @@
         <p>Choix de la map</p>
         <v-select
             :items="itemsMap"
+            v-model="choiceMap"
             label="Choix de la map"
+            :rules="choiceMapRules"
             outlined
         ></v-select>
         <v-divider></v-divider>
@@ -90,17 +92,31 @@
         itemsMap: ["Map #1", "Map #2", "Map #3"],
         privateGame: false,
         valid: true,
+        // Name part rules
         nameGame: '',
         nameGameRules: [
           v => !!v || 'Nom de la partie obligatoire',
           v => (v && v.length <= 15) || 'Le nom ne doit pas depasser 15 caractères',
         ],
+        // Players max rules
         playersMax: '',
-        playersMaxRules: v  => {
-          if (!v.trim()) return true;
-          if (!isNaN(parseFloat(v)) && v >= 0 && v <= 5) return true;
-          return 'Nombre maximum : 5 joueurs';
-        },
+        playersMaxRules: [
+            // v => !v.trim() || 'Test',
+            v => !!v || 'Nombre de joueurs max obligatoire',
+            v => (!isNaN(parseFloat(v))) || 'Ceci n\'est pas un nombre',
+            v => (v >= 0 && v <= 5) || 'Nombre maximum : 5 joueurs'
+        ],
+        // playersMaxRules: v  => {
+        //   if (!v.trim()) return true;
+        //   if (!isNaN(parseFloat(v)) && v >= 0 && v <= 5) return true;
+        //   return 'Nombre maximum : 5 joueurs';
+        // },
+        // Choice map rules
+        choiceMap: '',
+        choiceMapRules: [
+          v => !!v || 'Choix de la map obligatoire'
+        ],
+        // Code rules
         codeJoinGame: '',
         codeJoinGameRules: [
           v => !!v || 'Code de la partie obligatoire',
@@ -112,7 +128,7 @@
       validate () {
         // console.log("Private game " + this.privateGame)
         // console.log("Code value " + this.codeJoinGame)
-        console.log("Form " + this.$refs.form.validate())
+        console.log("Form = " + this.$refs.form.validate())
         // this.$refs.form.validate()
       },
     }
