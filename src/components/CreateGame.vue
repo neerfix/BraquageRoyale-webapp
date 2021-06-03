@@ -36,15 +36,15 @@
         />
       </v-col>
       <!-- Map choice -->
-      <v-col xs="12">
-        <label for="map_choice">Choix de la map</label>
+      <v-col xs="12" id="map_choice">
+        <label for="map_choice_game">Choix de la map</label>
         <v-select
             :items="itemsMap"
             v-model="choiceMap"
             label="Choix de la map"
             :rules="choiceMapRules"
             outlined
-            id="map_choice"
+            id="map_choice_game"
         ></v-select>
         <v-divider class="separator"></v-divider>
       </v-col>
@@ -179,6 +179,9 @@
   }
   #player_max .v-text-field{
     width: 40% !important;
+  }
+  #map_choice .v-text-field{
+    width: 60% !important;
   }
   .btn_actions{
     border: 2px solid black !important;
