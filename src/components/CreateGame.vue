@@ -91,7 +91,7 @@
       </v-col>
     </v-form>
     <!-- End create new game form -->
-
+    <!-- Error/Success message form-->
     <v-snackbar v-model="snackbar" :timeout="timeoutSnackbar" :color="colorMessage">
       {{ textMessageValidForm }}
       <template v-slot:action="{ attrs }">
@@ -151,15 +151,12 @@
       // Validate form
       validate () {
         this.snackbar = true
-        // console.log("Private game " + this.privateGame)
-        // console.log("Code value " + this.codeJoinGame)
-        // console.log("Form = " + this.$refs.form.validate())
         if(this.$refs.form.validate()) {
-          console.log("Form OK")
+          // console.log("Form OK")
           this.textMessageValidForm = "Votre partie à bien été créée"
           this.colorMessage = "green lighten-2";
         } else {
-          console.log("Form KO")
+          // console.log("Form KO")
           this.textMessageValidForm = "Des champs sont incorrectes"
           this.colorMessage = "red lighten-2";
         }
