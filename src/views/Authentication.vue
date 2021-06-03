@@ -20,6 +20,11 @@ export default {
   data: () => ({
     isRegister: false
   }),
+  beforeMount() {
+    if (localStorage.getItem('isLogged') === "true") {
+      this.$router.push('/');
+    }
+  },
   methods: {
     register () {
       this.isRegister = true;
