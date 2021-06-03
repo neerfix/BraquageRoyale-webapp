@@ -1,5 +1,5 @@
 <template>
-  <div class="cell" :style="styleCell">
+  <div class="cell" :style="styleCell" @click="move">
     <div class="background" :style="styleBackground"></div>
     <div class="obstacle">
         <slot name="obstacle"></slot>
@@ -72,6 +72,16 @@ export default {
         y : Math.floor(this.tileNumber / tileSetWidth)
       }
     },
+    move() {
+      if(this.isAccessible && this.obstacleTile === -1 && !this.player) {
+        this.$emit('move', { x: this.x, y: this.y })
+      }
+    }
+  },
+  watch: {
+    player() {
+      console.log(this.player)
+    }
   }
 }
 </script>

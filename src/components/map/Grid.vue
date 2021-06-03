@@ -2,7 +2,7 @@
   <div class="grid">
     <div class="grid-container">
       <div class="grid-row" v-for="(row, i) in rows" :key="i">
-        <cell v-for="(cell, j) in row" :key="j"
+        <cell v-for="(cell, j) in row" :key="j" @move="(e) => playerMove(e)"
               :x="cell.x" :y="cell.y" :tileNumber="cell.backgroundTile" :obstacleTile="cell.obstacleTile"
               :decorationTile="cell.decorationTile" :isAccessible="cell.isAccessible" :player="cell.player">
           <cell v-if="cell.obstacleTile !== -1" slot="obstacle" :tileNumber="cell.obstacleTile"></cell>
@@ -27,7 +27,8 @@ export default {
   },
   data() {
     return {
-      rows: []
+      rows: [],
+      currentPlayer: null
     }
   },
   methods: {
@@ -74,11 +75,18 @@ export default {
       if(x < 0 || x >= this.rows[0].length || y < 0 || y >= this.rows.length) {
         return false
       }
-      return this.rows[y][x].obstacleTile === -1
+      return (this.rows[y][x].obstacleTile === -1 || this.rows[y][x].decorationTile !== -1)
     },
-    setAccessibleCellsAroundPlayer(x, y, distance) {
+    setAccessibleCellsAroundPlayer(x, y, distance = 3) {
       if(distance === 0) {
         return
+      } else if(distance === 3) {
+        this.rows.forEach(row => {
+          const cells = row.filter(cell => { return cell.isAccessible })
+          cells.forEach(cell => {
+            cell.isAccessible = false
+          })
+        });
       }
       const directions = [
         { x: 0, y: 1, label: 'right' }, { x: 0, y: -1, label: 'left' },
@@ -91,6 +99,12 @@ export default {
           this.setAccessibleCellsAroundPlayer(target.x, target.y, distance - 1)
         }
       });
+    },
+    playerMove(arrival = { x: null, y: null }) {
+      console.log(this.currentPlayer, arrival)
+      this.rows[this.currentPlayer.coordinates.y][this.currentPlayer.coordinates.x].player = null
+      this.rows[arrival.y][arrival.x].player = this.currentPlayer
+      this.setAccessibleCellsAroundPlayer(arrival.x, arrival.y)
     }
   },
   mounted() {
@@ -99,7 +113,8 @@ export default {
     this.setupObstacles(0.1)
 
     const currentPlayer = this.players.find(player => player.isTurn)
-    this.setAccessibleCellsAroundPlayer(currentPlayer.coordinates.x, currentPlayer.coordinates.y, 3)
+    this.currentPlayer = currentPlayer
+    this.setAccessibleCellsAroundPlayer(currentPlayer.coordinates.x, currentPlayer.coordinates.y)
   }
 }
 </script>

@@ -54,7 +54,7 @@ export default {
           vitality: 67,
           attack: 12,
           kills: 0,
-          isTurn: true,
+          isTurn: false,
           coordinates: {
             x: 10,
             y: 5,
@@ -78,10 +78,10 @@ export default {
           vitality: 38,
           attack: 12,
           kills: 2,
-          isTurn: false,
+          isTurn: true,
           coordinates: {
-            x: 2,
-            y: 11,
+            x: 14,
+            y: 9,
           }
         },
         {
