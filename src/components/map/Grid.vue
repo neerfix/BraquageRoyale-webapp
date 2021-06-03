@@ -1,7 +1,7 @@
 <template>
-  <div class="grid ">
-    <div class="container">
-      <div class="row" v-for="(row, i) in rows" :key="i">
+  <div class="grid">
+    <div class="grid-container">
+      <div class="grid-row" v-for="(row, i) in rows" :key="i">
         <cell v-for="(cell, j) in row" :key="j"
               :x="cell.x" :y="cell.y" :tileNumber="cell.backgroundTile" :obstacleTile="cell.obstacleTile"
               :decorationTile="cell.decorationTile">
@@ -71,12 +71,12 @@ export default {
 </script>
 
 <style scoped>
-.row {
+.grid-row {
   display: flex;
   flex-direction: row;
 }
 
-.container {
+.grid-container {
   display: flex;
   flex-direction: column;
 }

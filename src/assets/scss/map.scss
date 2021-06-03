@@ -1,0 +1,31 @@
+.map {
+    .grid {
+        .grid-row {
+
+            &:first-child {
+                > .cell {
+                    border-top: none;
+                }
+            }
+
+            &:last-child {
+                > .cell {
+                    border-bottom: none;
+                }
+            }
+
+            > .cell {
+                border-right: .5px dashed #686868;
+                border-bottom: .5px dashed #686868;
+
+                &:first-child {
+                    border-left: none;
+                }
+                &:last-child {
+                    border-right: none;
+                }
+            }
+        }
+        
+    }
+}
