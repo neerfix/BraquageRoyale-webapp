@@ -25,7 +25,7 @@
         ></v-text-field>
       </v-col>
       <!-- Max player -->
-      <v-col xs="12">
+      <v-col xs="12" id="player_max">
         <label for="nb_players_max">Nombre de joueurs maximum</label>
         <v-text-field
             v-model="playersMax"
@@ -74,13 +74,19 @@
         </v-expand-transition>
       </v-col>
       <!-- Actions buttons -->
-      <v-col xs="12">
-        <v-btn elevation="2">Annuler</v-btn>
+      <v-col xs="12" class="d-flex">
         <v-btn
+            elevation="2"
+            @click="reset"
+            class="btn_actions"
+        >Annuler</v-btn>
+        <v-btn
+            id="btn_create_game"
             elevation="2"
             color="error"
             :disabled="!valid"
             @click="validate"
+            class="btn_actions"
         >Créer la partie</v-btn>
       </v-col>
     </v-form>
@@ -124,6 +130,7 @@
       };
     },
     methods: {
+      // Validate form
       validate () {
         // console.log("Private game " + this.privateGame)
         // console.log("Code value " + this.codeJoinGame)
@@ -133,6 +140,10 @@
         } else {
           console.log("Form KO")
         }
+      },
+      //  Reset form
+      reset () {
+        this.$refs.form.reset()
       },
     }
   }
@@ -145,5 +156,20 @@
   }
   .v-text-field--outlined >>> fieldset {
     border: 2px solid black;
+  }
+  #player_max .v-text-field{
+    width: 40% !important;
+  }
+  .btn_actions{
+    border: 2px solid black !important;
+    border-bottom: 4px solid black !important;
+    border-right: 4px solid black !important;
+  }
+  #btn_create_game{
+    margin: auto;
+    margin-right: 0;
+    border: 2px solid black !important;
+    border-bottom: 4px solid black !important;
+    border-right: 4px solid black !important;
   }
 </style>
