@@ -181,11 +181,14 @@ export default {
               const url = 'https://api.braquage-royale.xyz/users'
               const body = {
                 id: userCredential.user.uid,
-                email: userCredential.user.email,
+                firstName: this.firstName,
+                lastName: this.lastName,
+                email: this.email,
+                player: {
+                  username: this.pseudo
+                },
                 date: {
-                  createdAt: userCredential.user.metadata.creationTime,
-                  updateAt: userCredential.user.metadata.lastSignInTime,
-                  lastSignInTime: userCredential.user.metadata.lastSignInTime
+                  date_of_birth: this.dob
                 }
               }
               axios({
