@@ -7,14 +7,27 @@
     <div class="decoration">
       <slot name="decoration"></slot>
     </div>
+    <div class="caracter" v-if="player">
+      <v-tooltip left>
+        <template v-slot:activator="{ on, attrs }">
+          <img :src="player.vitality > 0 ? player.img : ripImage" alt="caracter" 
+            v-bind="attrs" v-on="on"/>
+        </template>
+        <span>{{ player.username }}</span>
+      </v-tooltip>
+      
+    </div>
     <div class="highlight" :class="(obstacleTile !== -1 && decorationTile === -1) ? 'red_obstacle' : null"></div>
   </div>
 </template>
 
 <script>
 import bgImage from '../../assets/img/village.png'
+import ripImage from '../../assets/img/caracters/rip.png'
+
 const tileSize = 32
 const tileSetWidth = 19
+
 export default {
   name: 'Cell',
   props: {
@@ -23,6 +36,7 @@ export default {
     tileNumber: Number,
     obstacleTile: Number,
     decorationTile: Number,
+    player: Object,
   },
   data() {
     return {
@@ -34,6 +48,7 @@ export default {
       },
       styleBackground: {},
       bgImage: bgImage,
+      ripImage: ripImage,
     }
   },
   mounted() {
@@ -56,7 +71,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .cell {
   position : relative;
   display : block;
@@ -79,6 +94,18 @@ export default {
 .decoration {
   z-index : 3;
   pointer-events : none;
+}
+
+.caracter {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index : 7;
+
+  img {
+    width: 100%;
+    max-height: 32px;
+  }
 }
 
 .highlight:hover {

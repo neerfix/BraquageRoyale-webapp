@@ -31,4 +31,8 @@
             }
         }
     }
+
+    .v-overlay.game-overlay {
+        z-index: 10 !important;
+    }
 }

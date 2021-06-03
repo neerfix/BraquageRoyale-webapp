@@ -4,7 +4,7 @@
       <div class="grid-row" v-for="(row, i) in rows" :key="i">
         <cell v-for="(cell, j) in row" :key="j"
               :x="cell.x" :y="cell.y" :tileNumber="cell.backgroundTile" :obstacleTile="cell.obstacleTile"
-              :decorationTile="cell.decorationTile">
+              :decorationTile="cell.decorationTile" :player="cell.player">
           <cell v-if="cell.obstacleTile !== -1" slot="obstacle" :tileNumber="cell.obstacleTile"></cell>
           <cell v-if="cell.decorationTile !== -1" slot="decoration" :tileNumber="cell.decorationTile"></cell>
         </cell>
@@ -21,6 +21,9 @@ export default {
   name: 'Grid',
   components: {
     Cell
+  },
+  props: {
+    players: Array
   },
   data() {
     return {
@@ -61,10 +64,23 @@ export default {
         });
       }
       this.rows.push(currentRow)
+    },
+    placePlayersOnMap() {
+      this.players.map(player => {
+        this.rows.filter(row => {
+          row.filter(cell => {
+            if(cell.x === player.coordinates.x && cell.y === player.coordinates.y) {
+              cell.player = player
+            }
+          })
+        })
+      })
+      console.log(this.rows)
     }
   },
   mounted() {
     this.createGridFromJSON(dataMap)
+    this.placePlayersOnMap()
     this.setupObstacles(0.1)
   }
 }
