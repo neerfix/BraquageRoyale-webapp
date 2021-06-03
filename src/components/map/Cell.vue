@@ -15,9 +15,13 @@
         </template>
         <span>{{ player.username }}</span>
       </v-tooltip>
-      
     </div>
-    <div class="highlight" :class="(obstacleTile !== -1 && decorationTile === -1) ? 'red_obstacle' : null"></div>
+    <div class="highlight"
+      :class="
+        (obstacleTile !== -1 && decorationTile === -1) ? 'red_obstacle'
+        : (isAccessible && !player) ? 'accessible' : null
+      "
+    ></div>
   </div>
 </template>
 
@@ -36,6 +40,7 @@ export default {
     tileNumber: Number,
     obstacleTile: Number,
     decorationTile: Number,
+    isAccessible: Boolean,
     player: Object,
   },
   data() {
@@ -72,52 +77,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.cell {
-  position : relative;
-  display : block;
-}
-.highlight, .obstacle, .decoration {
-  position : absolute;
-  height : 100%;
-  width : 100%;
-  top : 0;
-  left : 0;
-  z-index : 5;
-  border : 1px solid rgba(68,206,262,0);
-  border-radius:7px;
-  box-sizing : border-box;
-}
-.obstacle {
-  z-index : 2;
-  pointer-events : none;
-}
-.decoration {
-  z-index : 3;
-  pointer-events : none;
-}
 
-.caracter {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index : 7;
-
-  img {
-    width: 100%;
-    max-height: 32px;
-  }
-}
-
-.highlight:hover {
-  background-color : rgba(68,206,262,0.5);
-  border : 1px solid rgba(68,206,262,1);
-}
-.red_obstacle:hover {
-  background-color : rgba(252,65,55,0.5);
-  border : 1px solid rgba(252,65,55,1);
-}
-.purple, .purple:hover {
-  background-color : rgba(169,52,211,0.5);
-  border : 1px solid rgba(169,52,211,1);
-}
 </style>

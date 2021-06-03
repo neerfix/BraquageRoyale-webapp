@@ -53,10 +53,11 @@ export default {
           img: Knight1,
           vitality: 67,
           attack: 12,
-          kills: 1,
+          kills: 0,
+          isTurn: true,
           coordinates: {
-            x: 0,
-            y: 0,
+            x: 10,
+            y: 5,
           }
         },
         {
@@ -64,9 +65,10 @@ export default {
           img: Knight2,
           vitality: 98,
           attack: 6,
-          kills: 3,
+          kills: 0,
+          isTurn: false,
           coordinates: {
-            x: 1,
+            x: 0,
             y: 6,
           }
         },
@@ -75,10 +77,11 @@ export default {
           img: Knight2,
           vitality: 38,
           attack: 12,
-          kills: 1,
+          kills: 2,
+          isTurn: false,
           coordinates: {
             x: 2,
-            y: 10,
+            y: 11,
           }
         },
         {
@@ -87,9 +90,10 @@ export default {
           vitality: 0,
           attack: 6,
           kills: 3,
+          isTurn: false,
           coordinates: {
             x: 7,
-            y: 10,
+            y: 12,
           }
         },
         {
@@ -98,6 +102,7 @@ export default {
           vitality: 0,
           attack: 12,
           kills: 1,
+          isTurn: false,
           coordinates: {
             x: 1,
             y: 12,

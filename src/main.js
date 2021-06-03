@@ -12,6 +12,7 @@ require('firebase/auth')
 import './assets/scss/main.scss'
 import './assets/scss/game.scss'
 import './assets/scss/map.scss'
+import './assets/scss/cell.scss'
 
 Vue.config.productionTip = false
 

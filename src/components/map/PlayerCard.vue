@@ -18,18 +18,18 @@
           </v-list-item-content>
 
           <v-list-item-avatar>
-            <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
+            <img :src="player.img" alt="avatar" />
           </v-list-item-avatar>
         </v-list-item>
     </v-card>
     <v-overlay :value="isDead()" :absolute="true">
-      <img :src="imgDead" alt="dead" />
+      <img :src="deadBannier" alt="dead" />
     </v-overlay>
   </div>
 </template>
 
 <script>
-import PlayerDead from '../../assets/img/player-dead.png'
+import DeadBannier from '../../assets/img/player-dead.png'
 export default {
   name: 'PlayerCard',
   props: {
@@ -37,7 +37,7 @@ export default {
   },
   data() {
     return {
-      imgDead: PlayerDead
+      deadBannier: DeadBannier
     }
   },
   methods: {
