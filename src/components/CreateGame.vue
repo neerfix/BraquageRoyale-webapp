@@ -187,6 +187,7 @@
     border: 2px solid black !important;
     border-bottom: 4px solid black !important;
     border-right: 4px solid black !important;
+    text-transform: initial;
   }
   #btn_create_game{
     margin: auto;
