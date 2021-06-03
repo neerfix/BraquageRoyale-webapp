@@ -4,7 +4,8 @@ import Home from "@/views/Home";
 import Authentication from '@/views/Authentication'
 import Dashboard from '@/views/Dashboard'
 import CreateNewGame from "@/views/CreateNewGame";
-import GameInProgress from "@/views/GameInProgress";
+import GameInProgress from '@/views/GameInProgress'
+import Profil from '@/views/Profil';
 
 Vue.use(VueRouter)
 
@@ -25,14 +26,27 @@ const routes = [
     component: Dashboard
   },
   {
-    path: '/create_new_game',
+    path: '/create',
     name: 'CreateNewGame',
     component: CreateNewGame
   },
   {
-    path: '/game_in_progress',
-    name: 'GameInProgress',
+    path: '/join',
+    name: 'JoinGame'
+  },
+  {
+    path: '/lobby/{gameId}',
+    name: 'LobbyGame'
+  },
+  {
+    path: '/game',
+    name: 'Game',
     component: GameInProgress
+  },
+  {
+    path: '/profil',
+    name: 'Profil',
+    component: Profil
   }
 ]
 

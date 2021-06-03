@@ -8,6 +8,12 @@ import '/service-worker'
 import firebase from 'firebase/app'
 require('firebase/auth')
 
+// CSS / SCSS
+import './assets/scss/main.scss'
+
+// CSS / SCSS
+import './assets/scss/main.scss'
+
 Vue.config.productionTip = false
 
 const firebaseConfig = {

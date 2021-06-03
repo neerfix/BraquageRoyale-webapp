@@ -143,3 +143,16 @@
     }
   }
 </script>
+
+<style scoped lang="scss">
+::v-deep {
+  .v-toolbar__content {
+      background-color: #4a86e8;
+      color: #FFF;
+
+      .v-app-bar__nav-icon {
+        color: #FFF !important;
+      }
+  }
+}
+</style>
