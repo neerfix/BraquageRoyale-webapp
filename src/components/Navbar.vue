@@ -22,6 +22,22 @@
 
           {{ item.title }}
         </v-tab>
+          <v-btn
+              rounded
+              small
+              class="mt-2 "
+              color="green"
+              @click="loginOrAccount()"
+          >
+            <v-icon dark
+            v-if="user.data">
+              mdi-account
+            </v-icon>
+            <v-icon
+              v-if="!user.data">
+              mdi-login
+            </v-icon>
+          </v-btn>
         </v-tabs>
       </template>
     </v-app-bar>
@@ -35,6 +51,7 @@
           </v-list-item>
         </v-list-item-group>
       </v-list>
+
     </v-navigation-drawer>
     <!-- Navigation bar ends -->
   </div>
@@ -47,19 +64,29 @@
       return {
         drawer: false,
         tab: null,
+        user: '',
         itemsNav: [
           {title: 'Accueil', path: '/'},
-          {title: 'Connexion/Inscription', path: '/auth'},
           {title: 'Mes parties', path: '/dashboard'},
           {title: 'Créer une nouvelle partie', path: '/create_new_game'},
           {title: 'Partie en cours', path: 'game_in_progress'}
         ],
       }
     },
+    beforeCreate() {
+      this.$store.state.user.loggedIn = this.user
+    },
     methods: {
       // Allows to navigate between different pages
       redirect (path) {
         this.$router.push(path);
+      },
+      loginOrAccount() {
+        if (this.user.data) {
+          this.$router.push('/account');
+        } else {
+          this.$router.push('/auth');
+        }
       }
     }
   }

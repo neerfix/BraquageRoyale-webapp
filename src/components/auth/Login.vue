@@ -97,6 +97,7 @@ export default {
               }).then(r => {
                 console.log(r)
                 this.$router.push('/')
+                this.$store.state.user.loggedIn = true;
               })
             })
             .catch((error) => {

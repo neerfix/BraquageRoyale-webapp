@@ -48,7 +48,7 @@
     <v-text-field
         v-model="password"
         :rules="[v => !!v || 'Obligatoire']"
-        label="Mot de passe"
+        label="Mot de passe (minimum 6 caractères)"
         required
         type="password"
         placeholder="Votre mot de passe"
@@ -67,35 +67,47 @@
         clearable
     ></v-text-field>
 
-    <v-menu
-
-        v-model="fromDateMenu"
-        :close-on-content-click="false"
-        :nudge-right="40"
-        transition="scale-transition"
-        offset-y
-        max-width="290px"
-        min-width="290px"
+    <v-text-field
+        v-model="dob"
+        :rules="[v => !!v || 'Obligatoire']"
+        type="date"
+        label="Date de naissance"
+        outlined
+        clearable
+        required
+        placeholder="votre date de naissance"
     >
-      <template v-slot:activator="{ on }">
-        <v-text-field
-            label="Date de naissance"
-            readonly
-            :rules="[v => !!v || 'Date de naissance obligatoire']"
-            :value="fromDateVal"
-            v-on="on"
-            outlined
-            clearable
-            required
-        ></v-text-field>
-      </template>
-      <v-date-picker
-          locale="en-in"
-          v-model="fromDateVal"
-          no-title
-          @input="fromDateMenu = false"
-      ></v-date-picker>
-    </v-menu>
+    </v-text-field>
+
+<!--    <v-menu-->
+
+<!--        v-model="fromDateMenu"-->
+<!--        :close-on-content-click="false"-->
+<!--        :nudge-right="40"-->
+<!--        transition="scale-transition"-->
+<!--        offset-y-->
+<!--        max-width="290px"-->
+<!--        min-width="290px"-->
+<!--    >-->
+<!--      <template v-slot:activator="{ on }">-->
+<!--        <v-text-field-->
+<!--            label="Date de naissance"-->
+<!--            readonly-->
+<!--            :rules="[v => !!v || 'Date de naissance obligatoire']"-->
+<!--            :value="fromDateVal"-->
+<!--            v-on="on"-->
+<!--            outlined-->
+<!--            clearable-->
+<!--            required-->
+<!--        ></v-text-field>-->
+<!--      </template>-->
+<!--      <v-date-picker-->
+<!--          locale="en-in"-->
+<!--          v-model="fromDateVal"-->
+<!--          no-title-->
+<!--          @input="fromDateMenu = false"-->
+<!--      ></v-date-picker>-->
+<!--    </v-menu>-->
 
     <v-btn
         color="success"
@@ -138,8 +150,7 @@ export default {
     password: '',
     confirmPassword: '',
     valid: false,
-    fromDateMenu: false,
-    fromDateVal: null,
+    dob: '',
     emailRules: [
       v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail non valide'
     ],
@@ -157,16 +168,13 @@ export default {
           && this.lastName !== ''
           && this.firstName !== ''
           && this.confirmPassword !== ''
-          && this.fromDateVal !== null
-    },
-    fromDateDisp() {
-      return this.fromDateVal;
-      // format/do something with date
+          && this.dob !== ''
     },
   },
   methods: {
     register: function () {
       if (this.isFormValid) {
+        console.log(this.dob)
         db.auth()
             .createUserWithEmailAndPassword(this.email, this.password)
             .then((userCredential) => {
@@ -187,6 +195,7 @@ export default {
               }).then(r => {
                 console.log(r)
                 this.$router.push('/')
+                this.$store.state.user.loggedIn = true;
               }).catch(e => {
                 console.log(e.response)
               })
