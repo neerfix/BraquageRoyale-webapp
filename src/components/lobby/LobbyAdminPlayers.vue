@@ -5,11 +5,14 @@
       <p>Code d'invitation : {{ invitationCode }}</p>
 
       <v-btn @click="showAdminListPlayers">Liste des joueurs</v-btn>
+      <v-btn @click="showAdminOptions">Options</v-btn>
 
-      <!-- PLayers list-->
+      <!-- PLayers list -->
       <div v-if="showPlayersList" id="players_list" class="mb-12"><PlayersList/></div>
-      <v-divider class="separator"></v-divider>
+      <!-- Options admin -->
+      <div v-if="showOptions" id="options_admin" class="mb-12"><OptionsAdmin/></div>
 
+      <v-divider class="separator"></v-divider>
 
       <v-col xs="12" class="d-flex">
         <v-btn
@@ -35,11 +38,13 @@
 
 <script>
 import PlayersList from "@/components/lobby/PlayersList";
+import OptionsAdmin from "@/components/lobby/OptionsAdmin";
 
 export default {
   name: 'LobbyAdminPlayers',
   components: {
-    PlayersList
+    PlayersList,
+    OptionsAdmin
   },
   data() {
     return{
@@ -63,7 +68,8 @@ export default {
 </script>
 
 <style scoped>
-  #players_list{
+  #players_list,
+  #options_admin{
     height: 40vh;
     overflow-y: scroll;
   }
