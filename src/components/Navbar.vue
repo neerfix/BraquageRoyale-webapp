@@ -54,7 +54,8 @@
           {title: 'Rejoindre une partie privée', path: '/join'},
           {title: 'Mon profil', path: '/profil'},
           {title: 'Map', path: '/game'},
-          {title: 'Lobby', path: '/lobby/lobby_players'}
+          // {title: 'Lobby', path: '/lobby/lobby_players'}
+          {title: 'Lobby', path: '/lobby/lobby_admin_players'}
         ],
       }
     },
