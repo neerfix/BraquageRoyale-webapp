@@ -6,6 +6,9 @@
       class="sm4 md4"
 
   >
+    <h1>Connexion à Braquage royal!</h1>
+    <v-divider></v-divider>
+    <br>
     <v-text-field
         v-model="email"
         :rules="[v => !!v || 'E-mail obligatoire'] || emailRules"
@@ -35,6 +38,14 @@
     >
       Se connecter
     </v-btn>
+
+    <v-progress-circular
+        v-if="loader"
+        indeterminate
+        color="primary"
+        :width="5"
+    ></v-progress-circular>
+
     <v-snackbar
         v-model="snackbar"
     >
@@ -63,6 +74,7 @@ export default {
     password: '',
     email: '',
     valid: true,
+    loader: false,
     emailRules: [
       v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail non valide'
     ],
@@ -77,6 +89,7 @@ export default {
   methods: {
     loginFirebase: function () {
       if (this.isFormValid) {
+        this.loader = true;
         db.auth()
             .signInWithEmailAndPassword(this.email, this.password)
             .then((userCredential) => {
@@ -98,12 +111,14 @@ export default {
                 console.log(r)
                 this.$router.push('/')
                 this.$store.state.user.loggedIn = true;
+                this.loader = false;
               })
             })
             .catch((error) => {
               console.error(error)
             })
       } else {
+        this.loader = false;
         this.snackbar = true
         this.message = 'Veuillez remplir les champs ci-dessus'
       }

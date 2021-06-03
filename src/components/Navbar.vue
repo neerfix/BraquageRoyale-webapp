@@ -51,7 +51,24 @@
           </v-list-item>
         </v-list-item-group>
       </v-list>
-
+      <v-btn
+          rounded
+          small
+          class="mt-2 ml-5"
+          color="green"
+          @click="loginOrAccount()"
+      >
+        <v-icon
+            color="white"
+            v-if="user.data">
+          mdi-account
+        </v-icon>
+        <v-icon
+            color="white"
+            v-if="!user.data">
+          mdi-login
+        </v-icon>
+      </v-btn>
     </v-navigation-drawer>
     <!-- Navigation bar ends -->
   </div>
@@ -73,8 +90,8 @@
         ],
       }
     },
-    beforeCreate() {
-      this.$store.state.user.loggedIn = this.user
+    beforeMount() {
+      // this.$store.state.user.loggedIn = this.user
     },
     methods: {
       // Allows to navigate between different pages

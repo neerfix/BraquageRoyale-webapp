@@ -5,6 +5,9 @@
       lazy-validation
       class="sm4 md4"
   >
+    <h1>Inscription à Braquage royal!</h1>
+    <v-divider></v-divider>
+    <br>
     <v-text-field
         v-model="firstName"
         :rules="[v => !!v || 'Prénom obligatoire']"
@@ -118,6 +121,13 @@
       S'inscrire
     </v-btn>
 
+    <v-progress-circular
+        v-if="loader"
+        indeterminate
+        color="primary"
+        :width="5"
+    ></v-progress-circular>
+
     <v-snackbar
         v-model="snackbar"
     >
@@ -144,6 +154,7 @@ export default {
   name: "Register",
   data: () => ({
     pseudo: '',
+    loader: false,
     lastName: '',
     firstName: '',
     email: '',
@@ -173,8 +184,8 @@ export default {
   },
   methods: {
     register: function () {
+      this.loader = true;
       if (this.isFormValid) {
-        console.log(this.dob)
         db.auth()
             .createUserWithEmailAndPassword(this.email, this.password)
             .then((userCredential) => {
@@ -195,10 +206,11 @@ export default {
                 method: 'post',
                 url: url,
                 data: body
-              }).then(r => {
-                console.log(r)
-                this.$router.push('/')
+              }).then(response => {
+                console.log(response)
+                this.$router.go(this.$router.push('/'));
                 this.$store.state.user.loggedIn = true;
+                this.loader = false
               }).catch(e => {
                 console.log(e.response)
               })
@@ -207,6 +219,7 @@ export default {
               console.error(error)
             })
       } else {
+        this.loader = false;
         this.snackbar = true;
         this.message = "Mots de passe non identiques ou remplir tous les champs svp"
       }
