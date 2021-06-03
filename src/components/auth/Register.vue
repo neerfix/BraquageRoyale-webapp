@@ -82,37 +82,8 @@
     >
     </v-text-field>
 
-<!--    <v-menu-->
-
-<!--        v-model="fromDateMenu"-->
-<!--        :close-on-content-click="false"-->
-<!--        :nudge-right="40"-->
-<!--        transition="scale-transition"-->
-<!--        offset-y-->
-<!--        max-width="290px"-->
-<!--        min-width="290px"-->
-<!--    >-->
-<!--      <template v-slot:activator="{ on }">-->
-<!--        <v-text-field-->
-<!--            label="Date de naissance"-->
-<!--            readonly-->
-<!--            :rules="[v => !!v || 'Date de naissance obligatoire']"-->
-<!--            :value="fromDateVal"-->
-<!--            v-on="on"-->
-<!--            outlined-->
-<!--            clearable-->
-<!--            required-->
-<!--        ></v-text-field>-->
-<!--      </template>-->
-<!--      <v-date-picker-->
-<!--          locale="en-in"-->
-<!--          v-model="fromDateVal"-->
-<!--          no-title-->
-<!--          @input="fromDateMenu = false"-->
-<!--      ></v-date-picker>-->
-<!--    </v-menu>-->
-
     <v-btn
+        id="btn-game"
         color="success"
         class="mr-4"
         :disabled="!valid"
@@ -148,7 +119,7 @@
 
 <script>
 import axios from "axios";
-import { db } from "@/main"
+import {db} from "@/main"
 
 export default {
   name: "Register",
@@ -185,38 +156,39 @@ export default {
   methods: {
     register: function () {
       this.loader = true;
+      const url = 'https://api.braquage-royale.xyz/users'
+      const body = {
+        password: this.password,
+        firstname: this.firstName,
+        lastname: this.lastName,
+        email: this.email,
+        player: {
+          username: this.pseudo
+        },
+        date: {
+          date_of_birth: this.dob
+        }
+      }
       if (this.isFormValid) {
-        db.auth()
-            .createUserWithEmailAndPassword(this.email, this.password)
-            .then((userCredential) => {
-              const url = 'https://api.braquage-royale.xyz/users'
-              const body = {
-                id: userCredential.user.uid,
-                firstName: this.firstName,
-                lastName: this.lastName,
-                email: this.email,
-                player: {
-                  username: this.pseudo
-                },
-                date: {
-                  date_of_birth: this.dob
+        axios({
+          method: 'post',
+          url: url,
+          data: body
+        }).then(() => {
+          console.log('ok')
+          db.auth()
+              .signInWithEmailAndPassword(this.email, this.password)
+              .then((resp) => {
+                if (resp.user !== undefined) {
+                  localStorage.setItem("isLogged", 'true');
+                  this.$router.go(this.$router.push('/'))
                 }
-              }
-              axios({
-                method: 'post',
-                url: url,
-                data: body
-              }).then(response => {
-                console.log(response)
-                this.$router.go(this.$router.push('/'));
-                this.$store.state.user.loggedIn = true;
-                this.loader = false
-              }).catch(e => {
-                console.log(e.response)
               })
-            })
-            .catch((error) => {
-              console.error(error)
+        })
+            .catch(() => {
+              this.loader = false;
+              this.snackbar = true;
+              this.message = "Une erreur est survenue."
             })
       } else {
         this.loader = false;
@@ -229,5 +201,9 @@ export default {
 </script>
 
 <style scoped>
-
+#btn-game {
+  border: 2px solid black !important;
+  border-right: 4px solid black !important;
+  border-bottom: 4px solid black !important;
+}
 </style>

@@ -31,6 +31,7 @@
     ></v-text-field>
 
     <v-btn
+        id="btn-game"
         color="success"
         class="mr-4"
         :disabled="!valid"
@@ -114,5 +115,9 @@ export default {
 </script>
 
 <style scoped>
-
+#btn-game {
+  border: 2px solid black !important;
+  border-right: 4px solid black !important;
+  border-bottom: 4px solid black !important;
+}
 </style>

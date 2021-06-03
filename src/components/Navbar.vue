@@ -95,7 +95,7 @@
         <v-icon
             color="white"
             >
-          mdi-disconnect
+          mdi-account-cancel
         </v-icon>
       </v-btn>
     </v-navigation-drawer>
