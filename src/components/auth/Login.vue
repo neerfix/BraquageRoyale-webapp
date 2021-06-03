@@ -74,11 +74,11 @@ export default {
     email: '',
     valid: true,
     loader: false,
+    snackbar: false,
+    message: '',
     emailRules: [
       v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail non valide'
     ],
-    snackbar: false,
-    message: '',
   }),
   computed: {
     isFormValid: function () {
@@ -98,8 +98,10 @@ export default {
                 this.$router.go(this.$router.push('/'))
               }
             })
-            .catch((error) => {
-              console.error(error)
+            .catch(() => {
+              this.loader = false;
+              this.snackbar = true
+              this.message = 'Erreur, veuillez ressaisir vos identifiants. :( '
             })
       } else {
         this.loader = false;
