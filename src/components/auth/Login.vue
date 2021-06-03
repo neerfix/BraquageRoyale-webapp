@@ -65,7 +65,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import { db } from '@/main'
 
 export default {
@@ -84,7 +83,7 @@ export default {
   computed: {
     isFormValid: function () {
       return this.email !== '' && this.password !== ''
-    }
+    },
   },
   methods: {
     loginFirebase: function () {
@@ -92,27 +91,12 @@ export default {
         this.loader = true;
         db.auth()
             .signInWithEmailAndPassword(this.email, this.password)
-            .then((userCredential) => {
-              const url = 'https://api.braquage-royale.xyz/users'
-              const body = {
-                id: userCredential.user.uid,
-                email: userCredential.user.email,
-                date: {
-                  createdAt: userCredential.user.metadata.creationTime,
-                  updateAt: userCredential.user.metadata.lastSignInTime,
-                  lastSignInTime: userCredential.user.metadata.lastSignInTime
-                }
-              }
-              axios({
-                method: 'post',
-                url: url,
-                data: body
-              }).then(r => {
-                console.log(r)
-                this.$router.push('/')
-                this.$store.state.user.loggedIn = true;
+            .then((resp) => {
+              if (resp.user !== undefined ) {
+                localStorage.setItem("isLogged", 'true');
                 this.loader = false;
-              })
+                this.$router.go(this.$router.push('/'))
+              }
             })
             .catch((error) => {
               console.error(error)

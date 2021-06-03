@@ -1,6 +1,6 @@
 <template>
   <div class="navigationGame">
-    <v-app-bar app color="#4a86e8">
+    <v-app-bar app color="#4a86e8" id="navbar">
       <!-- Add this class (class="d-flex d-sm-none") to show menu icon only on small screen -->
       <v-app-bar-nav-icon @click="drawer = true" class="d-flex d-md-none"></v-app-bar-nav-icon>
       <v-toolbar-title class="white--text">Braquage Royal</v-toolbar-title>
@@ -30,12 +30,27 @@
               @click="loginOrAccount()"
           >
             <v-icon dark
-            v-if="user.data">
+            v-if="user">
               mdi-account
             </v-icon>
             <v-icon
-              v-if="!user.data">
+              v-if="!user">
               mdi-login
+            </v-icon>
+          </v-btn>
+
+          <v-btn
+              rounded
+              small
+              v-if="user"
+              class="mt-2 ml-5"
+              color="red"
+              @click="disconnect()"
+          >
+            <v-icon
+                color="white"
+            >
+              mdi-account-cancel
             </v-icon>
           </v-btn>
         </v-tabs>
@@ -60,13 +75,27 @@
       >
         <v-icon
             color="white"
-            v-if="user.data">
+            v-if="user">
           mdi-account
         </v-icon>
         <v-icon
             color="white"
-            v-if="!user.data">
+            v-if="!user">
           mdi-login
+        </v-icon>
+      </v-btn>
+      <v-btn
+          rounded
+          small
+          v-if="user"
+          class="mt-2 ml-5"
+          color="red"
+          @click="disconnect()"
+      >
+        <v-icon
+            color="white"
+            >
+          mdi-disconnect
         </v-icon>
       </v-btn>
     </v-navigation-drawer>
@@ -81,7 +110,7 @@
       return {
         drawer: false,
         tab: null,
-        user: '',
+        user: false,
         itemsNav: [
           {title: 'Accueil', path: '/'},
           {title: 'Mes parties', path: '/dashboard'},
@@ -91,7 +120,9 @@
       }
     },
     beforeMount() {
-      // this.$store.state.user.loggedIn = this.user
+      if (localStorage.getItem('isLogged') === 'true') {
+        this.user = true
+      }
     },
     methods: {
       // Allows to navigate between different pages
@@ -99,11 +130,15 @@
         this.$router.push(path);
       },
       loginOrAccount() {
-        if (this.user.data) {
+        if (this.user) {
           this.$router.push('/account');
         } else {
           this.$router.push('/auth');
         }
+      },
+      disconnect() {
+        localStorage.clear()
+        this.$router.go(this.$router.push('/'))
       }
     }
   }
