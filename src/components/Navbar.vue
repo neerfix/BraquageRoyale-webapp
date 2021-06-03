@@ -1,6 +1,6 @@
 <template>
   <div class="navigationGame">
-    <v-app-bar app color="#4a86e8">
+    <v-app-bar app color="#4a86e8" id="navbar">
       <!-- Add this class (class="d-flex d-sm-none") to show menu icon only on small screen -->
       <v-app-bar-nav-icon @click="drawer = true" class="d-flex d-md-none"></v-app-bar-nav-icon>
       <v-toolbar-title class="white--text">Braquage Royal</v-toolbar-title>
@@ -22,6 +22,37 @@
 
           {{ item.title }}
         </v-tab>
+          <v-btn
+              rounded
+              small
+              class="mt-2 "
+              color="green"
+              @click="loginOrAccount()"
+          >
+            <v-icon dark
+            v-if="user">
+              mdi-account
+            </v-icon>
+            <v-icon
+              v-if="!user">
+              mdi-login
+            </v-icon>
+          </v-btn>
+
+          <v-btn
+              rounded
+              small
+              v-if="user"
+              class="mt-2 ml-5"
+              color="red"
+              @click="disconnect()"
+          >
+            <v-icon
+                color="white"
+            >
+              mdi-account-cancel
+            </v-icon>
+          </v-btn>
         </v-tabs>
       </template>
     </v-app-bar>
@@ -35,6 +66,38 @@
           </v-list-item>
         </v-list-item-group>
       </v-list>
+      <v-btn
+          rounded
+          small
+          class="mt-2 ml-5"
+          color="green"
+          @click="loginOrAccount()"
+      >
+        <v-icon
+            color="white"
+            v-if="user">
+          mdi-account
+        </v-icon>
+        <v-icon
+            color="white"
+            v-if="!user">
+          mdi-login
+        </v-icon>
+      </v-btn>
+      <v-btn
+          rounded
+          small
+          v-if="user"
+          class="mt-2 ml-5"
+          color="red"
+          @click="disconnect()"
+      >
+        <v-icon
+            color="white"
+            >
+          mdi-account-cancel
+        </v-icon>
+      </v-btn>
     </v-navigation-drawer>
     <!-- Navigation bar ends -->
   </div>
@@ -47,20 +110,35 @@
       return {
         drawer: false,
         tab: null,
+        user: false,
         itemsNav: [
           {title: 'Accueil', path: '/'},
-          {title: 'Dashboard', path: '/dashboard'},
-          {title: 'Créer une nouvelle partie', path: '/create'},
-          {title: 'Rejoindre une partie privée', path: '/join'},
-          {title: 'Mon profil', path: '/profil'},
-          {title: 'Map', path: '/game'}
+          {title: 'Mes parties', path: '/dashboard'},
+          {title: 'Créer une nouvelle partie', path: '/create_new_game'},
+          {title: 'Partie en cours', path: 'game_in_progress'}
         ],
+      }
+    },
+    beforeMount() {
+      if (localStorage.getItem('isLogged') === 'true') {
+        this.user = true
       }
     },
     methods: {
       // Allows to navigate between different pages
       redirect (path) {
         this.$router.push(path);
+      },
+      loginOrAccount() {
+        if (this.user) {
+          this.$router.push('/account');
+        } else {
+          this.$router.push('/auth');
+        }
+      },
+      disconnect() {
+        localStorage.clear()
+        this.$router.go(this.$router.push('/'))
       }
     }
   }
