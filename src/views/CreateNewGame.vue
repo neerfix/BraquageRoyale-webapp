@@ -1,6 +1,5 @@
 <template>
   <div class="createNewGame">
-    <h1>Create New Game page</h1>
     <CreateGame/>
   </div>
 </template>

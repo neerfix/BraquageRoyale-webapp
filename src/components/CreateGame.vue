@@ -2,7 +2,7 @@
   <div class="create_game">
     <v-col xs="12">
       <p>Création d'une nouvelle partie</p>
-      <v-divider></v-divider>
+      <v-divider class="separator"></v-divider>
     </v-col>
     <!-- Create new game form -->
     <v-form
@@ -12,7 +12,7 @@
     >
       <!-- New game name -->
       <v-col xs="12">
-        <p>Nom de la partie</p>
+        <label for="name_game">Nom de la partie</label>
         <v-text-field
             label="Nom de la partie"
             outlined
@@ -21,29 +21,32 @@
             :counter="15"
             :rules="nameGameRules"
             required
+            id="name_game"
         ></v-text-field>
       </v-col>
       <!-- Max player -->
       <v-col xs="12">
-        <p>Nombre de joueurs maximum</p>
+        <label for="nb_players_max">Nombre de joueurs maximum</label>
         <v-text-field
             v-model="playersMax"
             label="Nombre de joueurs max"
             :rules="playersMaxRules"
             outlined
+            id="nb_players_max"
         />
       </v-col>
       <!-- Map choice -->
       <v-col xs="12">
-        <p>Choix de la map</p>
+        <label for="map_choice">Choix de la map</label>
         <v-select
             :items="itemsMap"
             v-model="choiceMap"
             label="Choix de la map"
             :rules="choiceMapRules"
             outlined
+            id="map_choice"
         ></v-select>
-        <v-divider></v-divider>
+        <v-divider class="separator"></v-divider>
       </v-col>
       <!-- Private game -->
       <v-col xs="12">
@@ -54,7 +57,7 @@
         <!-- Code -->
         <v-expand-transition>
           <div v-show="privateGame">
-            <p>Code d'invitation</p>
+            <label for="join_code">Code d'invitation</label>
             <v-text-field
                 label="code"
                 placeholder="zk88bfz6jb9"
@@ -65,6 +68,7 @@
                 :counter="10"
                 :rules="codeJoinGameRules"
                 required
+                id="join_code"
             ></v-text-field>
           </div>
         </v-expand-transition>
@@ -106,11 +110,6 @@
             v => (!isNaN(parseFloat(v))) || 'Ceci n\'est pas un nombre',
             v => (v >= 0 && v <= 5) || 'Nombre maximum : 5 joueurs'
         ],
-        // playersMaxRules: v  => {
-        //   if (!v.trim()) return true;
-        //   if (!isNaN(parseFloat(v)) && v >= 0 && v <= 5) return true;
-        //   return 'Nombre maximum : 5 joueurs';
-        // },
         // Choice map rules
         choiceMap: '',
         choiceMapRules: [
@@ -128,13 +127,23 @@
       validate () {
         // console.log("Private game " + this.privateGame)
         // console.log("Code value " + this.codeJoinGame)
-        console.log("Form = " + this.$refs.form.validate())
-        // this.$refs.form.validate()
+        // console.log("Form = " + this.$refs.form.validate())
+        if(this.$refs.form.validate()) {
+          console.log("Form OK")
+        } else {
+          console.log("Form KO")
+        }
       },
     }
   }
 </script>
 
 <style scoped>
-
+  .separator{
+    border-color: black !important;
+    box-shadow: 1px 3px 8px black;
+  }
+  .v-text-field--outlined >>> fieldset {
+    border: 2px solid black;
+  }
 </style>
