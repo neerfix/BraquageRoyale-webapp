@@ -4,11 +4,14 @@
       <p>Salon de la partie : {{ nameGame }}</p>
       <!-- PLayers list-->
       <div id="players">
-        <v-card class="mx-auto d-flex mb-3" elevation="2" v-for="player in players" :key="player.name">
-          <v-card-actions>
-            <v-list-item class="grow">
+        <v-card class="mx-auto d-flex mb-3 mr-10 players_cards" width="310" elevation="2" v-for="player in players" :key="player.name">
+          <v-card-actions class="card_actions">
+            <v-list-item class="informations_list">
               <!-- Avatar player -->
-              <v-list-item-avatar color="grey darken-3">
+              <v-list-item-avatar
+                  class="avatar_player profile"
+                  size="70"
+                  tile>
                 <v-img
                     class="elevation-6"
                     alt=""
@@ -16,13 +19,13 @@
                 ></v-img>
               </v-list-item-avatar>
               <!-- Information players -->
-              <v-list-item-content>
+              <v-list-item-content class="content_informations_list">
                 <v-list-item-title>Nom : {{ player.name }}</v-list-item-title>
                 <v-list-item-title>Exp : {{ player.exp }}</v-list-item-title>
                 <v-list-item-title>Rank: {{ player.rank }}</v-list-item-title>
               </v-list-item-content>
               <!-- Icon -->
-              <v-row align="center" justify="end">
+              <v-row align="center" justify="end" class="row_icon">
                 <v-icon class="mr-1">
                   mdi-star
                 </v-icon>
@@ -62,6 +65,31 @@
   #players{
     height: 50vh;
     overflow-y: scroll;
+  }
+  .players_cards{
+    border: 2px solid black !important;
+  }
+  .card_actions{
+    padding: 5px !important;
+  }
+  .informations_list{
+    padding-left: 0;
+  }
+  .avatar_player{
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  .content_informations_list{
+    padding: 0 !important;
+  }
+  .content_informations_list .v-list-item__title{
+    line-height: 1.8 !important;
+    font-size: 12px !important;
+  }
+  .row_icon{
+    position: absolute;
+    right: 0px;
+    top: 1em;
   }
   #quit{
     left: 50%;
