@@ -53,7 +53,8 @@
           {title: 'Créer une nouvelle partie', path: '/create'},
           {title: 'Rejoindre une partie privée', path: '/join'},
           {title: 'Mon profil', path: '/profil'},
-          {title: 'Map', path: '/game'}
+          {title: 'Map', path: '/game'},
+          {title: 'Lobby', path: '/lobby/lobby_players'}
         ],
       }
     },

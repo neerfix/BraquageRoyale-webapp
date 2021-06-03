@@ -1,5 +1,5 @@
 <template>
-  <div class="lobby">
+  <div class="lobby_players">
     <v-col xs="12">
       <p>Salon de la partie : {{ nameGame }}</p>
       <!-- PLayers list-->
@@ -16,7 +16,9 @@
                     class="elevation-6"
                     alt=""
                     src="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Prescription02&hairColor=Black&facialHairType=Blank&clotheType=Hoodie&clotheColor=White&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Default&skinColor=Light"
-                ></v-img>
+                >
+                  <span class="map_name">Map</span>
+                </v-img>
               </v-list-item-avatar>
               <!-- Information players -->
               <v-list-item-content class="content_informations_list">
@@ -50,20 +52,20 @@
         nameGame: 'Apex Legend (nom)',
         players: [
           {name: 'Lulu', exp: '200', rank: 'Gold'},
+          {name: 'efezfdzeferrgrzegvbrfgvbreagtjydfhtrghtfghr', exp: '200', rank: 'Gold'},
           {name: 'Flours', exp: '200', rank: 'Gold'},
-          {name: 'Flours', exp: '200', rank: 'Gold'},
-          {name: 'Flours', exp: '200', rank: 'Gold'},
-          {name: 'Flours', exp: '200', rank: 'Gold'},
-          {name: 'Flours', exp: '200', rank: 'Gold'},
+          {name: 'Antoine', exp: '200', rank: 'Gold'},
+          {name: 'Nico', exp: '200', rank: 'Gold'},
+          {name: 'Gregg', exp: '200', rank: 'Gold'},
         ]
       }
     }
   }
 </script>
 
-<style>
+<style scoped>
   #players{
-    height: 50vh;
+    height: 60vh;
     overflow-y: scroll;
   }
   .players_cards{
@@ -79,8 +81,16 @@
     margin-top: 0;
     margin-bottom: 0;
   }
+  .map_name{
+    border: 1px solid #CCC;
+    padding: 2px 10px;
+    height: max-content;
+    background-color: rgba(255, 255, 255, 0.7);
+    margin: auto;
+  }
   .content_informations_list{
     padding: 0 !important;
+    width: 185px;
   }
   .content_informations_list .v-list-item__title{
     line-height: 1.8 !important;

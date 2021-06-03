@@ -6,6 +6,7 @@ import Dashboard from '@/views/Dashboard'
 import CreateNewGame from "@/views/CreateNewGame";
 import GameInProgress from '@/views/GameInProgress'
 import Profil from '@/views/Profil';
+import Lobby from "@/views/Lobby";
 
 Vue.use(VueRouter)
 
@@ -35,8 +36,10 @@ const routes = [
     name: 'JoinGame'
   },
   {
-    path: '/lobby/{gameId}',
-    name: 'LobbyGame'
+    // path: '/lobby/{gameId}',
+    path: '/lobby/:type',
+    name: 'LobbyGame',
+    component: Lobby
   },
   {
     path: '/game',
