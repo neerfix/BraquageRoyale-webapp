@@ -57,15 +57,18 @@ export default {
     }
   },
   mounted() {
-    const coordinates = this.getTileCoordinates();
-    this.styleBackground = {
-      backgroundPosition: `-${coordinates.x * tileSize}px -${coordinates.y * tileSize}px`,
-      height: '100%',
-      width: '100%',
-      backgroundImage: `url(${this.bgImage})`
-    }
+    this.setup()
   },
   methods: {
+    setup() {
+      const coordinates = this.getTileCoordinates();
+      this.styleBackground = {
+        backgroundPosition: `-${coordinates.x * tileSize}px -${coordinates.y * tileSize}px`,
+        height: '100%',
+        width: '100%',
+        backgroundImage: `url(${this.bgImage})`
+      }
+    },
     getTileCoordinates(){
       return {
         x : this.tileNumber % tileSetWidth,
@@ -73,14 +76,9 @@ export default {
       }
     },
     move() {
-      if(this.isAccessible && this.obstacleTile === -1 && !this.player) {
+      if(this.isAccessible) {
         this.$emit('move', { x: this.x, y: this.y })
       }
-    }
-  },
-  watch: {
-    player() {
-      console.log(this.player)
     }
   }
 }

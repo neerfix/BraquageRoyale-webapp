@@ -66,6 +66,11 @@ export default {
       }
       this.rows.push(currentRow)
     },
+    setupCurrentPlayer() {
+      const currentPlayer = this.players.find(player => player.isTurn)
+      this.currentPlayer = currentPlayer
+      this.setAccessibleCellsAroundPlayer(currentPlayer.coordinates.x, currentPlayer.coordinates.y)
+    },
     placePlayersOnMap() {
       this.players.map(player => {
         this.rows[player.coordinates.y][player.coordinates.x].player = player
@@ -75,7 +80,7 @@ export default {
       if(x < 0 || x >= this.rows[0].length || y < 0 || y >= this.rows.length) {
         return false
       }
-      return (this.rows[y][x].obstacleTile === -1 || this.rows[y][x].decorationTile !== -1)
+      return ((this.rows[y][x].obstacleTile === -1 || this.rows[y][x].decorationTile !== -1) && !this.rows[y][x].player)
     },
     setAccessibleCellsAroundPlayer(x, y, distance = 3) {
       if(distance === 0) {
@@ -102,6 +107,7 @@ export default {
     },
     playerMove(arrival = { x: null, y: null }) {
       console.log(this.currentPlayer, arrival)
+      this.$emit('updatePlayer', { player: this.currentPlayer, arrival: arrival })
       this.rows[this.currentPlayer.coordinates.y][this.currentPlayer.coordinates.x].player = null
       this.rows[arrival.y][arrival.x].player = this.currentPlayer
       this.setAccessibleCellsAroundPlayer(arrival.x, arrival.y)
@@ -110,11 +116,13 @@ export default {
   mounted() {
     this.createGridFromJSON(dataMap)
     this.placePlayersOnMap()
-    this.setupObstacles(0.1)
-
-    const currentPlayer = this.players.find(player => player.isTurn)
-    this.currentPlayer = currentPlayer
-    this.setAccessibleCellsAroundPlayer(currentPlayer.coordinates.x, currentPlayer.coordinates.y)
+    //this.setupObstacles(0.1)
+    this.setupCurrentPlayer()
+  },
+  watch: {
+    players() {
+      this.setupCurrentPlayer()
+    },
   }
 }
 </script>

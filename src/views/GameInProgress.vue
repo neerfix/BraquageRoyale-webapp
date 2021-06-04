@@ -1,7 +1,7 @@
 <template>
   <div class="game">
     <div class="map">
-      <grid :players="players"></grid>
+      <grid :players="players" @updatePlayer="((e) => this.updatePlayer(e))"></grid>
     </div>
     <div class="game-actions">
       <div class="game-players mb-2">
@@ -123,6 +123,13 @@ export default {
         return -1;
       }
       return 0;
+    },
+    updatePlayer({ player, arrival }) {
+      let p = this.players.find(p => p.username === player.username)
+      p.coordinates = {
+        x: arrival.x,
+        y: arrival.y
+      }
     }
   },
   mounted() {
