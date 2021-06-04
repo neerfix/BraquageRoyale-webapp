@@ -36,6 +36,14 @@ if ('serviceWorker' in navigator) {
   });
 }
 
+if ('Notification' in window) {
+  if (Notification.permission === "default") {
+    Notification.requestPermission().then((res) => {
+      console.log(res)
+    })
+  }
+}
+
 firebase.initializeApp(firebaseConfig)
 
 firebase.auth().onAuthStateChanged(user => {
