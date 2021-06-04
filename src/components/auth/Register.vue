@@ -202,7 +202,7 @@ export default {
         this.message = "Mots de passe non identiques ou remplir tous les champs svp"
       }
     }
-  }c
+  }
 }
 </script>
 
