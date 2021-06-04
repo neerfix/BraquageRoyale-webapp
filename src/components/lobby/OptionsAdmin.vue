@@ -138,8 +138,7 @@ export default {
             max_player: this.playersMax,
             map_id: this.choiceMap
           })
-          .then((r) => {
-            console.log(r)
+          .then(() => {
           })
     },
   }

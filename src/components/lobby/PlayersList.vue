@@ -67,7 +67,6 @@ export default {
       axios
           .get("https://api.braquage-royale.xyz/users/" + idUser)
           .then((resp) => {
-            console.log(resp)
             this.users.username = resp.data.player.username
             this.users.rank = resp.data.player.rank
             this.users.exp = resp.data.player.exp
