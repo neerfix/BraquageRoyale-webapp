@@ -48,7 +48,7 @@
               transition="dialog-bottom-transition"
           >
             <template v-slot:activator="{ on, attrs }">
-              <v-btn fab x-small v-bind="attrs" v-on="on" class="mt-3 mr-6">
+              <v-btn fab x-small v-bind="attrs" v-on="on" class="mt-3 mr-6" @click="sendDataFromGame(item)">
                 <v-icon>mdi-cog-outline</v-icon>
               </v-btn>
             </template>
@@ -130,8 +130,10 @@ export default {
     showAdminLobby(){
       this.showLobbyPlayers = false
       this.showLobbyAdmin = true
+    },
+    sendDataFromGame(game) {
+      this.$store.state.game = game;
     }
-
   }
 }
 </script>

@@ -1,10 +1,10 @@
 <template>
   <div class="lobby_players">
     <v-col xs="12">
-      <p>Salon de la partie : {{ nameGame }}</p>
+      <p>Salon de la partie : {{ this.games.name }}</p>
       <!-- PLayers list-->
       <div id="players_list"><PlayersList/></div>
-      <v-btn absolute bottom id="quit">Quitter</v-btn>
+<!--      <v-btn absolute bottom id="quit">Quitter</v-btn>-->
     </v-col>
   </div>
 </template>
@@ -19,8 +19,12 @@ import PlayersList from "@/components/lobby/PlayersList";
     },
     data() {
       return{
-        nameGame: 'Apex Legend (nom)'
+        nameGame: 'Apex Legend (nom)',
+        games: []
       }
+    },
+    mounted() {
+      this.games = this.$store.state.game
     }
   }
 </script>

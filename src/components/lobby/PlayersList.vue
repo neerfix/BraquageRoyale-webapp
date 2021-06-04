@@ -2,7 +2,8 @@
   <div class="players_list">
       <!-- PLayers list-->
       <div id="players">
-        <v-card class="mx-auto d-flex mb-3 mr-10 players_cards" width="310" elevation="2" v-for="player in players" :key="player.name">
+<!--        <v-card class="mx-auto d-flex mb-3 mr-10 players_cards" width="310" elevation="2" v-for="user in users" :key="user.username">-->
+        <v-card class="mx-auto d-flex mb-3 mr-10 players_cards" width="310" elevation="2">
           <v-card-actions class="card_actions">
             <v-list-item class="informations_list">
               <!-- Avatar player -->
@@ -20,9 +21,9 @@
               </v-list-item-avatar>
               <!-- Information players -->
               <v-list-item-content class="content_informations_list">
-                <v-list-item-title>Nom : {{ player.name }}</v-list-item-title>
-                <v-list-item-title>Exp : {{ player.exp }}</v-list-item-title>
-                <v-list-item-title>Rank: {{ player.rank }}</v-list-item-title>
+                <v-list-item-title>Nom : {{ this.users.username }}</v-list-item-title>
+                <v-list-item-title>Exp : {{ this.users.exp }}</v-list-item-title>
+                <v-list-item-title>Rank: {{ this.users.rank }}</v-list-item-title>
               </v-list-item-content>
               <!-- Icon -->
               <v-row align="center" justify="end" class="row_icon">
@@ -38,19 +39,40 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: 'Lobby',
   data() {
     return{
       players: [
-        {name: 'Lulu', exp: '200', rank: 'Gold'},
-        {name: 'efezfdzeferrgrzegvbrfgvbreagtjydfhtrghtfghr', exp: '200', rank: 'Gold'},
-        {name: 'Flours', exp: '200', rank: 'Gold'},
-        {name: 'Antoine', exp: '200', rank: 'Gold'},
-        {name: 'Nico', exp: '200', rank: 'Gold'},
-        {name: 'Gregg', exp: '200', rank: 'Gold'},
-      ]
+
+      ],
+      idUser: '',
+      users: {
+        username: '',
+        rank: '',
+        exp: '',
+      }
     }
+  },
+  mounted() {
+    let game = this.$store.state.game
+    this.idUser = game.players[0].user_id
+    // todo : Try to use it if they are more than 1 player !
+    this.userOfGame(this.idUser)
+  },
+  methods: {
+    userOfGame(idUser) {
+      axios
+          .get("https://api.braquage-royale.xyz/users/" + idUser)
+          .then((resp) => {
+            console.log(resp)
+            this.users.username = resp.data.player.username
+            this.users.rank = resp.data.player.rank
+            this.users.exp = resp.data.player.exp
+          })
+    },
   }
 }
 </script>
