@@ -180,12 +180,10 @@ export default {
             url: url,
             data: body
           }).then(() => {
-            console.log('ok')
             db.auth()
                 .signInWithEmailAndPassword(this.email, this.password)
                 .then((resp) => {
                   if (resp.user !== undefined) {
-                    console.log(resp.user)
                     localStorage.setItem('idUser', resp.user.uid)
                     localStorage.setItem("isLogged", 'true');
                     this.$router.go(this.$router.push('/'))
@@ -204,7 +202,7 @@ export default {
         this.message = "Mots de passe non identiques ou remplir tous les champs svp"
       }
     }
-  }
+  }c
 }
 </script>
 

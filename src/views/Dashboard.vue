@@ -94,7 +94,6 @@ export default {
       axios
           .get("https://api.braquage-royale.xyz/users/" + localStorage.getItem('idUser'))
           .then((resp) => {
-            console.log(resp)
             this.user.username = resp.user.username
             this.user.status = resp.user.status
             this.user.rank = resp.user.rank
