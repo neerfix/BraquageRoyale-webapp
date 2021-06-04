@@ -112,6 +112,9 @@ export default {
   },
   mounted() {
     this.gameId = this.$store.state.game.id
+    this.nameGame = this.$store.state.game.name
+    this.playersMax = this.$store.state.game.max_player
+    this.choiceMap = this.$store.state.game.map_id
   },
   methods: {
     // Validate form

@@ -1,7 +1,5 @@
 <template>
 <div>
-  <H1 class="title">Les parties en cours ! </H1>
-  <v-divider class="separator"></v-divider>
   <v-virtual-scroll :items="games" height="450" :item-height="240">
     <template v-slot:default="{ item }">
       <v-card class="mx-auto">
