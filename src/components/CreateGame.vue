@@ -188,7 +188,8 @@ import axios from 'axios';
           url: url,
           data: body,
           headers: {
-            'Access-Control-Allow-Origin': 'https://api.braquage-royale.xyz'
+            'Access-Control-Allow-Origin': 'https://api.braquage-royale.xyz',
+            'Content-Type': 'application/json',
           },
         }).then((response) => {
           console.log(response)
