@@ -88,7 +88,7 @@ export default {
     }
   },
   mounted() {
-    // this.getCurrentUser()
+    this.getCurrentUser()
     this.getUserGames(localStorage.getItem('idUser'));
   },
   methods: {
@@ -96,11 +96,12 @@ export default {
       axios
           .get("https://api.braquage-royale.xyz/users/" + localStorage.getItem('idUser'))
           .then((resp) => {
-            this.user.username = resp.user.username
-            this.user.status = resp.user.status
-            this.user.rank = resp.user.rank
-            this.user.exp = resp.user.exp
-            this.user.avatar = resp.user.avatar
+            console.log(resp)
+            this.user.username = resp.data.player.username
+            this.user.status = resp.data.status
+            this.user.rank = resp.data.player.rank
+            this.user.exp = resp.data.player.exp
+            this.user.avatar = resp.data.avatar
           })
     },
     getUserGames(userId) {
