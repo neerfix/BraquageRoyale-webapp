@@ -14,24 +14,24 @@
 
       <v-divider class="separator"></v-divider>
 
-      <v-col xs="12" class="d-flex">
-        <v-btn
-            elevation="2"
-            class="btn_actions"
-            absolute
-            bottom
-            left
-        >Supprimer</v-btn>
-        <v-btn
-            id="go"
-            elevation="2"
-            color="error"
-            class="btn_actions"
-            absolute
-            bottom
-            right
-        >Lancer</v-btn>
-      </v-col>
+<!--      <v-col xs="12" class="d-flex">-->
+<!--        <v-btn-->
+<!--            elevation="2"-->
+<!--            class="btn_actions"-->
+<!--            absolute-->
+<!--            bottom-->
+<!--            left-->
+<!--        >Supprimer</v-btn>-->
+<!--        <v-btn-->
+<!--            id="go"-->
+<!--            elevation="2"-->
+<!--            color="error"-->
+<!--            class="btn_actions"-->
+<!--            absolute-->
+<!--            bottom-->
+<!--            right-->
+<!--        >Lancer</v-btn>-->
+<!--      </v-col>-->
     </v-col>
   </div>
 </template>

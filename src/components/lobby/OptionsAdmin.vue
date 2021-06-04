@@ -48,7 +48,8 @@
           @click="validate"
           id="save"
           color="error"
-      >Sauvegarder</v-btn>
+      >Sauvegarder
+      </v-btn>
     </v-form>
     <!-- End create option game form -->
     <!-- Error/Success message form-->
@@ -69,16 +70,19 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "OptionsAdmin",
   data() {
     return {
-      itemsMap: ["Map #1", "Map #2", "Map #3"],
+      itemsMap: ["Village", "Desert", "Buildings"],
       valid: true,
       snackbar: false,
       colorMessage: '',
       textMessageValidForm: '',
       timeoutSnackbar: 4000,
+      gameId: '',
       // Name part rules
       nameGame: '',
       nameGameRules: [
@@ -106,12 +110,16 @@ export default {
       ],
     };
   },
+  mounted() {
+    this.gameId = this.$store.state.game.id
+  },
   methods: {
     // Validate form
-    validate () {
+    validate() {
       this.snackbar = true
-      if(this.$refs.form.validate()) {
+      if (this.$refs.form.validate()) {
         // console.log("Form OK")
+        this.updateGame(this.gameId)
         this.textMessageValidForm = "Votre partie à bien été créée"
         this.colorMessage = "green lighten-2";
       } else {
@@ -119,27 +127,41 @@ export default {
         this.textMessageValidForm = "Des champs sont incorrectes"
         this.colorMessage = "red lighten-2";
       }
-    }
+    },
+    updateGame(gameId) {
+      axios
+          .patch("https://api.braquage-royale.xyz/games/" + gameId, {
+            name: this.nameGame,
+            max_player: this.playersMax,
+            map_id: this.choiceMap
+          })
+          .then((r) => {
+            console.log(r)
+          })
+    },
   }
 }
 </script>
 
 <style scoped>
-  .v-text-field--outlined >>> fieldset {
-    border: 2px solid black;
-  }
-  #player_max .v-text-field{
-    width: 40% !important;
-  }
-  #map_choice .v-text-field{
-    width: 60% !important;
-  }
-  #save{
-    left: 50%;
-    transform: translate(-50%,0);
-    text-transform: initial;
-    border: 2px solid black !important;
-    border-right: 4px solid black !important;
-    border-bottom: 4px solid black !important;
-  }
+.v-text-field--outlined >>> fieldset {
+  border: 2px solid black;
+}
+
+#player_max .v-text-field {
+  width: 40% !important;
+}
+
+#map_choice .v-text-field {
+  width: 60% !important;
+}
+
+#save {
+  left: 50%;
+  transform: translate(-50%, 0);
+  text-transform: initial;
+  border: 2px solid black !important;
+  border-right: 4px solid black !important;
+  border-bottom: 4px solid black !important;
+}
 </style>
