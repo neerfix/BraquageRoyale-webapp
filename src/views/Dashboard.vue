@@ -60,7 +60,6 @@
 </template>
 
 <script>
-// import VillageMap from '../assets/img/village-map.png'
 import axios from 'axios'
 
 export default {
