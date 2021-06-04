@@ -115,7 +115,7 @@
           {title: 'Accueil', path: '/'},
           {title: 'Mes parties', path: '/dashboard'},
           {title: 'Créer une nouvelle partie', path: '/create'},
-          {title: 'Partie en cours', path: 'game_in_progress'},
+          {title: 'Partie en cours', path: '/your_games'},
           {title: 'Map', path: '/game'},
         ],
       }
