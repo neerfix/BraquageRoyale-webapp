@@ -7,6 +7,7 @@ import CreateNewGame from "@/views/CreateNewGame";
 import GameInProgress from '@/views/GameInProgress'
 import Profil from '@/views/Profil';
 import Grid from "@/components/map/Grid";
+import GamesInProgress from "@/views/GamesInProgress";
 
 Vue.use(VueRouter)
 
@@ -43,6 +44,11 @@ const routes = [
     path: '/game',
     name: 'Game',
     component: GameInProgress
+  },
+  {
+    path: '/your_games',
+    name: 'GamesInProgress',
+    component: GamesInProgress
   },
   {
     path: '/profil',
