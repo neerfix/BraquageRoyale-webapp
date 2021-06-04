@@ -181,7 +181,7 @@ export default {
         map_id: 'ezdbcouizebcbabu',
         players: [
           {
-            user_id: 'PhzXPQuEb9VoS1m14RORRBZzHB32',
+            user_id: 'ENTWAn',
             is_spectate: false,
             character_id: 'test'
           }
