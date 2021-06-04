@@ -117,7 +117,7 @@ export default {
   name: "CreateGame",
   data() {
     return {
-      itemsMap: ["Map #1", "Map #2", "Map #3"],
+      itemsMap: ["Village", "Desert", "Buildings"],
       privateGame: false,
       valid: true,
       snackbar: false,
@@ -156,13 +156,8 @@ export default {
     validate() {
       this.snackbar = true
       if (this.$refs.form.validate()) {
-        // console.log("Form OK")
-        // console.log(this.nameGame,  this.playersMax, this.privateGame, this.choiceMap)
         this.createGame()
-        this.textMessageValidForm = "Votre partie à bien été créée"
-        this.colorMessage = "green lighten-2";
       } else {
-        // console.log("Form KO")
         this.textMessageValidForm = "Des champs sont incorrectes"
         this.colorMessage = "red lighten-2";
       }
@@ -174,14 +169,15 @@ export default {
     // Call API create game
     createGame() {
       const url = 'https://api.braquage-royale.xyz/games/'
+      const user_id = localStorage.getItem('idUser')
       const body = {
         name: this.nameGame,
         max_player: this.playersMax,
         is_private: this.privateGame,
-        map_id: 'ezdbcouizebcbabu',
+        map_id: this.choiceMap,
         players: [
           {
-            user_id: 'ENTWAn',
+            user_id: user_id,
             is_spectate: false,
             character_id: 'test'
           }
@@ -194,12 +190,18 @@ export default {
         headers: {
           'Access-Control-Allow-Origin': '*',
         },
-      }).then((response) => {
-        console.log(response)
+      }).then(() => {
+        this.colorMessage = "green lighten-2";
+        this.textMessageValidForm = "Votre partie à bien été créée"
+        setTimeout(() => {
+          this.$router.go(this.$router.push('/dashboard'))
+        }, 2000)
       })
-          .catch((error) => {
-            console.log(error)
-          })
+        .catch((error) => {
+          console.log(error);
+          this.textMessageValidForm = "Erreur serveur, veuillez réssayer plus tard !"
+          this.colorMessage = "red lighten-2";
+        })
     }
   }
 }

@@ -1,9 +1,9 @@
 <template>
   <div class="dashboard">
-    
+
     <v-card
-      class="mx-auto"
-      elevation="2"
+        class="mx-auto"
+        elevation="2"
     >
       <v-list-item three-line>
         <v-list-item-content>
@@ -18,7 +18,7 @@
         </v-list-item-content>
 
         <v-list-item-avatar>
-          <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
+          <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John"/>
         </v-list-item-avatar>
       </v-list-item>
     </v-card>
@@ -31,9 +31,9 @@
         <template v-slot:default="{ item }">
           <v-card class="mx-auto">
             <v-img
-              class="white--text align-end"
-              height="125px"
-              :src="item.map.src"
+                class="white--text align-end"
+                height="125px"
+                src="@/assets/img/village-map.png"
             >
               <v-card-title>
                 <div class="overlay-title">
@@ -42,95 +42,81 @@
               </v-card-title>
             </v-img>
 
-            <v-card-subtitle class="pb-0" :class="{'text-primary font-weight-bold': item.isTurn}">
-              {{ item.isTurn ? 'À vous de jouer !' : 'En attente' }}
-            </v-card-subtitle>
+<!--            <v-card-subtitle class="pb-0" :class="{'text-primary font-weight-bold': item.isTurn}">-->
+<!--              {{ item.isTurn ? 'À vous de jouer !' : 'En attente' }}-->
+<!--            </v-card-subtitle>-->
 
             <v-card-text class="text--primary">
-              <div>Carte : <span class="font-weight-bold">{{ item.map.name }}</span></div>
-              <div>Nombre de joueurs : <span class="font-weight-bold">{{ item.players }}</span></div>
+              <div>Carte : <span class="font-weight-bold">{{ item.map_id }}</span></div>
+              <div>Nombre de joueurs : <span class="font-weight-bold">{{ item.max_player }}</span></div>
             </v-card-text>
           </v-card>
         </template>
       </v-virtual-scroll>
-      
+
     </div>
 
   </div>
 </template>
 
 <script>
-import VillageMap from '../assets/img/village-map.png'
+// import VillageMap from '../assets/img/village-map.png'
+import axios from 'axios'
 
 export default {
   name: 'Dashboard',
   data() {
     return {
       user: {
-        username: 'Ynov',
-        rank: 'Gold 2',
-        exp: '128 032',
-        status: 'Joueur Pro - Vitality',
+        username: '',
+        rank: '',
+        exp: '',
+        status: '',
         avatar: ''
       },
-      games: [
-        {
-          name: 'Apex Legends',
-          map: {
-            name: 'Village',
-            src: VillageMap
-          },
-          players: 3,
-          isTurn: true
-        },
-        {
-          name: 'Worms',
-          map: {
-            name: 'Village',
-            src: VillageMap
-          },
-          players: 5,
-          isTurn: false
-        },
-        {
-          name: 'Apex Legends',
-          map: {
-            name: 'Village',
-            src: VillageMap
-          },
-          players: 3,
-          isTurn: true
-        },
-        {
-          name: '4 Worms',
-          map: {
-            name: 'Village',
-            src: VillageMap
-          },
-          players: 5,
-          isTurn: false
-        },
-        {
-          name: 'Apex Legends',
-          map: {
-            name: 'Village',
-            src: VillageMap
-          },
-          players: 3,
-          isTurn: true
-        },
-        {
-          name: 'Worms',
-          map: {
-            name: 'Village',
-            src: VillageMap
-          },
-          players: 5,
-          isTurn: false
-        },
-      ]
+      games: []
     }
   },
+  beforeCreate() {
+    if (!localStorage.getItem('idUser')) {
+      if (confirm("Vous devez être connecté !")) {
+        this.$router.go(this.$router.push('/auth'))
+      } else {
+        this.$router.go(this.$router.push('/'))
+      }
+    }
+  },
+  mounted() {
+    // this.getCurrentUser()
+    this.getUserGames(localStorage.getItem('idUser'));
+  },
+  methods: {
+    getCurrentUser() {
+      axios
+          .get("https://api.braquage-royale.xyz/users/" + localStorage.getItem('idUser'))
+          .then((resp) => {
+            console.log(resp)
+            this.user.username = resp.user.username
+            this.user.status = resp.user.status
+            this.user.rank = resp.user.rank
+            this.user.exp = resp.user.exp
+            this.user.avatar = resp.user.avatar
+          })
+    },
+    getUserGames(userId) {
+      let arrayOfGames = [];
+      axios
+          .get("https://api.braquage-royale.xyz/games/")
+          .then((resp) => {
+            resp.data.forEach( game => {
+              if (game.players[0].user_id === userId && game.status === "ACTIVE") {
+                arrayOfGames.push(game)
+               }
+            })
+            this.games = arrayOfGames;
+          })
+    }
+  }
 }
 </script>
 
@@ -141,6 +127,7 @@ export default {
     font-size: .65rem !important;
   }
 }
+
 .overlay-title {
   background-color: #ebf1f5;
   color: #000;
