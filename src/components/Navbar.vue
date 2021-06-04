@@ -114,7 +114,7 @@
         itemsNav: [
           {title: 'Accueil', path: '/'},
           {title: 'Mes parties', path: '/dashboard'},
-          {title: 'Créer une nouvelle partie', path: '/create_new_game'},
+          {title: 'Créer une nouvelle partie', path: '/create'},
           {title: 'Partie en cours', path: 'game_in_progress'},
           {title: 'Map', path: '/game'},
         ],

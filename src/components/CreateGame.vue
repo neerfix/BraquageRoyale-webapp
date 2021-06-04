@@ -109,6 +109,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
   export default {
     name: "CreateGame",
     data() {
@@ -153,6 +155,8 @@
         this.snackbar = true
         if(this.$refs.form.validate()) {
           // console.log("Form OK")
+          // console.log(this.nameGame,  this.playersMax, this.privateGame, this.choiceMap)
+          this.createGame()
           this.textMessageValidForm = "Votre partie à bien été créée"
           this.colorMessage = "green lighten-2";
         } else {
@@ -165,6 +169,34 @@
       reset () {
         this.$refs.form.reset()
       },
+      // Call API create game
+      createGame(){
+        const url = 'https://api.braquage-royale.xyz/games'
+        const body = {
+          name: this.nameGame,
+          max_player: this.playersMax,
+          is_private: this.privateGame,
+          map_id: this.choiceMap,
+          player: {
+            user_id: 'user id',
+            is_spectate: false,
+            character_id: 'test'
+          }
+        }
+        axios({
+          method: 'post',
+          url: url,
+          data: body,
+          headers: {
+            'Access-Control-Allow-Origin': 'https://api.braquage-royale.xyz'
+          },
+        }).then((response) => {
+          console.log(response)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+      }
     }
   }
 </script>
