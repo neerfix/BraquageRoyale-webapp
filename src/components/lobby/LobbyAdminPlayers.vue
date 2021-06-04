@@ -1,8 +1,8 @@
 <template>
   <div class="lobby_admin_players">
     <v-col xs="12">
-      <p>Salon de la partie : {{ nameGame }}</p>
-      <p>Code d'invitation : {{ invitationCode }}</p>
+      <p>Salon de la partie : {{ this.$store.state.game.name }}</p>
+<!--      <p>Code d'invitation : {{ invitationCode }}</p>-->
 
       <v-btn class="btn_choice" :class="{is_active: showPlayersList === true}" @click="showAdminListPlayers">Liste des joueurs</v-btn>
       <v-btn class="btn_choice" :class="{is_active: showOptions === true}" @click="showAdminOptions">Options</v-btn>
