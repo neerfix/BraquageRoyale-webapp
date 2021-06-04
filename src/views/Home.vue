@@ -11,7 +11,15 @@ export default {
   name: 'Home',
   methods: {
     test() {
-      return new Notification('Coucou')
+      console.log(window.getPath)
+      return new Notification('Braquage Royal!', {body: "C'est votre tour ! Allez les massacrer", icon:"./assets/img/bank.png"})
+    },
+    askPermission() {
+      if ('Notification' in window) {
+        if (Notification.permission === "default") {
+          //
+        }
+      }
     }
   }
 }
