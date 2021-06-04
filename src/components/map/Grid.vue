@@ -23,12 +23,12 @@ export default {
     Cell
   },
   props: {
-    players: Array
+    players: Array,
+    currentPlayer: Object,
   },
   data() {
     return {
-      rows: [],
-      currentPlayer: null
+      rows: []
     }
   },
   methods: {
@@ -67,9 +67,8 @@ export default {
       this.rows.push(currentRow)
     },
     setupCurrentPlayer() {
-      const currentPlayer = this.players.find(player => player.isTurn)
-      this.currentPlayer = currentPlayer
-      this.setAccessibleCellsAroundPlayer(currentPlayer.coordinates.x, currentPlayer.coordinates.y)
+      console.log(this.players)
+      this.setAccessibleCellsAroundPlayer(this.currentPlayer.coordinates.x, this.currentPlayer.coordinates.y)
     },
     placePlayersOnMap() {
       this.players.map(player => {
@@ -120,9 +119,12 @@ export default {
     this.setupCurrentPlayer()
   },
   watch: {
-    players() {
+    /* players() {
       this.setupCurrentPlayer()
-    },
+    }, */
+    currentPlayer() {
+      this.setupCurrentPlayer()
+    }
   }
 }
 </script>

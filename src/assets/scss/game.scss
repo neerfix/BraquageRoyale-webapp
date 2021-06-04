@@ -13,22 +13,35 @@
         left: 0;
         bottom: 65px;
         z-index: 5;
+    }
 
-        .game-players, .game-options {
+    .player-actions {
+        position: absolute;
+        right: 0;
+        bottom: 65px;
+        z-index: 5;
+
+        .player-attack, .player-pass {
+            text-align: right;
+        }
+    }
+
+    .game-actions, .player-actions {
+        .game-players, .game-options, .player-attack, .player-pass {
             opacity: .65;
             transition: .3s;
-            
-            .v-btn {
-                text-transform: none;
-                font-size: .9rem;
-                font-weight: 400;
-                line-height: 1.375rem;
-                letter-spacing: 0.0071428571em;
-            }
 
             &:hover, &:focus, &:active {
                 opacity: 1;
             }
+        }
+
+        .v-btn {
+            text-transform: none;
+            font-size: .9rem;
+            font-weight: 400;
+            line-height: 1.375rem;
+            letter-spacing: 0.0071428571em;
         }
     }
 

@@ -1,7 +1,7 @@
 <template>
   <div class="game">
     <div class="map">
-      <grid :players="players" @updatePlayer="((e) => this.updatePlayer(e))"></grid>
+      <grid :players="players" :currentPlayer="this.currentPlayer" @updatePlayer="((e) => this.updatePlayer(e))"></grid>
     </div>
     <div class="game-actions">
       <div class="game-players mb-2">
@@ -12,6 +12,18 @@
       <div class="game-options">
         <v-btn elevation="2" color="primary" @click="toggleOverlay('options')">
           Options
+        </v-btn>
+      </div>
+    </div>
+    <div class="player-actions">
+      <div class="player-attack mb-2">
+        <v-btn elevation="2" color="primary">
+          Attaquer
+        </v-btn>
+      </div>
+      <div class="player-pass">
+        <v-btn elevation="2">
+          Fin du tour
         </v-btn>
       </div>
     </div>
@@ -47,11 +59,22 @@ export default {
         players: false,
         options: false,
       },
+      game: {
+        actualRound: 3,
+        rounds: [4, 1, 2, 3, 5]
+      },
+      currentPlayer: {
+        coordinates: {
+          x: null,
+          y: null
+        }
+      },
       players: [
         {
+          id: 1,
           username: 'Flo',
           img: Knight1,
-          vitality: 67,
+          vitality: 41,
           attack: 12,
           kills: 0,
           isTurn: false,
@@ -61,9 +84,10 @@ export default {
           }
         },
         {
+          id: 2,
           username: 'Nico',
           img: Knight2,
-          vitality: 98,
+          vitality: 29,
           attack: 6,
           kills: 0,
           isTurn: false,
@@ -73,18 +97,20 @@ export default {
           }
         },
         {
+          id: 3,
           username: 'Gregg',
           img: Knight2,
           vitality: 38,
           attack: 12,
           kills: 2,
-          isTurn: true,
+          isTurn: false,
           coordinates: {
             x: 14,
             y: 9,
           }
         },
         {
+          id: 4,
           username: 'Luca',
           img: Knight2,
           vitality: 0,
@@ -97,6 +123,7 @@ export default {
           }
         },
         {
+          id: 5,
           username: 'Antoine',
           img: Knight1,
           vitality: 0,
@@ -112,6 +139,24 @@ export default {
     }
   },
   methods: {
+    /* newRound(oldPlayer = this.players.find(player => player.isTurn)) {
+      console.log(oldPlayer)
+      oldPlayer.isTurn = false
+      let currentPlayerIndex = this.game.rounds.indexOf(oldPlayer.id)
+      let nextPlayerId = this.game.rounds[currentPlayerIndex + 1]
+      let nextPlayer = this.players.find(player => player.id === nextPlayerId)
+      if(nextPlayer === undefined) {
+        nextPlayer = this.players.find(player => player.id === this.game.rounds[0])
+      }
+      while(nextPlayer.vitality === 0) {
+        nextPlayer = this.players.find(player => player.id === (nextPlayerId + 1))
+        if(nextPlayer === undefined) {
+          nextPlayer = this.players.find(player => player.id === this.game.rounds[0])
+        }
+      }
+      console.log(nextPlayer)
+      nextPlayer.isTurn = true
+    }, */
     toggleOverlay(overlay) {
       this.overlay[overlay] = !this.overlay[overlay]
     },
@@ -133,6 +178,9 @@ export default {
     }
   },
   mounted() {
+    let player = this.players.find(player => player.id === this.game.actualRound)
+    player.isTurn = true
+    this.currentPlayer = player
     this.players.sort(this.sortPlayers)
   }
 }
