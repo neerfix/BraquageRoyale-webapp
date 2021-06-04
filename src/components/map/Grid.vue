@@ -28,7 +28,8 @@ export default {
   },
   data() {
     return {
-      rows: []
+      rows: [],
+      moves: 0,
     }
   },
   methods: {
@@ -110,6 +111,7 @@ export default {
       this.rows[this.currentPlayer.coordinates.y][this.currentPlayer.coordinates.x].player = null
       this.rows[arrival.y][arrival.x].player = this.currentPlayer
       this.setAccessibleCellsAroundPlayer(arrival.x, arrival.y)
+      this.$forceUpdate()
     }
   },
   mounted() {
@@ -119,9 +121,6 @@ export default {
     this.setupCurrentPlayer()
   },
   watch: {
-    /* players() {
-      this.setupCurrentPlayer()
-    }, */
     currentPlayer() {
       this.setupCurrentPlayer()
     }
