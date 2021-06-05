@@ -170,12 +170,13 @@ export default {
             }
             return 0;
         },
-        updatePlayer({player, arrival}) {
-            let p = this.players.find(p => p.username === player.username)
+        updatePlayer({ player, arrival }) {
+            let p = this.players.find(p => p.id === player.id)
             p.coordinates = {
                 x: arrival.x,
                 y: arrival.y
             }
+            this.$forceUpdate()
         }
     },
     mounted() {

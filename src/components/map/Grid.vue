@@ -48,13 +48,13 @@ export default {
             })
         },
         createGridFromJSON(data) {
-            console.log(data);
-            const width = data.width; // Map width
-            let currentRow = []; // Contains our future cells
+            console.log(data)
+            const width = data.width // Map width
+            let currentRow = [] // Contains our future cells
             for (let i = 0; i < data.layers[0].data.length; i++) {
                 if (i % width === 0 && i !== 0) {
-                    this.rows.push(currentRow);
-                    currentRow = [];
+                    this.rows.push(currentRow)
+                    currentRow = []
                 }
                 // Push our cell inside our current row
                 currentRow.push({
@@ -63,12 +63,11 @@ export default {
                     backgroundTile: data.layers[0].data[i] - 1,
                     obstacleTile: data.layers[1].data[i] - 1,
                     decorationTile: data.layers[2].data[i] - 1,
-                });
+                })
             }
             this.rows.push(currentRow)
         },
         setupCurrentPlayer() {
-            console.log(this.players)
             this.setAccessibleCellsAroundPlayer(this.currentPlayer.coordinates.x, this.currentPlayer.coordinates.y)
         },
         placePlayersOnMap() {
@@ -93,11 +92,11 @@ export default {
                     cells.forEach(cell => {
                         cell.isAccessible = false
                     })
-                });
+                })
             }
             const directions = [
-                {x: 0, y: 1, label: 'right'}, {x: 0, y: -1, label: 'left'},
-                {x: 1, y: 0, label: 'up'}, {x: -1, y: 0, label: 'down'}
+                { x: 0, y: 1, label: 'right' }, { x: 0, y: -1, label: 'left' },
+                { x: 1, y: 0, label: 'up' }, { x: -1, y: 0, label: 'down' }
             ]
             directions.forEach(direction => {
                 const target = {x: x + direction.x, y: y + direction.y}
@@ -105,15 +104,18 @@ export default {
                     this.rows[target.y][target.x].isAccessible = true
                     this.setAccessibleCellsAroundPlayer(target.x, target.y, distance - 1)
                 }
-            });
+            })
         },
         playerMove(arrival = {x: null, y: null}) {
-            console.log(this.currentPlayer, arrival)
-            this.$emit('updatePlayer', {player: this.currentPlayer, arrival: arrival})
-            this.rows[this.currentPlayer.coordinates.y][this.currentPlayer.coordinates.x].player = null
-            this.rows[arrival.y][arrival.x].player = this.currentPlayer
+            const oldCoordinates = { x: this.currentPlayer.coordinates.x, y: this.currentPlayer.coordinates.y }
+            this.$emit('updatePlayer', { player: this.currentPlayer, arrival: arrival })
+            this.updateCells(oldCoordinates, arrival)
             this.setAccessibleCellsAroundPlayer(arrival.x, arrival.y)
             this.$forceUpdate()
+        },
+        updateCells(oldCoordinates, nextCoordinates) {
+            this.rows[oldCoordinates.y][oldCoordinates.x].player = null
+            this.rows[nextCoordinates.y][nextCoordinates.x].player = this.currentPlayer
         }
     },
     mounted() {
