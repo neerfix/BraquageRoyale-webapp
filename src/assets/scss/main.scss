@@ -11,4 +11,8 @@
     .relative {
         position: relative;
     }
+
+    .v-navigation-drawer {
+        z-index: 10;
+    }
 }

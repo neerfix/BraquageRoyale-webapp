@@ -28,8 +28,7 @@ export default {
     },
     data() {
         return {
-            rows: [],
-            moves: 0,
+            rows: []
         }
     },
     methods: {
