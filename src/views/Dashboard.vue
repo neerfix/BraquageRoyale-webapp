@@ -51,6 +51,8 @@ export default {
     }
   },
   mounted() {
+    this.allGame = true;
+    this.gamesInProgress = false;
     this.getCurrentUser()
     this.getUserGames(localStorage.getItem('idUser'));
   },
