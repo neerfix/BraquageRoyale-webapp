@@ -95,7 +95,7 @@ export default {
         // v => !v.trim() || 'Test',
         v => !!v || 'Nombre de joueurs max obligatoire',
         v => (!isNaN(parseFloat(v))) || 'Ceci n\'est pas un nombre',
-        v => (v >= 0 && v <= 5) || 'Nombre maximum : 5 joueurs'
+        v => (v >= 2 && v <= 5) || 'Nombre maximum : 5 joueurs'
       ],
       // Choice map rules
       choiceMap: '',
@@ -123,7 +123,7 @@ export default {
       if (this.$refs.form.validate()) {
         // console.log("Form OK")
         this.updateGame(this.gameId)
-        this.textMessageValidForm = "Votre partie à bien été créée"
+        this.textMessageValidForm = "Votre partie à bien été modifiée"
         this.colorMessage = "green lighten-2";
       } else {
         // console.log("Form KO")
@@ -138,7 +138,8 @@ export default {
             max_player: this.playersMax,
             map_id: this.choiceMap
           })
-          .then(() => {
+          .then((r) => {
+            console.log(r)
           })
     },
   }
