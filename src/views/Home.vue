@@ -46,11 +46,14 @@
 
 <script>
 import bankImage from '@/assets/img/bank.png'
+import bankImageLogo from '@/assets/img/braquageroyale.png'
+
 export default {
   name: 'Home',
   data() {
     return {
       bankImage: bankImage,
+      bankImageLogo: bankImageLogo,
       isConnected: ''
     }
   },
@@ -65,19 +68,22 @@ export default {
       console.log(window.getPath)
 
     },
-    async askNotificationPermission(){
-      if(!('Notification' in window)){
+    async askNotificationPermission() {
+      if (!('Notification' in window)) {
         return;
       }
-      if(Notification.permission === "default"){
+      if (Notification.permission === "default") {
 
         const permission = await Notification.requestPermission();
-        if(permission === "granted"){
-          return new Notification('Braquage Royal!', {body: "C'est bon de vous revoir, allez les massacrer !", icon:'../assets/img/bank.png'})
+        if (permission === "granted") {
+          return new Notification('Braquage Royal!', {
+            body: "C'est bon de vous revoir, allez les massacrer !",
+            icon: this.bankImageLogo,
+          })
         }
 
-      }else if(Notification.permission === "granted"){
-        return new Notification('Braquage Royal!', {body: "C'est bon de vous revoir, allez les massacrer !", icon:'./assets/img/braquageroyale.png'})
+      } else if (Notification.permission === "granted") {
+        //
       }
     },
     toLogin() {
