@@ -58,18 +58,26 @@ export default {
     this.isConnected = localStorage.getItem('isLogged')
   },
   mounted() {
-    console.log(this.isConnected);
+    this.askNotificationPermission()
   },
   methods: {
     test() {
       console.log(window.getPath)
-      return new Notification('Braquage Royal!', {body: "C'est votre tour ! Allez les massacrer", icon:"./assets/img/bank.png"})
+
     },
-    askPermission() {
-      if ('Notification' in window) {
-        if (Notification.permission === "default") {
-          //
+    async askNotificationPermission(){
+      if(!('Notification' in window)){
+        return;
+      }
+      if(Notification.permission === "default"){
+
+        const permission = await Notification.requestPermission();
+        if(permission === "granted"){
+          return new Notification('Braquage Royal!', {body: "C'est bon de vous revoir, allez les massacrer !", icon:'../assets/img/bank.png'})
         }
+
+      }else if(Notification.permission === "granted"){
+        return new Notification('Braquage Royal!', {body: "C'est bon de vous revoir, allez les massacrer !", icon:'./assets/img/braquageroyale.png'})
       }
     },
     toLogin() {
