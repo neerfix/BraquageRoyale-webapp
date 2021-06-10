@@ -94,6 +94,7 @@ export default {
             .signInWithEmailAndPassword(this.email, this.password)
             .then((resp) => {
               if (resp.user !== undefined ) {
+                localStorage.setItem('idUser', resp.user.uid)
                 localStorage.setItem("isLogged", 'true');
                 this.loader = false;
                 this.$router.go(this.$router.push('/'))

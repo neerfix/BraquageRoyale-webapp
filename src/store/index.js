@@ -9,7 +9,8 @@ export default new Vuex.Store({
     user: {
       loggedIn: false,
       data: null
-    }
+    },
+    game: ''
   },
   getters: {
     user (state) {
