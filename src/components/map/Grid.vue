@@ -16,6 +16,7 @@
 <script>
 import dataMap from '../../assets/json/village.json';
 import Cell from './Cell';
+import axios from 'axios';
 
 export default {
     name: 'Grid',
@@ -28,7 +29,8 @@ export default {
     },
     data() {
         return {
-            rows: []
+            rows: [],
+            currentGame: undefined
         }
     },
     methods: {
@@ -115,6 +117,15 @@ export default {
         updateCells(oldCoordinates, nextCoordinates) {
             this.rows[oldCoordinates.y][oldCoordinates.x].player = null
             this.rows[nextCoordinates.y][nextCoordinates.x].player = this.currentPlayer
+        },
+        getGameById(gameId){
+          axios.get("https://api.braquage-royale.xyz/games/" + gameId)
+          .then((response) => {
+            console.log(response)
+          })
+          .catch((error) => {
+            console.log(error);
+          })
         }
     },
     mounted() {
@@ -122,6 +133,8 @@ export default {
         this.placePlayersOnMap()
         //this.setupObstacles(0.1)
         this.setupCurrentPlayer()
+        this.currentGame = this.$route.params.gameId
+        this.getGameById(this.currentGame)
     },
     watch: {
         currentPlayer() {
