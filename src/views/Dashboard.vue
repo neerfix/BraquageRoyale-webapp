@@ -123,5 +123,6 @@ export default {
     border: 2px solid black !important;
     border-right: 4px solid black !important;
     border-bottom: 4px solid black !important;
+    margin-top: 0.5em;
   }
 </style>
