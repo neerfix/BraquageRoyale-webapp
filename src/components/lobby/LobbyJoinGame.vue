@@ -27,6 +27,7 @@
     name: "LobbyJoinGame",
     data() {
       return{
+        idCurrentUser: undefined,
         invits: [
           {byUser: "Flours"},
           {byUser: "Flours"},
@@ -37,6 +38,10 @@
           {byUser: "Flours"},
         ]
       }
+    },
+
+    mounted() {
+      this.idCurrentUser = localStorage.getItem('idUser')
     }
   }
 </script>
