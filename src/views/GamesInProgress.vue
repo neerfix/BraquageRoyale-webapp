@@ -134,7 +134,7 @@ export default {
       this.$store.state.game = game;
     },
     joinGame(idGame){
-      this.$router.go(this.$router.push('/game/'+idGame))
+      this.$router.go(this.$router.push('/game/' + localStorage.getItem('idUser') + '/' + idGame))
     }
   }
 }
