@@ -31,13 +31,13 @@
       return{
         idCurrentUser: undefined,
         invits: [
-          {byUser: "Flours"},
-          {byUser: "Flours"},
-          {byUser: "Flours"},
-          {byUser: "Flours"},
-          {byUser: "Flours"},
-          {byUser: "Flours"},
-          {byUser: "Flours"},
+          {byUser: "Flours", invitCode: "knefinezif"},
+          {byUser: "Flours", invitCode: "knefinezif"},
+          {byUser: "Flours", invitCode: "knefinezif"},
+          {byUser: "Flours", invitCode: "knefinezif"},
+          {byUser: "Flours", invitCode: "knefinezif"},
+          {byUser: "Flours", invitCode: "knefinezif"},
+          {byUser: "Flours", invitCode: "knefinezif"},
         ]
       }
     },
@@ -56,6 +56,16 @@
       //   .catch((error) => {
       //     console.log(error);
       //   })
+      // },
+
+      // declineInvitations(userId){
+      // // TODO : decline invitation when user click on button decline and delete invation in firebase
+      // // TODO : get invite code
+      // // TODO : delete invite by invit code
+      // },
+      //
+      // acceptInvitations(userId){
+      //   // TODO : accept invitation when user click on button accept
       // }
     }
   }
