@@ -2,7 +2,7 @@
     <div class="game">
         <div class="map">
             <grid :players="players" :currentPlayer="this.currentPlayer"
-                  @updatePlayer="((e) => this.updatePlayer(e))"></grid>
+                  @updatePlayer="((e) => this.updatePlayer(e))" @attackPlayer="((e) => attackPlayer(e))"></grid>
         </div>
         <div class="game-actions">
             <div class="game-players mb-2">
@@ -106,8 +106,8 @@ export default {
                     kills: 2,
                     isTurn: false,
                     coordinates: {
-                        x: 14,
-                        y: 9,
+                        x: 10,
+                        y: 6,
                     }
                 },
                 {
@@ -176,6 +176,12 @@ export default {
                 x: arrival.x,
                 y: arrival.y
             }
+            this.$forceUpdate()
+        },
+        attackPlayer({ player, target }) {
+            let p = this.players.find(p => p.id === player.id)
+            let t = this.players.find(t => t.coordinates.x === target.x && t.coordinates.y === target.y)
+            console.log(p, t)
             this.$forceUpdate()
         }
     },

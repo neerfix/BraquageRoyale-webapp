@@ -2,9 +2,9 @@
     <div class="grid">
         <div class="grid-container">
             <div class="grid-row" v-for="(row, i) in rows" :key="i">
-                <cell v-for="(cell, j) in row" :key="j" @move="(e) => playerMove(e)"
+                <cell v-for="(cell, j) in row" :key="j" @move="(e) => playerMove(e)" @attack="(e) => playerAttack(e)"
                       :x="cell.x" :y="cell.y" :tileNumber="cell.backgroundTile" :obstacleTile="cell.obstacleTile"
-                      :decorationTile="cell.decorationTile" :isAccessible="cell.isAccessible" :player="cell.player">
+                      :decorationTile="cell.decorationTile" :isAccessible="cell.isAccessible" :isAttackable="cell.isAttackable" :player="cell.player">
                     <cell v-if="cell.obstacleTile !== -1" slot="obstacle" :tileNumber="cell.obstacleTile"></cell>
                     <cell v-if="cell.decorationTile !== -1" slot="decoration" :tileNumber="cell.decorationTile"></cell>
                 </cell>
@@ -83,16 +83,21 @@ export default {
             }
             return ((this.rows[y][x].obstacleTile === -1 || this.rows[y][x].decorationTile !== -1) && !this.rows[y][x].player)
         },
+        isAttackableCell({ x, y }) {
+            if (x < 0 || x >= this.rows[0].length || y < 0 || y >= this.rows.length) {
+                return false
+            }
+            return ((this.rows[y][x].obstacleTile === -1 || this.rows[y][x].decorationTile !== -1)
+                && this.rows[y][x].player && this.rows[y][x].player.id !== this.currentPlayer.id)
+        },
         setAccessibleCellsAroundPlayer(x, y, distance = 3) {
             if (distance === 0) {
                 return
             } else if (distance === 3) {
                 this.rows.forEach(row => {
-                    const cells = row.filter(cell => {
-                        return cell.isAccessible
-                    })
-                    cells.forEach(cell => {
+                    row.forEach(cell => {
                         cell.isAccessible = false
+                        cell.isAttackable = false
                     })
                 })
             }
@@ -105,6 +110,8 @@ export default {
                 if (this.isWalkableCell(target)) {
                     this.rows[target.y][target.x].isAccessible = true
                     this.setAccessibleCellsAroundPlayer(target.x, target.y, distance - 1)
+                } else if (this.isAttackableCell(target)) {
+                    this.rows[target.y][target.x].isAttackable = true
                 }
             })
         },
@@ -114,6 +121,9 @@ export default {
             this.updateCells(oldCoordinates, arrival)
             this.setAccessibleCellsAroundPlayer(arrival.x, arrival.y)
             this.$forceUpdate()
+        },
+        playerAttack(target = {x: null, y: null}) {
+            this.$emit('attackPlayer', { player: this.currentPlayer, target })
         },
         updateCells(oldCoordinates, nextCoordinates) {
             this.rows[oldCoordinates.y][oldCoordinates.x].player = null

@@ -9,7 +9,7 @@
     width : 100%;
     top : 0;
     left : 0;
-    z-index : 5;
+    z-index : 500;
     border : 1px solid rgba(68,206,262,0);
     border-radius:7px;
     box-sizing : border-box;
@@ -49,6 +49,10 @@
 .red_obstacle:hover {
     background-color : rgba(252,65,55,0.5);
     border : 1px solid rgba(252,65,55,1);
+}
+.attackable:hover {
+    background-color : rgba(72, 164, 56,0.5);
+    border : 1px solid rgb(72, 164, 56);
 }
 .purple, .purple:hover {
     background-color : rgba(169,52,211,0.5);

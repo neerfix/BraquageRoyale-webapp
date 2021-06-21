@@ -1,5 +1,5 @@
 <template>
-    <div class="cell" :style="styleCell" @click="move">
+    <div class="cell" :style="styleCell" @click="action">
         <div class="background" :style="styleBackground"></div>
         <div class="obstacle">
             <slot name="obstacle"></slot>
@@ -16,7 +16,7 @@
                 <span>{{ player.username }}</span>
             </v-tooltip>
         </div>
-        <div class="highlight" :class="(obstacleTile !== -1 && decorationTile === -1) ? 'red_obstacle' : (isAccessible && !player) ? 'accessible' : null"></div>
+        <div class="highlight" :class="(obstacleTile !== -1 && decorationTile === -1) ? 'red_obstacle' : (isAttackable && player) ? 'attackable' : (isAccessible && !player) ? 'accessible' : null"></div>
     </div>
 </template>
 
@@ -36,6 +36,7 @@ export default {
         obstacleTile: Number,
         decorationTile: Number,
         isAccessible: Boolean,
+        isAttackable: Boolean,
         player: Object,
     },
     data() {
@@ -70,9 +71,11 @@ export default {
                 y: Math.floor(this.tileNumber / tileSetWidth)
             }
         },
-        move() {
+        action() {
             if (this.isAccessible) {
                 this.$emit('move', {x: this.x, y: this.y})
+            } else if (this.isAttackable) {
+                this.$emit('attack', {x: this.x, y: this.y})
             }
         }
     }
