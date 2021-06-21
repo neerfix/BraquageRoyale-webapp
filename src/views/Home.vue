@@ -83,7 +83,10 @@ export default {
         }
 
       } else if (Notification.permission === "granted") {
-        //
+        // return new Notification('Braquage Royal!', {
+        //   body: "C'est bon de vous revoir, allez les massacrer !",
+        //   icon: this.bankImageLogo,
+        // })
       }
     },
     toLogin() {
