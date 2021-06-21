@@ -6,11 +6,14 @@
 
       <v-btn class="btn_choice" :class="{is_active: showPlayersList === true}" @click="showAdminListPlayers">Liste des joueurs</v-btn>
       <v-btn class="btn_choice" :class="{is_active: showOptions === true}" @click="showAdminOptions">Options</v-btn>
+      <v-btn class="btn_choice" :class="{is_active: showInvite === true}" @click="showInviteFriends">Inviter</v-btn>
 
       <!-- PLayers list -->
       <div v-if="showPlayersList" id="players_list" class="mb-12"><PlayersList/></div>
       <!-- Options admin -->
       <div v-if="showOptions" id="options_admin" class="mb-12"><OptionsAdmin/></div>
+      <!-- Options invite  -->
+      <div v-if="showInvite" id="invite" class="mb-12"><InviteFriends/></div>
 
       <v-divider class="separator"></v-divider>
     </v-col>
@@ -20,12 +23,14 @@
 <script>
 import PlayersList from "@/components/lobby/PlayersList";
 import OptionsAdmin from "@/components/lobby/OptionsAdmin";
+import InviteFriends from "@/components/lobby/InviteFriends";
 
 export default {
   name: 'LobbyAdminPlayers',
   components: {
     PlayersList,
-    OptionsAdmin
+    OptionsAdmin,
+    InviteFriends
   },
   data() {
     return{
@@ -33,6 +38,7 @@ export default {
       invitationCode: 'klnb54ef654za',
       showPlayersList: true,
       showOptions: false,
+      showInvite: false,
     }
   },
   methods: {
@@ -40,11 +46,19 @@ export default {
     showAdminListPlayers(){
       this.showPlayersList = true
       this.showOptions = false
+      this.showInvite = false
     },
     // If options admin is clicked
     showAdminOptions(){
       this.showPlayersList = false
       this.showOptions = true
+      this.showInvite = false
+    },
+    // If invite admin is clicked
+    showInviteFriends(){
+      this.showPlayersList = false
+      this.showOptions = false
+      this.showInvite = true
     }
   }
 }
@@ -62,7 +76,8 @@ export default {
     border-radius: 2px;
   }
   #players_list,
-  #options_admin{
+  #options_admin,
+  #invite{
     height: 70vh;
     overflow-y: scroll;
     border-top: 1px solid black;
