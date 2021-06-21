@@ -46,21 +46,49 @@
 
 <script>
 import bankImage from '@/assets/img/bank.png'
+import bankImageLogo from '@/assets/img/braquageroyale.png'
+
 export default {
   name: 'Home',
   data() {
     return {
       bankImage: bankImage,
+      bankImageLogo: bankImageLogo,
       isConnected: ''
     }
-},
+  },
   beforeMount() {
     this.isConnected = localStorage.getItem('isLogged')
   },
   mounted() {
-    console.log(this.isConnected);
+    this.askNotificationPermission()
   },
   methods: {
+    test() {
+      console.log(window.getPath)
+
+    },
+    async askNotificationPermission() {
+      if (!('Notification' in window)) {
+        return;
+      }
+      if (Notification.permission === "default") {
+
+        const permission = await Notification.requestPermission();
+        if (permission === "granted") {
+          return new Notification('Braquage Royal!', {
+            body: "C'est bon de vous revoir, allez les massacrer !",
+            icon: this.bankImageLogo,
+          })
+        }
+
+      } else if (Notification.permission === "granted") {
+        // return new Notification('Braquage Royal!', {
+        //   body: "C'est bon de vous revoir, allez les massacrer !",
+        //   icon: this.bankImageLogo,
+        // })
+      }
+    },
     toLogin() {
       this.$router.go(this.$router.push('/auth'))
     },

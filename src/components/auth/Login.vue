@@ -67,10 +67,13 @@
 
 <script>
 import { db } from '@/main'
+import bankImageLogo from '@/assets/img/braquageroyale.png'
+
 
 export default {
   name: "Login",
   data: () => ({
+    bankImageLogo: bankImageLogo,
     password: '',
     email: '',
     valid: true,
@@ -98,6 +101,10 @@ export default {
                 localStorage.setItem("isLogged", 'true');
                 this.loader = false;
                 this.$router.go(this.$router.push('/'))
+                return new Notification('Braquage Royal!', {
+                  body: "C'est bon de vous revoir, allez les massacrer !",
+                  icon: this.bankImageLogo
+                })
               }
             })
             .catch(() => {

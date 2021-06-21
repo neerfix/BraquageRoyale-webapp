@@ -63,7 +63,7 @@ export default {
   }
   #players_list,
   #options_admin{
-    height: 40vh;
+    height: 70vh;
     overflow-y: scroll;
     border-top: 1px solid black;
     margin-top: -1px;
