@@ -119,23 +119,19 @@ export default {
             this.rows[oldCoordinates.y][oldCoordinates.x].player = null
             this.rows[nextCoordinates.y][nextCoordinates.x].player = this.currentPlayer
         },
+        // Get current game data
         getGameById(gameId){
           axios.get("https://api.braquage-royale.xyz/games/" + gameId)
           .then((response) => {
             this.getCurrentUserById(response.data.players)
           })
-          .catch((error) => {
-            console.log(error);
-          })
         },
+        // Get current player
         getCurrentUserById(players){
-          console.log(players);
-
+          // Loop for get current user
           players.forEach(player => {
-            console.log(player.user_id)
             if (this.$route.params.userId === player.user_id){
               this.player = player
-              console.log(this.player);
             }
           })
         }
