@@ -23,6 +23,8 @@
 </template>
 
 <script>
+  import axios from 'axios'
+
   export default {
     name: "LobbyJoinGame",
     data() {
@@ -42,6 +44,19 @@
 
     mounted() {
       this.idCurrentUser = localStorage.getItem('idUser')
+      // this.getAllInvitByUser(this.idCurrentUser)
+    },
+
+    methods: {
+      // getAllInvitByUser(currentUserId){
+      //   axios.get("https://api.braquage-royale.xyz/")
+      //   .then((response) => {
+      //     console.log(response)
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   })
+      // }
     }
   }
 </script>
