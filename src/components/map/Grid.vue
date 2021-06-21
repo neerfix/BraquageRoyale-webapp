@@ -30,7 +30,8 @@ export default {
     data() {
         return {
             rows: [],
-            currentGame: undefined
+            currentGame: undefined,
+            player: this.currentPlayer
         }
     },
     methods: {
@@ -121,10 +122,21 @@ export default {
         getGameById(gameId){
           axios.get("https://api.braquage-royale.xyz/games/" + gameId)
           .then((response) => {
-            console.log(response)
+            this.getCurrentUserById(response.data.players)
           })
           .catch((error) => {
             console.log(error);
+          })
+        },
+        getCurrentUserById(players){
+          console.log(players);
+
+          players.forEach(player => {
+            console.log(player.user_id)
+            if (this.$route.params.userId === player.user_id){
+              this.player = player
+              console.log(this.player);
+            }
           })
         }
     },
