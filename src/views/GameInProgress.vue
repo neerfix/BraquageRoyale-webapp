@@ -47,7 +47,8 @@ import Grid from '../components/map/Grid';
 import PlayerCard from '../components/map/PlayerCard';
 
 import Knight1 from '../assets/img/caracters/knight.png'
-import Knight2 from '../assets/img/caracters/knight-2.png'
+//import Knight2 from '../assets/img/caracters/knight-2.png'
+import axios from "axios";
 
 export default {
     name: 'GameInProgress',
@@ -61,16 +62,12 @@ export default {
                 options: false,
             },
             game: {
-                actualRound: 3,
-                rounds: [4, 1, 2, 3, 5]
+                actualRound: 'k3njGxsHztcApBPQYU0vEjetk363',
+                rounds: ['k3njGxsHztcApBPQYU0vEjetk363']
             },
-            currentPlayer: {
-                coordinates: {
-                    x: null,
-                    y: null
-                }
-            },
-            players: [
+            currentPlayer: null,
+            players: [],
+            /*players: [
                 {
                     id: 1,
                     username: 'Flo',
@@ -136,10 +133,37 @@ export default {
                         y: 12,
                     }
                 }
-            ]
+            ]*/
         }
     },
     methods: {
+        // Get current game data
+        async getGameById(gameId) {
+            await axios.get("https://api.braquage-royale.xyz/games/" + gameId)
+                .then((response) => {
+                    response.data.players.map(player => {
+                        axios.get("https://api.braquage-royale.xyz/users/" + player.user_id)
+                            .then(res => {
+                                player.user = res.data
+                                player.username = res.data.player.username
+                                player.coordinates = {
+                                    x: 0,
+                                    y: 0
+                                }
+                                player.img = Knight1
+                            })
+                    })
+                    this.players = response.data.players
+                    this.setCurrentPlayer()
+                })
+        },
+        setCurrentPlayer() {
+            let player = this.players.find(player => player.user_id === this.game.actualRound)
+            player.isTurn = true
+            console.log(player)
+            this.currentPlayer = player
+            this.players.sort(this.sortPlayers)
+        },
         /* newRound(oldPlayer = this.players.find(player => player.isTurn)) {
           console.log(oldPlayer)
           oldPlayer.isTurn = false
@@ -171,7 +195,7 @@ export default {
             return 0;
         },
         updatePlayer({ player, arrival }) {
-            let p = this.players.find(p => p.id === player.id)
+            let p = this.players.find(p => p.user_id === player.user_id)
             p.coordinates = {
                 x: arrival.x,
                 y: arrival.y
@@ -179,17 +203,14 @@ export default {
             this.$forceUpdate()
         },
         attackPlayer({ player, target }) {
-            let p = this.players.find(p => p.id === player.id)
+            let p = this.players.find(p => p.user_id === player.user_id)
             let t = this.players.find(t => t.coordinates.x === target.x && t.coordinates.y === target.y)
             console.log(p, t)
             this.$forceUpdate()
         }
     },
     mounted() {
-        let player = this.players.find(player => player.id === this.game.actualRound)
-        player.isTurn = true
-        this.currentPlayer = player
-        this.players.sort(this.sortPlayers)
+        this.getGameById(this.$route.params.gameId)
     }
 }
 </script>

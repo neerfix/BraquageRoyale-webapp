@@ -16,7 +16,6 @@
 <script>
 import dataMap from '../../assets/json/village.json';
 import Cell from './Cell';
-import axios from 'axios';
 
 export default {
     name: 'Grid',
@@ -25,13 +24,21 @@ export default {
     },
     props: {
         players: Array,
-        currentPlayer: Object,
+        currentPlayer: {
+            type: Object,
+            default() {
+                return {
+                    coordinates: {
+                        x: 0,
+                        y: 0
+                    }
+                }
+            }
+        },
     },
     data() {
         return {
-            rows: [],
-            currentGame: undefined,
-            player: this.currentPlayer
+            rows: []
         }
     },
     methods: {
@@ -88,7 +95,7 @@ export default {
                 return false
             }
             return ((this.rows[y][x].obstacleTile === -1 || this.rows[y][x].decorationTile !== -1)
-                && this.rows[y][x].player && this.rows[y][x].player.id !== this.currentPlayer.id)
+                && this.rows[y][x].player && this.rows[y][x].player.user_id !== this.currentPlayer.user_id)
         },
         setAccessibleCellsAroundPlayer(x, y, distance = 3) {
             if (distance === 0) {
@@ -129,21 +136,14 @@ export default {
             this.rows[oldCoordinates.y][oldCoordinates.x].player = null
             this.rows[nextCoordinates.y][nextCoordinates.x].player = this.currentPlayer
         },
-        // Get current game data
-        getGameById(gameId){
-          axios.get("https://api.braquage-royale.xyz/games/" + gameId)
-          .then((response) => {
-            this.getCurrentUserById(response.data.players)
-          })
-        },
         // Get current player
-        getCurrentUserById(players){
-          // Loop for get current user
-          players.forEach(player => {
-            if (this.$route.params.userId === player.user_id){
-              this.player = player
-            }
-          })
+        getCurrentUserById(players) {
+            // Loop for get current user
+            players.forEach(player => {
+                if (this.$route.params.userId === player.user_id){
+                    this.player = player
+                }
+            })
         }
     },
     mounted() {
@@ -151,8 +151,6 @@ export default {
         this.placePlayersOnMap()
         //this.setupObstacles(0.1)
         this.setupCurrentPlayer()
-        this.currentGame = this.$route.params.gameId
-        this.getGameById(this.currentGame)
     },
     watch: {
         currentPlayer() {
