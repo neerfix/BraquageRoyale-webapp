@@ -44,7 +44,7 @@ const routes = [
   //   component: Lobby
   // },
   {
-    path: '/game',
+    path: '/game/:userId/:gameId',
     name: 'Game',
     component: GameInProgress
   },

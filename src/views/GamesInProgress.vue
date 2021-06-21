@@ -19,6 +19,7 @@
           id="btn-game"
           small
           v-if="yourTurn"
+          @click="joinGame(item.id)"
           >
             Rejoindre !
 <!--            Faire le lien avec la partie en cours ici :) -->
@@ -86,7 +87,7 @@ export default {
   data() {
     return {
       games: [],
-      yourTurn: false,
+      yourTurn: true,
       dialog: false,
       notifications: false,
       sound: true,
@@ -131,6 +132,9 @@ export default {
     },
     sendDataFromGame(game) {
       this.$store.state.game = game;
+    },
+    joinGame(idGame){
+      this.$router.go(this.$router.push('/game/' + localStorage.getItem('idUser') + '/' + idGame))
     }
   }
 }
