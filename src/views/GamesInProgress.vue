@@ -112,12 +112,10 @@ export default {
     getAllActiveGames(userId) {
       let arrayOfGames = [];
       axios
-          .get("https://api.braquage-royale.xyz/games/")
+          .get("https://api.braquage-royale.xyz/users/" + userId + '/games')
           .then((resp) => {
             resp.data.forEach(game => {
-              if (game.players[0].user_id === userId && game.status === "ACTIVE") {
                 arrayOfGames.push(game)
-              }
             })
             this.games = arrayOfGames;
           })
