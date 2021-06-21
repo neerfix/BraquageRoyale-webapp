@@ -8,6 +8,9 @@
       <v-btn @click="displayCurrentGames" small id="btn-game-current" class="ml-2" :color="gamesInProgress ? 'success' : ''">
         Parties en cours
       </v-btn>
+      <v-btn @click="displayAllInvitations" small id="btn-game-current" class="ml-2" :color="gamesInProgress ? 'success' : ''">
+        Mes invitations
+      </v-btn>
     </div>
     <v-divider class="separator"></v-divider>
 
@@ -53,6 +56,7 @@ export default {
   mounted() {
     this.allGame = true;
     this.gamesInProgress = false;
+    this.allInvitations = false;
     this.getCurrentUser()
     this.getUserGames(localStorage.getItem('idUser'));
   },
@@ -84,10 +88,17 @@ export default {
     displayAllGame() {
       this.allGame = true;
       this.gamesInProgress = false;
+      this.allInvitations = false;
     },
     displayCurrentGames() {
       this.allGame = false;
       this.gamesInProgress = true;
+      this.allInvitations = false;
+    },
+    displayAllInvitations() {
+      this.allGame = false;
+      this.gamesInProgress = false;
+      this.allInvitations = true;
     },
   }
 }
