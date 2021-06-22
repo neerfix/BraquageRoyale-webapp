@@ -64,6 +64,7 @@ export default {
           .then((r) => {
             r.data.forEach(user => {
               if (user.player.username === this.friendUsername) {
+                //this.getInviteForFriendUsername(user)
                 axios
                   .post('https://api.braquage-royale.xyz/invite', {
                     gameId: this.$store.state.game.id,
@@ -80,6 +81,18 @@ export default {
             })
           })
     },
+    getInviteForFriendUsername(user) {
+      axios
+        .get("https://api.braquage-royale.xyz/invites")
+        .then((response) => {
+          if (response.data.userId === user.userId && response.data.gameId === this.$store.state.game.id) {
+            this.snackbar = true
+            this.textMessageValidForm = 'Vous avez déjà inviter cette personne'
+            this.colorMessage = "red lighten-2";
+            this.friendUsername = ''
+          }
+        })
+    }
   }
 }
 </script>

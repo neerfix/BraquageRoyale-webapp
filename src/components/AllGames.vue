@@ -46,7 +46,7 @@
             <!--            </v-card-subtitle>-->
 
             <v-card-text class="text--primary">
-              <div>Carte : <span class="font-weight-bold">{{ item.map_id }}</span></div>
+<!--              <div>Carte : <span class="font-weight-bold">{{ item.map_id }}</span></div>-->
               <div>Nombre de joueurs : <span class="font-weight-bold">{{ item.max_player }}</span></div>
               <div v-if="item.status === 'ACTIVE'">Partie : <span class="font-weight-bold">en cours</span></div>
               <div v-if="item.status === 'INACTIVE'">Partie : <span class="font-weight-bold">terminée</span></div>
