@@ -154,12 +154,6 @@ export default {
                 player.isTurn = !!response.data.players.find(player => player.user_id === this.game.actualRound) ?? false
                 this.players.push(player)
             })
-        },
-        setCurrentPlayer() {
-            let player = this.players.find(player => player.user_id === this.game.actualRound)
-            player.isTurn = true
-            console.log(player)
-            this.currentPlayer = player
             this.players.sort(this.sortPlayers)
         },
         /* newRound(oldPlayer = this.players.find(player => player.isTurn)) {
