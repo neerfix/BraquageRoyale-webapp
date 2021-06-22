@@ -2,7 +2,7 @@
   <div class="lobby_join_game">
     <v-card v-for="invite in invites" :key="invite.nameGame" class="card_invit">
       <div class="content_invitation d-flex">
-        <p class="title_invit">Invitation pour la partie : {{ invite.nameGame }}</p>
+        <p class="title_invit ">Invitation pour la partie : <span class="font-weight-black">{{ invite.nameGame }} </span></p>
         <v-spacer></v-spacer>
         <div class="btn_choice">
           <v-btn fab elevation="2" x-small color="success" class="btn_choice_accept">
@@ -93,6 +93,9 @@
   .card_invit{
     margin-top: 1em;
     margin-right: 0.5em;
+  }
+  .content_invitation .title_invit{
+    width: 56%;
   }
   .content_invitation .title_invit,
   .content_invitation .btn_choice{
