@@ -126,15 +126,12 @@ export default {
       this.snackbar = true
       if (this.$refs.form.validate()) {
         this.updateGame(this.gameId)
-        this.textMessageValidForm = "Votre partie à bien été modifiée"
-        this.colorMessage = "green lighten-2";
       } else {
         this.textMessageValidForm = "Des champs sont incorrectes"
         this.colorMessage = "red lighten-2";
       }
     },
     updateGame(gameId) {
-      console.log(this.$store.state.game);
       axios
           .patch("https://api.braquage-royale.xyz/games/" + gameId, {
             id: gameId,
@@ -143,15 +140,13 @@ export default {
             map_id: this.choiceMap,
             is_private: this.$store.state.game.is_private,
             players: this.$store.state.game.players,
-            // date: [
-            //   {
-            //     created_at: this.created_at,
-            //     finished_at: this.finished_at
-            //   }
-            // ]
           })
-          .then((r) => {
-            console.log(r)
+          .then(() => {
+            this.textMessageValidForm = "Votre partie à bien été modifiée"
+            this.colorMessage = "green lighten-2";
+            setTimeout(() => {
+              this.$router.go(this.$router.push('/dashboard'))
+            }, 2500)
           })
     },
   }
