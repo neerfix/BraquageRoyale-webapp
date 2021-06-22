@@ -6,18 +6,18 @@
         </div>
         <div class="game-actions">
             <div class="game-options">
-                <v-btn @click="toggleOverlay('players')" small class="btn-actions info">
+                <v-btn @click="toggleOverlay('players')" small class="btn-actions">
                     Joueurs
                 </v-btn>
-                <v-btn small class="btn-actions" :disabled="!isCurrentPlayer">
-                    Fin du tour
-                </v-btn>
-            </div>
-            <div class="game-options">
                 <v-btn @click="toggleOverlay('infos')" small class="btn-actions">
                     Infos
                 </v-btn>
-                <v-btn @click="toggleOverlay('options')" small class="btn-actions warning" v-if="canOptions">
+                <v-btn small class="btn-actions" :class="canDoSomeThing ? 'warning' : 'info'" :disabled="!isCurrentPlayer">
+                    Fin du tour
+                </v-btn>
+            </div>
+            <div class="game-options" v-if="canOptions">
+                <v-btn @click="toggleOverlay('options')" small class="btn-actions warning">
                     Options
                 </v-btn>
             </div>
@@ -40,11 +40,10 @@
                     <p class="text-black mb-0">{{ this.game.map.name }}</p>
                     <p class="text-black mb-3">{{ this.game.map.description }}</p>
                     <span class="text-primary font-weight-bold">Tour</span>
-                    <div class="d-flex align-center">
+                    <div class="d-flex align-center" v-if="currentPlayer">
                         <img :src="currentPlayer.img" alt="caracter" />
                         <span class="text-black mb-0 ml-2">{{ currentPlayer.username }}</span>
                     </div>
-
                 </div>
             </v-card>
             <v-btn small class="btn-actions" @click="toggleOverlay('infos')">
@@ -94,6 +93,13 @@ export default {
        },
         currentPlayer() {
            return this.players.find(player => player.isTurn)
+        },
+        canDoSomeThing() {
+           if(this.isCurrentPlayer && this.currentPlayer) {
+               return !(this.currentPlayer.moved && this.currentPlayer.attacked)
+           } else {
+               return false
+           }
         },
         canOptions() {
            if(this.players.length > 0) {
@@ -181,6 +187,7 @@ export default {
                     y: t.coordinates.y
                 }
             })*/
+            p.attacked = true
             this.$forceUpdate()
         }
     },
