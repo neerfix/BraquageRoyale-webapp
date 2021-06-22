@@ -10,7 +10,7 @@
               mdi-check
             </v-icon>
           </v-btn>
-          <v-btn fab elevation="2" x-small color="error" class="btn_choice_decline" @click="declineInvitations(invite.inviteId)">
+          <v-btn fab elevation="2" x-small color="error" class="btn_choice_decline" @click="declineInvitations(invite.userId, invite.gameId, invite.inviteId)">
             <v-icon>
               mdi-delete
             </v-icon>
@@ -79,7 +79,7 @@
         axios
             .post("https://api.braquage-royale.xyz/games/" + gameId + "/invite/" + inviteId + "/refused", {
               userId: userId,
-              player: [
+              players: [
                 {}
               ]
             })
@@ -95,7 +95,7 @@
         axios
             .post("https://api.braquage-royale.xyz/games/" + gameId + "/invite/" + inviteId + "/accepted", {
                 userId: userId,
-                player: [
+                players: [
                   {}
                 ]
              })
