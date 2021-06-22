@@ -12,7 +12,7 @@
           </v-btn>
           <v-btn fab elevation="2" x-small color="error" class="btn_choice_decline" @click="declineInvitations(invite.inviteId)">
             <v-icon>
-              mdi-alert-circle-outline
+              mdi-delete
             </v-icon>
           </v-btn>
         </div>
@@ -43,49 +43,65 @@
     methods: {
       // Get all invites
       getAllInvitByUser(currentUserId){
-        axios.get("https://api.braquage-royale.xyz/invites")
-        .then((response) => {
-          response.data.forEach((invite) => {
-            // Get invites by current user
-            if (invite.userId === currentUserId && invite.accepted === 'false'){
-              // Get game invites
-              this.getGameById(invite)
-            }
-          })
-        })
+        axios
+            .get("https://api.braquage-royale.xyz/invites")
+            .then((response) => {
+              response.data.forEach((invite) => {
+                // Get invites by current user
+                if (invite.userId === currentUserId && invite.accepted === 'false'){
+                  // Get game invites
+                  this.getGameById(invite)
+                }
+              })
+            })
       },
       // Get game by id and create object invites
       getGameById(invite){
-        axios.get('https://api.braquage-royale.xyz/games/' + invite.gameId)
-        .then((response) => {
-          // Create object invites
-          let invitation = {
-            userId: this.idCurrentUser,
-            gameId: response.data.id,
-            inviteId: invite.id,
-            nameGame: response.data.name
-          }
-          // Push object in array invites
-          this.invites.push(invitation)
-        })
+        axios
+            .get('https://api.braquage-royale.xyz/games/' + invite.gameId)
+            .then((response) => {
+              // Create object invites
+              let invitation = {
+                userId: this.idCurrentUser,
+                gameId: response.data.id,
+                inviteId: invite.id,
+                nameGame: response.data.name
+              }
+              // Push object in array invites
+              this.invites.push(invitation)
+            })
       },
-
-      declineInvitations(inviteId){
-      // TODO : decline invitation when user click on button decline and delete invation in firebase
-      // TODO : get invite code
-      // TODO : delete invite by invit code
-        console.log('invite id : ' + inviteId);
+      // Decline invitation
+      declineInvitations(userId, gameId, inviteId){
+        console.log("user " + userId);
+        console.log("game " + gameId);
+        console.log("invite " + inviteId);
+        axios
+            .post("https://api.braquage-royale.xyz/games/" + gameId + "/invite/" + inviteId + "/refused", {
+              userId: userId,
+              player: [
+                {}
+              ]
+            })
+            .then(() => {
+              this.getAllInvitByUser(this.idCurrentUser)
+            })
       },
-
+      // Accepte invitation
       acceptInvitations(userId, gameId, inviteId){
-        console.log("user id : " + userId);
-        console.log('game id : ' + gameId);
-        console.log('invite id : ' + inviteId);
-        // TODO : accept invitation when user click on button accept
-        //     axios.post("https://api.braquage-royale.xyz/games/gameId/invite/inviteId/accepted", {
-        //       gameId: gameId,
-        //       inviteId: inviteId
-        //     })
+        console.log("user " + userId);
+        console.log("game " + gameId);
+        console.log("invite " + inviteId);
+        axios
+            .post("https://api.braquage-royale.xyz/games/" + gameId + "/invite/" + inviteId + "/accepted", {
+                userId: userId,
+                player: [
+                  {}
+                ]
+             })
+            .then(() => {
+              this.getAllInvitByUser(this.idCurrentUser)
+            })
       }
     }
   }
