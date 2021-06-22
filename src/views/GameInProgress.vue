@@ -146,10 +146,6 @@ export default {
                 const { data } = await axios.get("https://api.braquage-royale.xyz/users/" + player.user_id)
                 player.user = data
                 player.username = data.player.username
-                player.coordinates = {
-                    x: 0,
-                    y: 0
-                }
                 player.img = this.skins[Math.floor(Math.random() * this.skins.length)]
                 player.isTurn = !!response.data.players.find(player => player.user_id === this.game.actualRound) ?? false
                 this.players.push(player)
