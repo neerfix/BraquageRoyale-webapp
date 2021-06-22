@@ -13,7 +13,6 @@
             outlined
             clearable
             v-model="friendUsername"
-            :rules="pseudoRule"
             required
             id="friendEmail"
         ></v-text-field>
@@ -64,28 +63,20 @@ export default {
           .get('https://api.braquage-royale.xyz/users')
           .then((r) => {
             r.data.forEach(user => {
-              if (this.friendUsername === '') {
-                this.snackbar = true
-                this.textMessageValidForm = 'Veuillez saisir un pseudo'
-                this.colorMessage = "red lighten-2";
-              } else if (user.player.username === this.friendUsername) {
-                // axios
-                //     .post('https://doc.braquage-royale.xyz/invite', {
-                //
-                //     })
-                //     .then(() => {
-                      this.snackbar = true
-                      this.textMessageValidForm = 'Votre ami a été invité'
-                      this.colorMessage = "green lighten-2";
-                      this.friendUsername = '';
-                //     })
-              } else {
-                this.snackbar = true
-                this.textMessageValidForm = 'Ce pseudo n\'existe pas...'
-                this.colorMessage = "red lighten-2";
-                this.friendUsername = '';
+              if (user.player.username === this.friendUsername) {
+                axios
+                  .post('https://api.braquage-royale.xyz/invite', {
+                    gameId: this.$store.state.game.id,
+                    userId: user.id,
+                    username: this.friendUsername
+                  })
+                  .then(() => {
+                    this.snackbar = true
+                    this.textMessageValidForm = 'Votre ami a été invité'
+                    this.colorMessage = "green lighten-2";
+                    this.friendUsername = '';
+                  })
               }
-
             })
           })
     },
