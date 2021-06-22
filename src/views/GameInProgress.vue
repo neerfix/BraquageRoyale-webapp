@@ -2,7 +2,7 @@
     <div class="game">
         <div class="map">
             <grid :players="players"
-                  @updatePlayer="((e) => this.updatePlayer(e))" @attackPlayer="((e) => attackPlayer(e))"></grid>
+                  @movePlayer="((e) => this.movePlayer(e))" @attackPlayer="((e) => attackPlayer(e))"></grid>
         </div>
         <div class="game-actions">
             <div class="game-players mb-2">
@@ -47,7 +47,7 @@ import Grid from '../components/map/Grid';
 import PlayerCard from '../components/map/PlayerCard';
 
 import Knight1 from '../assets/img/caracters/knight.png'
-//import Knight2 from '../assets/img/caracters/knight-2.png'
+import Knight2 from '../assets/img/caracters/knight-2.png'
 import axios from "axios";
 
 export default {
@@ -57,6 +57,7 @@ export default {
     },
     data() {
         return {
+            skins: [Knight1, Knight2],
             overlay: {
                 players: false,
                 options: false,
@@ -140,6 +141,7 @@ export default {
         // Get current game data
         async getGameById(gameId) {
             const response = await axios.get("https://api.braquage-royale.xyz/games/" + gameId)
+            console.log(response.data)
             response.data.players.map(async player => {
                 const { data } = await axios.get("https://api.braquage-royale.xyz/users/" + player.user_id)
                 player.user = data
@@ -148,7 +150,7 @@ export default {
                     x: 0,
                     y: 0
                 }
-                player.img = Knight1
+                player.img = this.skins[Math.floor(Math.random() * this.skins.length)]
                 player.isTurn = !!response.data.players.find(player => player.user_id === this.game.actualRound) ?? false
                 this.players.push(player)
             })
@@ -190,12 +192,13 @@ export default {
             }
             return 0;
         },
-        updatePlayer({ player, arrival }) {
+        movePlayer({ player, arrival }) {
             let p = this.players.find(p => p.user_id === player.user_id)
             p.coordinates = {
                 x: arrival.x,
                 y: arrival.y
             }
+            p.moved = true
             this.$forceUpdate()
         },
         attackPlayer({ player, target }) {

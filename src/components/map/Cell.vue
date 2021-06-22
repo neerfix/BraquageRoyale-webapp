@@ -35,6 +35,7 @@ export default {
         tileNumber: Number,
         obstacleTile: Number,
         decorationTile: Number,
+        distance: Number,
         isAccessible: Boolean,
         isAttackable: Boolean,
         player: Object,
@@ -73,9 +74,10 @@ export default {
         },
         action() {
             if (this.isAccessible) {
-                this.$emit('move', {x: this.x, y: this.y})
+                console.log(this.distance)
+                this.$emit('move', { x: this.x, y: this.y, distance: this.distance })
             } else if (this.isAttackable) {
-                this.$emit('attack', {x: this.x, y: this.y})
+                this.$emit('attack', { x: this.x, y: this.y })
             }
         }
     }

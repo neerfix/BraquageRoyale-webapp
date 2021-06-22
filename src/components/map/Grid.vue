@@ -3,7 +3,7 @@
         <div class="grid-container">
             <div class="grid-row" v-for="(row, i) in rows" :key="i">
                 <cell v-for="(cell, j) in row" :key="j" @move="(e) => playerMove(e)" @attack="(e) => playerAttack(e)"
-                      :x="cell.x" :y="cell.y" :tileNumber="cell.backgroundTile" :obstacleTile="cell.obstacleTile"
+                      :x="cell.x" :y="cell.y" :tileNumber="cell.backgroundTile" :obstacleTile="cell.obstacleTile" :distance="cell.distance"
                       :decorationTile="cell.decorationTile" :isAccessible="cell.isAccessible" :isAttackable="cell.isAttackable" :player="cell.player">
                     <cell v-if="cell.obstacleTile !== -1" slot="obstacle" :tileNumber="cell.obstacleTile"></cell>
                     <cell v-if="cell.decorationTile !== -1" slot="decoration" :tileNumber="cell.decorationTile"></cell>
@@ -74,7 +74,7 @@ export default {
             }
         },
         placePlayersOnMap() {
-            this.players.map(player => {
+            this.players.forEach(player => {
                 this.rows[player.coordinates.y][player.coordinates.x].player = player
             })
             this.$forceUpdate()
@@ -96,12 +96,7 @@ export default {
             if (distance === 0) {
                 return
             } else if (distance === 3) {
-                this.rows.forEach(row => {
-                    row.forEach(cell => {
-                        cell.isAccessible = false
-                        cell.isAttackable = false
-                    })
-                })
+                this.resetCells()
             }
             const directions = [
                 { x: 0, y: 1, label: 'right' }, { x: 0, y: -1, label: 'left' },
@@ -111,17 +106,29 @@ export default {
                 const target = {x: x + direction.x, y: y + direction.y}
                 if (this.isWalkableCell(target)) {
                     this.rows[target.y][target.x].isAccessible = true
+                    this.rows[target.y][target.x].distance = distance
                     this.setAccessibleCellsAroundPlayer(target.x, target.y, distance - 1)
                 } else if (this.isAttackableCell(target)) {
                     this.rows[target.y][target.x].isAttackable = true
                 }
             })
+            this.$forceUpdate()
         },
-        playerMove(arrival = {x: null, y: null}) {
+        resetCells() {
+            this.rows.forEach(row => {
+                row.forEach(cell => {
+                    cell.isAccessible = false
+                    cell.isAttackable = false
+                    cell.distance = null
+                })
+            })
+        },
+        playerMove(arrival = { x: null, y: null, distance: 0 }) {
             const oldCoordinates = { x: this.currentPlayer.coordinates.x, y: this.currentPlayer.coordinates.y }
-            this.$emit('updatePlayer', { player: this.currentPlayer, arrival: arrival })
+            this.$emit('movePlayer', { player: this.currentPlayer, arrival: arrival })
             this.updateCells(oldCoordinates, arrival)
-            this.setAccessibleCellsAroundPlayer(arrival.x, arrival.y)
+            //this.setAccessibleCellsAroundPlayer(arrival.x, arrival.y)
+            this.resetCells()
             this.$forceUpdate()
         },
         playerAttack(target = {x: null, y: null}) {
