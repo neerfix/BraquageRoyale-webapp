@@ -9,12 +9,12 @@
       <v-col xs="12">
         <p>Inviter un ami</p>
         <v-text-field
-            label="Pseudo de votre ami"
+            label="ID de votre ami"
             outlined
             clearable
-            v-model="friendUsername"
+            v-model="friendId"
             required
-            id="friendEmail"
+            id="friendId"
         ></v-text-field>
       </v-col>
       <v-btn
@@ -54,44 +54,38 @@ export default {
       timeoutSnackbar: 3000,
       snackbar: false,
       valid: true,
-      friendUsername: '',
+      friendId: '',
     }
   },
   methods: {
     invite() {
       axios
-          .get('https://api.braquage-royale.xyz/users')
+          .get('https://api.braquage-royale.xyz/users/' + this.friendId)
           .then((r) => {
-            r.data.forEach(user => {
-              if (user.player.username === this.friendUsername) {
-                //this.getInviteForFriendUsername(user)
-                axios
-                  .post('https://api.braquage-royale.xyz/invite', {
-                    gameId: this.$store.state.game.id,
-                    userId: user.id,
-                    username: this.friendUsername
-                  })
-                  .then(() => {
-                    this.snackbar = true
-                    this.textMessageValidForm = 'Votre ami a été invité'
-                    this.colorMessage = "green lighten-2";
-                    this.friendUsername = '';
-                  })
+            if (this.friendId === '') {
+              this.snackbar = true
+              this.textMessageValidForm = 'Veuillez saisir un champ'
+              this.colorMessage = "red lighten-2";
+            } else {
+              if (r.data.id === this.friendId) {
+                this.sendInvitation(r)
               }
-            })
+            }
           })
     },
-    getInviteForFriendUsername(user) {
+    sendInvitation(user) {
       axios
-        .get("https://api.braquage-royale.xyz/invites")
-        .then((response) => {
-          if (response.data.userId === user.userId && response.data.gameId === this.$store.state.game.id) {
+          .post('https://api.braquage-royale.xyz/invite', {
+            gameId: this.$store.state.game.id,
+            userId: this.friendId,
+            username: user.data.player.username
+          })
+          .then(() => {
             this.snackbar = true
-            this.textMessageValidForm = 'Vous avez déjà inviter cette personne'
-            this.colorMessage = "red lighten-2";
-            this.friendUsername = ''
-          }
-        })
+            this.textMessageValidForm = 'Votre ami a été invité'
+            this.colorMessage = "green lighten-2";
+            this.friendId = '';
+          })
     }
   }
 }
