@@ -56,19 +56,19 @@ export default {
       snackbar: false,
       valid: true,
       friendUsername: '',
-      pseudoRule: [
-        v => !!v || 'Pseudo obligatoire'
-      ],
     }
   },
   methods: {
     invite() {
-      console.log(this.friendUsername)
       axios
           .get('https://api.braquage-royale.xyz/users')
           .then((r) => {
             r.data.forEach(user => {
-              if (user.player.username === this.friendUsername) {
+              if (this.friendUsername === '') {
+                this.snackbar = true
+                this.textMessageValidForm = 'Veuillez saisir un pseudo'
+                this.colorMessage = "red lighten-2";
+              } else if (user.player.username === this.friendUsername) {
                 // axios
                 //     .post('https://doc.braquage-royale.xyz/invite', {
                 //
@@ -77,11 +77,13 @@ export default {
                       this.snackbar = true
                       this.textMessageValidForm = 'Votre ami a été invité'
                       this.colorMessage = "green lighten-2";
+                      this.friendUsername = '';
                 //     })
               } else {
                 this.snackbar = true
                 this.textMessageValidForm = 'Ce pseudo n\'existe pas...'
                 this.colorMessage = "red lighten-2";
+                this.friendUsername = '';
               }
 
             })
