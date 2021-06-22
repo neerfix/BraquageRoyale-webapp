@@ -83,7 +83,9 @@ export default {
         setupCurrentPlayer() {
             if(this.players.length > 0) {
                 this.currentPlayer = this.players.find(p => p.isTurn === true)
-                this.setAccessibleCellsAroundPlayer(this.currentPlayer.coordinates.x, (this.currentPlayer.coordinates.y))
+                if(this.currentPlayer.user_id === this.$route.params.userId) {
+                    this.setAccessibleCellsAroundPlayer(this.currentPlayer.coordinates.x, (this.currentPlayer.coordinates.y))
+                }
                 this.$forceUpdate()
             }
         },

@@ -9,12 +9,15 @@
                 <v-btn @click="toggleOverlay('players')" small class="btn-actions info">
                     Joueurs
                 </v-btn>
-                <v-btn small class="btn-actions" :disabled="isCurrentPlayer">
+                <v-btn small class="btn-actions" :disabled="!isCurrentPlayer">
                     Fin du tour
                 </v-btn>
             </div>
-            <div class="game-options" v-if="canOptions">
-                <v-btn @click="toggleOverlay('options')" small class="btn-actions warning">
+            <div class="game-options">
+                <v-btn @click="toggleOverlay('infos')" small class="btn-actions">
+                    Infos
+                </v-btn>
+                <v-btn @click="toggleOverlay('options')" small class="btn-actions warning" v-if="canOptions">
                     Options
                 </v-btn>
             </div>
@@ -22,6 +25,29 @@
         <v-overlay :value="overlay.players" class="game-overlay">
             <player-card v-for="(player, index) in players" :key="index" :player="player"></player-card>
             <v-btn small class="btn-actions" @click="toggleOverlay('players')">
+                Fermer
+            </v-btn>
+        </v-overlay>
+        <v-overlay :value="overlay.infos" class="game-overlay">
+            <v-card
+                class="mx-auto mb-3"
+                elevation="2"
+                color="#FFF"
+            >
+                <div class="pa-4">
+                    <p class="font-weight-bold text-black">Informations sur la partie</p>
+                    <span class="text-primary font-weight-bold">Map</span>
+                    <p class="text-black mb-0">{{ this.game.map.name }}</p>
+                    <p class="text-black mb-3">{{ this.game.map.description }}</p>
+                    <span class="text-primary font-weight-bold">Tour</span>
+                    <div class="d-flex align-center">
+                        <img :src="currentPlayer.img" alt="caracter" />
+                        <span class="text-black mb-0 ml-2">{{ currentPlayer.username }}</span>
+                    </div>
+
+                </div>
+            </v-card>
+            <v-btn small class="btn-actions" @click="toggleOverlay('infos')">
                 Fermer
             </v-btn>
         </v-overlay>
@@ -52,88 +78,29 @@ export default {
             overlay: {
                 players: false,
                 options: false,
+                infos: false,
             },
             game: {
                 actualRound: 'k3njGxsHztcApBPQYU0vEjetk363',
                 rounds: ['k3njGxsHztcApBPQYU0vEjetk363', 'UwZa24qM1uRKj7bKSmZyP7khUjr2'],
                 map: {}
             },
-            players: [],
-            /*players: [
-                {
-                    id: 1,
-                    username: 'Flo',
-                    img: Knight1,
-                    vitality: 41,
-                    attack: 12,
-                    kills: 0,
-                    isTurn: false,
-                    coordinates: {
-                        x: 10,
-                        y: 5,
-                    }
-                },
-                {
-                    id: 2,
-                    username: 'Nico',
-                    img: Knight2,
-                    vitality: 29,
-                    attack: 6,
-                    kills: 0,
-                    isTurn: false,
-                    coordinates: {
-                        x: 0,
-                        y: 6,
-                    }
-                },
-                {
-                    id: 3,
-                    username: 'Gregg',
-                    img: Knight2,
-                    vitality: 38,
-                    attack: 12,
-                    kills: 2,
-                    isTurn: false,
-                    coordinates: {
-                        x: 10,
-                        y: 6,
-                    }
-                },
-                {
-                    id: 4,
-                    username: 'Luca',
-                    img: Knight2,
-                    vitality: 0,
-                    attack: 6,
-                    kills: 3,
-                    isTurn: false,
-                    coordinates: {
-                        x: 7,
-                        y: 12,
-                    }
-                },
-                {
-                    id: 5,
-                    username: 'Antoine',
-                    img: Knight1,
-                    vitality: 0,
-                    attack: 12,
-                    kills: 1,
-                    isTurn: false,
-                    coordinates: {
-                        x: 1,
-                        y: 12,
-                    }
-                }
-            ]*/
+            players: []
         }
     },
     computed: {
        isCurrentPlayer() {
-           return !!this.$route.params.userId === this.game.actualRound
+           return this.$route.params.userId === this.game.actualRound
        },
+        currentPlayer() {
+           return this.players.find(player => player.isTurn)
+        },
         canOptions() {
-           return !!this.players.find(player => player.user_id === this.$route.params.userId)
+           if(this.players.length > 0) {
+               return !!this.$route.params.userId === this.players[0].user_id
+           } else {
+               return false
+           }
         }
     },
     methods: {
@@ -141,10 +108,10 @@ export default {
         async getGameById(gameId) {
             const { data } = await axios.get("https://api.braquage-royale.xyz/games/" + gameId)
             console.log('game', data)
-            data.players.map(async player => {
+            data.players.map(player => {
                 player.username = player.user.player.username
                 player.img = this.skins[Math.floor(Math.random() * this.skins.length)]
-                player.isTurn = !!data.players.find(player => player.user_id === this.game.actualRound) ?? false
+                player.isTurn = player.user_id === this.game.actualRound
                 this.players.push(player)
             })
             this.game = {
