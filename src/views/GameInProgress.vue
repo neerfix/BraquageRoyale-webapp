@@ -5,37 +5,28 @@
                   @movePlayer="((e) => this.movePlayer(e))" @attackPlayer="((e) => attackPlayer(e))"></grid>
         </div>
         <div class="game-actions">
-            <div class="game-players mb-2">
-                <v-btn elevation="2" @click="toggleOverlay('players')">
+            <div class="game-options">
+                <v-btn @click="toggleOverlay('players')" small class="btn-actions info">
                     Joueurs
                 </v-btn>
-            </div>
-            <div class="game-options">
-                <v-btn elevation="2" color="primary" @click="toggleOverlay('options')">
-                    Options
-                </v-btn>
-            </div>
-        </div>
-        <div class="player-actions">
-            <div class="player-attack mb-2">
-                <v-btn elevation="2" color="primary">
-                    Attaquer
-                </v-btn>
-            </div>
-            <div class="player-pass">
-                <v-btn elevation="2">
+                <v-btn small class="btn-actions" :disabled="isCurrentPlayer">
                     Fin du tour
+                </v-btn>
+            </div>
+            <div class="game-options" v-if="canOptions">
+                <v-btn @click="toggleOverlay('options')" small class="btn-actions warning">
+                    Options
                 </v-btn>
             </div>
         </div>
         <v-overlay :value="overlay.players" class="game-overlay">
             <player-card v-for="(player, index) in players" :key="index" :player="player"></player-card>
-            <v-btn @click="toggleOverlay('players')">
+            <v-btn small class="btn-actions" @click="toggleOverlay('players')">
                 Fermer
             </v-btn>
         </v-overlay>
         <v-overlay :value="overlay.options" class="game-overlay">
-            <v-btn @click="toggleOverlay('options')">
+            <v-btn small class="btn-actions" @click="toggleOverlay('options')">
                 Fermer
             </v-btn>
         </v-overlay>
@@ -64,9 +55,8 @@ export default {
             },
             game: {
                 actualRound: 'k3njGxsHztcApBPQYU0vEjetk363',
-                rounds: ['k3njGxsHztcApBPQYU0vEjetk363']
+                rounds: ['k3njGxsHztcApBPQYU0vEjetk363', 'UwZa24qM1uRKj7bKSmZyP7khUjr2']
             },
-            currentPlayer: null,
             players: [],
             /*players: [
                 {
@@ -137,6 +127,14 @@ export default {
             ]*/
         }
     },
+    computed: {
+       isCurrentPlayer() {
+           return !!this.$route.params.userId === this.game.actualRound
+       },
+        canOptions() {
+           return !!this.players.find(player => player.user_id === this.$route.params.userId)
+        }
+    },
     methods: {
         // Get current game data
         async getGameById(gameId) {
@@ -150,7 +148,13 @@ export default {
                 player.isTurn = !!response.data.players.find(player => player.user_id === this.game.actualRound) ?? false
                 this.players.push(player)
             })
-            this.players.sort(this.sortPlayers)
+        },
+        endRound(player) {
+            this.players.forEach(p => {
+                if(p.user_id === player.user_id) {
+                    p.isTurn = false
+                }
+            })
         },
         /* newRound(oldPlayer = this.players.find(player => player.isTurn)) {
           console.log(oldPlayer)
@@ -173,16 +177,19 @@ export default {
         toggleOverlay(overlay) {
             this.overlay[overlay] = !this.overlay[overlay]
         },
-        sortPlayers(a, b) {
-            if (a.vitality < b.vitality) {
-                return 1;
-            }
-            if (a.vitality > b.vitality) {
-                return -1;
-            }
-            return 0;
-        },
-        movePlayer({ player, arrival }) {
+        async movePlayer({ player, arrival }) {
+            await axios.post("https://api.braquage-royale.xyz/games/" + this.$route.params.gameId + "/action", {
+                active_player_id: this.$route.params.userId,
+                is_attack: false,
+                last_coordinate: {
+                    x: player.coordinates.x,
+                    y: player.coordinates.y
+                },
+                coordinate: {
+                    x: arrival.x,
+                    y: arrival.y
+                }
+            })
             let p = this.players.find(p => p.user_id === player.user_id)
             p.coordinates = {
                 x: arrival.x,
@@ -191,10 +198,19 @@ export default {
             p.moved = true
             this.$forceUpdate()
         },
-        attackPlayer({ player, target }) {
+        async attackPlayer({ player, target }) {
             let p = this.players.find(p => p.user_id === player.user_id)
             let t = this.players.find(t => t.coordinates.x === target.x && t.coordinates.y === target.y)
             console.log(p, t)
+            /*await axios.post("https://api.braquage-royale.xyz/games/" + this.$route.params.gameId + "/action", {
+                active_player_id: this.$route.params.userId,
+                target_player_id: t.user_id,
+                is_attack: true,
+                coordinate: {
+                    x: t.coordinates.x,
+                    y: t.coordinates.y
+                }
+            })*/
             this.$forceUpdate()
         }
     },

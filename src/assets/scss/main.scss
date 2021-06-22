@@ -12,7 +12,11 @@
         position: relative;
     }
 
+    .v-toolbar {
+        z-index: 100;
+    }
+
     .v-navigation-drawer {
-        z-index: 10;
+        z-index: 150;
     }
 }

@@ -8,13 +8,7 @@
             <slot name="decoration"></slot>
         </div>
         <div class="caracter" v-if="player">
-            <v-tooltip left>
-                <template v-slot:activator="{ on, attrs }">
-                    <img :src="player.vitality > 0 ? player.img : ripImage" alt="caracter"
-                         v-bind="attrs" v-on="on"/>
-                </template>
-                <span>{{ player.username }}</span>
-            </v-tooltip>
+            <img :src="player.vitality > 0 ? player.img : ripImage" alt="caracter" />
         </div>
         <div class="highlight" :class="(obstacleTile !== -1 && decorationTile === -1) ? 'red_obstacle' : (isAttackable && player) ? 'attackable' : (isAccessible && !player) ? 'accessible' : null"></div>
     </div>
