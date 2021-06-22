@@ -1,7 +1,7 @@
 <template>
     <div class="game">
         <div class="map">
-            <grid :players="players" :currentPlayer="this.currentPlayer"
+            <grid :players="players"
                   @updatePlayer="((e) => this.updatePlayer(e))" @attackPlayer="((e) => attackPlayer(e))"></grid>
         </div>
         <div class="game-actions">
@@ -139,23 +139,19 @@ export default {
     methods: {
         // Get current game data
         async getGameById(gameId) {
-            await axios.get("https://api.braquage-royale.xyz/games/" + gameId)
-                .then((response) => {
-                    response.data.players.map(player => {
-                        axios.get("https://api.braquage-royale.xyz/users/" + player.user_id)
-                            .then(res => {
-                                player.user = res.data
-                                player.username = res.data.player.username
-                                player.coordinates = {
-                                    x: 0,
-                                    y: 0
-                                }
-                                player.img = Knight1
-                            })
-                    })
-                    this.players = response.data.players
-                    this.setCurrentPlayer()
-                })
+            const response = await axios.get("https://api.braquage-royale.xyz/games/" + gameId)
+            response.data.players.map(async player => {
+                const { data } = await axios.get("https://api.braquage-royale.xyz/users/" + player.user_id)
+                player.user = data
+                player.username = data.player.username
+                player.coordinates = {
+                    x: 0,
+                    y: 0
+                }
+                player.img = Knight1
+                player.isTurn = !!response.data.players.find(player => player.user_id === this.game.actualRound) ?? false
+                this.players.push(player)
+            })
         },
         setCurrentPlayer() {
             let player = this.players.find(player => player.user_id === this.game.actualRound)

@@ -24,21 +24,11 @@ export default {
     },
     props: {
         players: Array,
-        currentPlayer: {
-            type: Object,
-            default() {
-                return {
-                    coordinates: {
-                        x: 0,
-                        y: 0
-                    }
-                }
-            }
-        },
     },
     data() {
         return {
-            rows: []
+            rows: [],
+            currentPlayer: {}
         }
     },
     methods: {
@@ -77,12 +67,17 @@ export default {
             this.rows.push(currentRow)
         },
         setupCurrentPlayer() {
-            this.setAccessibleCellsAroundPlayer(this.currentPlayer.coordinates.x, this.currentPlayer.coordinates.y)
+            if(this.players.length > 0) {
+                this.currentPlayer = this.players.find(p => p.isTurn === true)
+                this.setAccessibleCellsAroundPlayer(this.currentPlayer.coordinates.x, (this.currentPlayer.coordinates.y))
+                this.$forceUpdate()
+            }
         },
         placePlayersOnMap() {
             this.players.map(player => {
                 this.rows[player.coordinates.y][player.coordinates.x].player = player
             })
+            this.$forceUpdate()
         },
         isWalkableCell({x, y}) {
             if (x < 0 || x >= this.rows[0].length || y < 0 || y >= this.rows.length) {
@@ -153,7 +148,8 @@ export default {
         this.setupCurrentPlayer()
     },
     watch: {
-        currentPlayer() {
+        players() {
+            this.placePlayersOnMap()
             this.setupCurrentPlayer()
         }
     }
