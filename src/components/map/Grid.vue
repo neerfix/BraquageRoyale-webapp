@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import dataMap from '../../assets/json/village.json';
+//import dataMap from '../../assets/json/village.json';
 import Cell from './Cell';
 
 export default {
@@ -24,6 +24,9 @@ export default {
     },
     props: {
         players: Array,
+        map: {
+            type: Object,
+        }
     },
     data() {
         return {
@@ -47,24 +50,35 @@ export default {
             })
         },
         createGridFromJSON(data) {
-            console.log(data)
-            const width = data.width // Map width
-            let currentRow = [] // Contains our future cells
-            for (let i = 0; i < data.layers[0].data.length; i++) {
-                if (i % width === 0 && i !== 0) {
-                    this.rows.push(currentRow)
-                    currentRow = []
-                }
-                // Push our cell inside our current row
-                currentRow.push({
-                    x: i % width,
-                    y: Math.floor(i / width),
-                    backgroundTile: data.layers[0].data[i] - 1,
-                    obstacleTile: data.layers[1].data[i] - 1,
-                    decorationTile: data.layers[2].data[i] - 1,
-                })
+            if(data.version) {
+                const myRequest = new Request(data.version.files_url);
+                fetch(myRequest)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('map', data)
+                        const width = data.width // Map width
+                        let currentRow = [] // Contains our future cells
+                        for (let i = 0; i < data.layers[0].data.length; i++) {
+                            if (i % width === 0 && i !== 0) {
+                                this.rows.push(currentRow)
+                                currentRow = []
+                            }
+                            // Push our cell inside our current row
+                            currentRow.push({
+                                x: i % width,
+                                y: Math.floor(i / width),
+                                backgroundTile: data.layers[0].data[i] - 1,
+                                obstacleTile: data.layers[1].data[i] - 1,
+                                decorationTile: data.layers[2].data[i] - 1,
+                            })
+                        }
+                        this.rows.push(currentRow)
+                        this.placePlayersOnMap()
+                        //this.setupObstacles(0.1)
+                        this.setupCurrentPlayer()
+                    });
+
             }
-            this.rows.push(currentRow)
         },
         setupCurrentPlayer() {
             if(this.players.length > 0) {
@@ -138,26 +152,13 @@ export default {
             this.rows[oldCoordinates.y][oldCoordinates.x].player = null
             this.rows[nextCoordinates.y][nextCoordinates.x].player = this.currentPlayer
         },
-        // Get current player
-        getCurrentUserById(players) {
-            // Loop for get current user
-            players.forEach(player => {
-                if (this.$route.params.userId === player.user_id){
-                    this.player = player
-                }
-            })
-        }
     },
     mounted() {
-        this.createGridFromJSON(dataMap)
-        this.placePlayersOnMap()
-        //this.setupObstacles(0.1)
-        this.setupCurrentPlayer()
+        this.createGridFromJSON(this.map)
     },
     watch: {
-        players() {
-            this.placePlayersOnMap()
-            this.setupCurrentPlayer()
+        map(newVal) {
+            this.createGridFromJSON(newVal)
         }
     }
 }

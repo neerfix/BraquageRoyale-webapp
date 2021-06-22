@@ -1,7 +1,7 @@
 <template>
     <div class="game">
         <div class="map">
-            <grid :players="players"
+            <grid :players="players" :map="game.map"
                   @movePlayer="((e) => this.movePlayer(e))" @attackPlayer="((e) => attackPlayer(e))"></grid>
         </div>
         <div class="game-actions">
@@ -55,7 +55,8 @@ export default {
             },
             game: {
                 actualRound: 'k3njGxsHztcApBPQYU0vEjetk363',
-                rounds: ['k3njGxsHztcApBPQYU0vEjetk363', 'UwZa24qM1uRKj7bKSmZyP7khUjr2']
+                rounds: ['k3njGxsHztcApBPQYU0vEjetk363', 'UwZa24qM1uRKj7bKSmZyP7khUjr2'],
+                map: {}
             },
             players: [],
             /*players: [
@@ -138,16 +139,18 @@ export default {
     methods: {
         // Get current game data
         async getGameById(gameId) {
-            const response = await axios.get("https://api.braquage-royale.xyz/games/" + gameId)
-            console.log(response.data)
-            response.data.players.map(async player => {
-                const { data } = await axios.get("https://api.braquage-royale.xyz/users/" + player.user_id)
-                player.user = data
-                player.username = data.player.username
+            const { data } = await axios.get("https://api.braquage-royale.xyz/games/" + gameId)
+            console.log('game', data)
+            data.players.map(async player => {
+                player.username = player.user.player.username
                 player.img = this.skins[Math.floor(Math.random() * this.skins.length)]
-                player.isTurn = !!response.data.players.find(player => player.user_id === this.game.actualRound) ?? false
+                player.isTurn = !!data.players.find(player => player.user_id === this.game.actualRound) ?? false
                 this.players.push(player)
             })
+            this.game = {
+                ...this.game,
+                map: data.map
+            }
         },
         endRound(player) {
             this.players.forEach(p => {
