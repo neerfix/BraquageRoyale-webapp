@@ -5,12 +5,12 @@
         <p class="title_invit ">Invitation pour la partie : <span class="font-weight-black">{{ invite.nameGame }} </span></p>
         <v-spacer></v-spacer>
         <div class="btn_choice">
-          <v-btn fab elevation="2" x-small color="success" class="btn_choice_accept">
+          <v-btn fab elevation="2" x-small color="success" class="btn_choice_accept" @click="acceptInvitations(invite.userId, invite.gameId, invite.inviteId)">
             <v-icon>
               mdi-check
             </v-icon>
           </v-btn>
-          <v-btn fab elevation="2" x-small color="error" class="btn_choice_decline">
+          <v-btn fab elevation="2" x-small color="error" class="btn_choice_decline" @click="declineInvitations(invite.inviteId)">
             <v-icon>
               mdi-alert-circle-outline
             </v-icon>
@@ -60,27 +60,33 @@
         .then((response) => {
           // Create object invites
           let invitation = {
-            gameId: response.data.gameId,
+            userId: this.idCurrentUser,
+            gameId: response.data.id,
             inviteId: invite.id,
             nameGame: response.data.name
           }
           // Push object in array invites
           this.invites.push(invitation)
         })
+      },
+
+      declineInvitations(inviteId){
+      // TODO : decline invitation when user click on button decline and delete invation in firebase
+      // TODO : get invite code
+      // TODO : delete invite by invit code
+        console.log('invite id : ' + inviteId);
+      },
+
+      acceptInvitations(userId, gameId, inviteId){
+        console.log("user id : " + userId);
+        console.log('game id : ' + gameId);
+        console.log('invite id : ' + inviteId);
+        // TODO : accept invitation when user click on button accept
+        //     axios.post("https://api.braquage-royale.xyz/games/gameId/invite/inviteId/accepted", {
+        //       gameId: gameId,
+        //       inviteId: inviteId
+        //     })
       }
-      // declineInvitations(userId){
-      // // TODO : decline invitation when user click on button decline and delete invation in firebase
-      // // TODO : get invite code
-      // // TODO : delete invite by invit code
-      // },
-      //
-      // acceptInvitations(userId, gameId, invitId){
-      //   // TODO : accept invitation when user click on button accept
-      //       axios.post("https://api.braquage-royale.xyz/games/gameId/invite/inviteId/accepted", {
-      //         gameId: gameId,
-      //         inviteId: inviteId
-      // })
-      // }
     }
   }
 </script>
