@@ -35,7 +35,7 @@
 
         <div class="d-flex">
           <v-card-text class="text--primary">
-            <div>Carte : <span class="font-weight-bold">{{ item.map_id }}</span></div>
+<!--            <div>Carte : <span class="font-weight-bold">{{ item.map_id }}</span></div>-->
             <div>Nombre de joueurs : <span class="font-weight-bold">{{ item.max_player }}</span></div>
           </v-card-text>
 
@@ -112,12 +112,10 @@ export default {
     getAllActiveGames(userId) {
       let arrayOfGames = [];
       axios
-          .get("https://api.braquage-royale.xyz/games/")
+          .get("https://api.braquage-royale.xyz/users/" + userId + '/games')
           .then((resp) => {
             resp.data.forEach(game => {
-              if (game.players[0].user_id === userId && game.status === "ACTIVE") {
                 arrayOfGames.push(game)
-              }
             })
             this.games = arrayOfGames;
           })

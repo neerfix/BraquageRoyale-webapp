@@ -8,11 +8,15 @@
       <v-btn @click="displayCurrentGames" small id="btn-game-current" class="ml-2" :color="gamesInProgress ? 'success' : ''">
         Parties en cours
       </v-btn>
+      <v-btn @click="displayAllInvitations" small id="btn-invitation_all" class="ml-2" :color="allInvitations ? 'success' : ''">
+        Mes invitations
+      </v-btn>
     </div>
     <v-divider class="separator"></v-divider>
 
     <AllGames v-if="allGame"/>
     <GamesInProgress v-if="gamesInProgress"/>
+    <LobbyJoinGame v-if="allInvitations"/>
   </div>
 </template>
 
@@ -20,17 +24,20 @@
 import axios from 'axios'
 import AllGames from '@/components/AllGames'
 import GamesInProgress from "@/views/GamesInProgress";
+import LobbyJoinGame from "@/components/lobby/LobbyJoinGame";
 
 export default {
   name: 'Dashboard',
   components: {
     AllGames,
-    GamesInProgress
+    GamesInProgress,
+    LobbyJoinGame
   },
   data() {
     return {
       allGame: false,
       gamesInProgress: false,
+      allInvitations: false,
       user: {
         username: '',
         rank: '',
@@ -53,6 +60,7 @@ export default {
   mounted() {
     this.allGame = true;
     this.gamesInProgress = false;
+    this.allInvitations = false;
     this.getCurrentUser()
     this.getUserGames(localStorage.getItem('idUser'));
   },
@@ -84,10 +92,17 @@ export default {
     displayAllGame() {
       this.allGame = true;
       this.gamesInProgress = false;
+      this.allInvitations = false;
     },
     displayCurrentGames() {
       this.allGame = false;
       this.gamesInProgress = true;
+      this.allInvitations = false;
+    },
+    displayAllInvitations() {
+      this.allGame = false;
+      this.gamesInProgress = false;
+      this.allInvitations = true;
     },
   }
 }
@@ -103,9 +118,11 @@ export default {
 }
 
   #btn-game-current,
-  #btn-game-all {
+  #btn-game-all,
+  #btn-invitation_all {
     border: 2px solid black !important;
     border-right: 4px solid black !important;
     border-bottom: 4px solid black !important;
+    margin-top: 0.5em;
   }
 </style>

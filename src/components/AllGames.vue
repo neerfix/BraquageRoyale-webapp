@@ -8,6 +8,7 @@
       <v-list-item three-line>
         <v-list-item-content>
           <v-list-item-title class="text-h5 mb-1">{{ user.username }}</v-list-item-title>
+          <small class="mb-1 font-italic">Votre id a donner à vos amis : {{ user.id }}</small>
           <div class="text-overline mt-3">
             <div class="d-flex align-center flex-wrap justify-space-between">
               <div><span class="text-primary">Rank : </span>{{ user.rank }}</div>
@@ -46,7 +47,7 @@
             <!--            </v-card-subtitle>-->
 
             <v-card-text class="text--primary">
-              <div>Carte : <span class="font-weight-bold">{{ item.map_id }}</span></div>
+<!--              <div>Carte : <span class="font-weight-bold">{{ item.map_id }}</span></div>-->
               <div>Nombre de joueurs : <span class="font-weight-bold">{{ item.max_player }}</span></div>
               <div v-if="item.status === 'ACTIVE'">Partie : <span class="font-weight-bold">en cours</span></div>
               <div v-if="item.status === 'INACTIVE'">Partie : <span class="font-weight-bold">terminée</span></div>
@@ -68,6 +69,7 @@ export default {
   data() {
     return {
       user: {
+        id: '',
         username: '',
         rank: '',
         exp: '',
@@ -95,6 +97,7 @@ export default {
       axios
           .get("https://api.braquage-royale.xyz/users/" + localStorage.getItem('idUser'))
           .then((resp) => {
+            this.user.id = resp.data.id
             this.user.username = resp.data.player.username
             this.user.status = resp.data.status
             this.user.rank = resp.data.player.rank
@@ -107,10 +110,13 @@ export default {
       axios
           .get("https://api.braquage-royale.xyz/games/")
           .then((resp) => {
+            console.log(resp.data);
             resp.data.forEach(game => {
-              if (game.players[0].user_id === userId) {
-                arrayOfGames.push(game)
-              }
+              game.players.forEach((player) => {
+                if (player.user_id === userId) {
+                  arrayOfGames.push(game)
+                }
+              })
             })
             this.games = arrayOfGames;
           })
