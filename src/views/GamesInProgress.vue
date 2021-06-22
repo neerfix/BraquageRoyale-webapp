@@ -35,7 +35,7 @@
 
         <div class="d-flex">
           <v-card-text class="text--primary">
-            <div>Carte : <span class="font-weight-bold">{{ item.map_id }}</span></div>
+<!--            <div>Carte : <span class="font-weight-bold">{{ item.map_id }}</span></div>-->
             <div>Nombre de joueurs : <span class="font-weight-bold">{{ item.max_player }}</span></div>
           </v-card-text>
 

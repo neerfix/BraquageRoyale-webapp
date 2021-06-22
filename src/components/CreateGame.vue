@@ -39,8 +39,7 @@
       <v-col xs="12" id="map_choice">
         <label for="map_choice_game">Choix de la map</label>
         <v-select
-            :items="itemsMap"
-            v-model="choiceMap"
+            :items="mapName"
             label="Choix de la map"
             :rules="choiceMapRules"
             outlined
@@ -117,7 +116,7 @@ export default {
   name: "CreateGame",
   data() {
     return {
-      itemsMap: ["Village", "Desert", "Buildings"],
+      itemsMap: [],
       privateGame: false,
       valid: true,
       snackbar: false,
@@ -125,6 +124,8 @@ export default {
       textMessageValidForm: '',
       timeoutSnackbar: 4000,
       // Name part rules
+      mapName: '',
+      mapId: '',
       nameGame: '',
       nameGameRules: [
         v => !!v || 'Nom de la partie obligatoire',
@@ -151,10 +152,14 @@ export default {
       ],
     };
   },
+  mounted() {
+    this.getMaps()
+  },
   methods: {
     // Validate form
     validate() {
       this.snackbar = true
+      console.log(this.$refs.form);
       if (this.$refs.form.validate()) {
         this.createGame()
       } else {
@@ -166,15 +171,36 @@ export default {
     reset() {
       this.$refs.form.reset()
     },
+    getMaps() {
+      axios
+      .get("https://api.braquage-royale.xyz/maps/")
+      .then((res) => {
+        res.data.forEach(map => {
+          this.mapName = [
+              map.name
+          ];
+          this.mapId = map.id;
+          console.log(this.mapId);
+          // let mapData = {
+          //   mapId: map.id,
+          //   mapName: map.name
+          // }
+          // // Push object in array itemsMap
+          // this.itemsMap.push(mapData)
+          // console.log(this.itemsMap)
+        })
+      })
+    },
     // Call API create game
     createGame() {
       const url = 'https://api.braquage-royale.xyz/games/'
       const user_id = localStorage.getItem('idUser')
+
       const body = {
         name: this.nameGame,
         max_player: this.playersMax,
         is_private: this.privateGame,
-        map_id: this.choiceMap,
+        map_id: this.mapId,
         players: [
           {
             user_id: user_id,
