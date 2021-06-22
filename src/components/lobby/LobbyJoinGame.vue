@@ -1,5 +1,6 @@
 <template>
   <div class="lobby_join_game">
+    <p v-if="invites.length === 0">Aucune invitation</p>
     <v-card v-for="invite in invites" :key="invite.nameGame" class="card_invit">
       <div class="content_invitation d-flex">
         <p class="title_invit ">Invitation pour la partie : <span class="font-weight-black">{{ invite.nameGame }} </span></p>
@@ -48,7 +49,7 @@
             .then((response) => {
               response.data.forEach((invite) => {
                 // Get invites by current user
-                if (invite.userId === currentUserId && invite.accepted === 'false'){
+                if (invite.userId === currentUserId && invite.accepted === 'false' && invite.active === 'true'){
                   // Get game invites
                   this.getGameById(invite)
                 }
@@ -73,9 +74,6 @@
       },
       // Decline invitation
       declineInvitations(userId, gameId, inviteId){
-        console.log("user " + userId);
-        console.log("game " + gameId);
-        console.log("invite " + inviteId);
         axios
             .post("https://api.braquage-royale.xyz/games/" + gameId + "/invite/" + inviteId + "/refused", {
               userId: userId,
@@ -84,14 +82,11 @@
               ]
             })
             .then(() => {
-              this.getAllInvitByUser(this.idCurrentUser)
+              this.$router.go(this.$router.push('/dashboard'))
             })
       },
       // Accepte invitation
       acceptInvitations(userId, gameId, inviteId){
-        console.log("user " + userId);
-        console.log("game " + gameId);
-        console.log("invite " + inviteId);
         axios
             .post("https://api.braquage-royale.xyz/games/" + gameId + "/invite/" + inviteId + "/accepted", {
                 userId: userId,
@@ -100,7 +95,7 @@
                 ]
              })
             .then(() => {
-              this.getAllInvitByUser(this.idCurrentUser)
+              this.$router.go(this.$router.push('/game/' + userId + '/' + gameId))
             })
       }
     }
