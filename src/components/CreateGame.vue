@@ -124,7 +124,7 @@ export default {
       textMessageValidForm: '',
       timeoutSnackbar: 4000,
       // Name part rules
-      mapName: '',
+      mapName: [],
       mapId: '',
       nameGame: '',
       nameGameRules: [
@@ -159,7 +159,6 @@ export default {
     // Validate form
     validate() {
       this.snackbar = true
-      console.log(this.$refs.form);
       if (this.$refs.form.validate()) {
         this.createGame()
       } else {
@@ -173,23 +172,22 @@ export default {
     },
     getMaps() {
       axios
-      .get("https://api.braquage-royale.xyz/maps/")
-      .then((res) => {
-        res.data.forEach(map => {
-          this.mapName = [
-              map.name
-          ];
-          this.mapId = map.id;
-          console.log(this.mapId);
-          // let mapData = {
-          //   mapId: map.id,
-          //   mapName: map.name
-          // }
-          // // Push object in array itemsMap
-          // this.itemsMap.push(mapData)
-          // console.log(this.itemsMap)
-        })
-      })
+          .get("https://api.braquage-royale.xyz/maps/")
+          .then((res) => {
+            res.data.forEach(map => {
+              this.mapName = [
+                map.name
+              ];
+              this.mapId = map.id;
+              // let mapData = {
+              //   mapId: map.id,
+              //   mapName: map.name
+              // }
+              // // Push object in array itemsMap
+              // this.itemsMap.push(mapData)
+              // console.log(this.itemsMap)
+            })
+          })
     },
     // Call API create game
     createGame() {
@@ -223,11 +221,11 @@ export default {
           this.$router.go(this.$router.push('/dashboard'))
         }, 2000)
       })
-        .catch((error) => {
-          console.log(error);
-          this.textMessageValidForm = "Erreur serveur, veuillez réssayer plus tard !"
-          this.colorMessage = "red lighten-2";
-        })
+          .catch((error) => {
+            console.log(error);
+            this.textMessageValidForm = "Erreur serveur, veuillez réssayer plus tard !"
+            this.colorMessage = "red lighten-2";
+          })
     }
   }
 }
