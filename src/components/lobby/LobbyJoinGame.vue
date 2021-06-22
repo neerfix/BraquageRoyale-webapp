@@ -47,7 +47,7 @@
         .then((response) => {
           response.data.forEach((invite) => {
             // Get invites by current user
-            if (invite.userId === currentUserId){
+            if (invite.userId === currentUserId && invite.accepted === 'false'){
               // Get game invites
               this.getGameById(invite)
             }
