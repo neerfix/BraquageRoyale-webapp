@@ -1,8 +1,8 @@
 <template>
   <div class="lobby_join_game">
-    <v-card v-for="invit in invits" :key="invit.byUser" class="card_invit">
+    <v-card v-for="invite in invites" :key="invite.nameGame" class="card_invit">
       <div class="content_invitation d-flex">
-        <p class="title_invit">Invitation de {{ invit.byUser }}</p>
+        <p class="title_invit">Invitation pour la partie : {{ invite.nameGame }}</p>
         <v-spacer></v-spacer>
         <div class="btn_choice">
           <v-btn fab elevation="2" x-small color="success" class="btn_choice_accept">
@@ -23,49 +23,65 @@
 </template>
 
 <script>
-  // import axios from 'axios'
+  import axios from 'axios'
 
   export default {
     name: "LobbyJoinGame",
     data() {
       return{
         idCurrentUser: undefined,
-        invits: [
-          {byUser: "Flours", invitCode: "knefinezif"},
-          {byUser: "Flours", invitCode: "knefinezif"},
-          {byUser: "Flours", invitCode: "knefinezif"},
-          {byUser: "Flours", invitCode: "knefinezif"},
-          {byUser: "Flours", invitCode: "knefinezif"},
-          {byUser: "Flours", invitCode: "knefinezif"},
-          {byUser: "Flours", invitCode: "knefinezif"},
-        ]
+        nameGameInvite: undefined,
+        invites: []
       }
     },
 
     mounted() {
       this.idCurrentUser = localStorage.getItem('idUser')
-      // this.getAllInvitByUser(this.idCurrentUser)
+      this.getAllInvitByUser(this.idCurrentUser)
     },
 
     methods: {
-      // getAllInvitByUser(currentUserId){
-      //   axios.get("https://api.braquage-royale.xyz/")
-      //   .then((response) => {
-      //     console.log(response)
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //   })
-      // },
+      getAllInvitByUser(currentUserId){
+        axios.get("https://api.braquage-royale.xyz/invites")
+        .then((response) => {
+          console.log(response.data);
+          response.data.forEach((invite) => {
+            if (invite.userId === currentUserId){
+              this.getGameById(invite)
+            }
+          })
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+      },
 
+      getGameById(invite){
+        axios.get('https://api.braquage-royale.xyz/games/' + invite.gameId)
+        .then((response) => {
+          console.log(response.data);
+          let invitation = {
+            gameId: response.data.gameId,
+            inviteId: invite.id,
+            nameGame: response.data.name
+          }
+
+          this.invites.push(invitation)
+          console.log(this.invites)
+        })
+      }
       // declineInvitations(userId){
       // // TODO : decline invitation when user click on button decline and delete invation in firebase
       // // TODO : get invite code
       // // TODO : delete invite by invit code
       // },
       //
-      // acceptInvitations(userId){
+      // acceptInvitations(userId, gameId, invitId){
       //   // TODO : accept invitation when user click on button accept
+      //       axios.post("https://api.braquage-royale.xyz/games/gameId/invite/inviteId/accepted", {
+      //         gameId: gameId,
+      //         inviteId: inviteId
+      // })
       // }
     }
   }
