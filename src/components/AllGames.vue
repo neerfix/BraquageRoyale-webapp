@@ -8,6 +8,7 @@
       <v-list-item three-line>
         <v-list-item-content>
           <v-list-item-title class="text-h5 mb-1">{{ user.username }}</v-list-item-title>
+          <small class="mb-1 font-italic">Votre id a donner à vos amis : {{ user.id }}</small>
           <div class="text-overline mt-3">
             <div class="d-flex align-center flex-wrap justify-space-between">
               <div><span class="text-primary">Rank : </span>{{ user.rank }}</div>
@@ -68,6 +69,7 @@ export default {
   data() {
     return {
       user: {
+        id: '',
         username: '',
         rank: '',
         exp: '',
@@ -95,6 +97,7 @@ export default {
       axios
           .get("https://api.braquage-royale.xyz/users/" + localStorage.getItem('idUser'))
           .then((resp) => {
+            this.user.id = resp.data.id
             this.user.username = resp.data.player.username
             this.user.status = resp.data.status
             this.user.rank = resp.data.player.rank
