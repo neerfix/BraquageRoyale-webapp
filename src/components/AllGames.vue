@@ -107,10 +107,13 @@ export default {
       axios
           .get("https://api.braquage-royale.xyz/games/")
           .then((resp) => {
+            console.log(resp.data);
             resp.data.forEach(game => {
-              if (game.players[0].user_id === userId) {
-                arrayOfGames.push(game)
-              }
+              game.players.forEach((player) => {
+                if (player.user_id === userId) {
+                  arrayOfGames.push(game)
+                }
+              })
             })
             this.games = arrayOfGames;
           })
