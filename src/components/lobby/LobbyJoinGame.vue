@@ -41,33 +41,31 @@
     },
 
     methods: {
+      // Get all invites
       getAllInvitByUser(currentUserId){
         axios.get("https://api.braquage-royale.xyz/invites")
         .then((response) => {
-          console.log(response.data);
           response.data.forEach((invite) => {
+            // Get invites by current user
             if (invite.userId === currentUserId){
+              // Get game invites
               this.getGameById(invite)
             }
           })
         })
-        .catch((error) => {
-          console.log(error);
-        })
       },
-
+      // Get game by id and create object invites
       getGameById(invite){
         axios.get('https://api.braquage-royale.xyz/games/' + invite.gameId)
         .then((response) => {
-          console.log(response.data);
+          // Create object invites
           let invitation = {
             gameId: response.data.gameId,
             inviteId: invite.id,
             nameGame: response.data.name
           }
-
+          // Push object in array invites
           this.invites.push(invitation)
-          console.log(this.invites)
         })
       }
       // declineInvitations(userId){
