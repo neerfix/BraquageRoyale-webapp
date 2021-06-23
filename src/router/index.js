@@ -4,7 +4,11 @@ import Home from "@/views/Home";
 import Authentication from '@/views/Authentication'
 import Dashboard from '@/views/Dashboard'
 import CreateNewGame from "@/views/CreateNewGame";
+import GameInProgress from '@/views/GameInProgress'
 import Profil from '@/views/Profil';
+// import Lobby from "@/views/Lobby";
+import Grid from "@/components/map/Grid";
+import GamesInProgress from "@/views/GamesInProgress";
 
 Vue.use(VueRouter)
 
@@ -33,19 +37,31 @@ const routes = [
     path: '/join',
     name: 'JoinGame'
   },
+  // {
+  //   // path: '/lobby/{gameId}',
+  //   path: '/lobby/:type',
+  //   name: 'LobbyGame',
+  //   component: Lobby
+  // },
   {
-    path: '/lobby/{gameId}',
-    name: 'LobbyGame'
+    path: '/game/:userId/:gameId',
+    name: 'Game',
+    component: GameInProgress
   },
   {
-    path: '/game',
-    name: 'CreateNewGame',
-    component: CreateNewGame
+    path: '/your_games',
+    name: 'GamesInProgress',
+    component: GamesInProgress
   },
   {
     path: '/profil',
     name: 'Profil',
     component: Profil
+  },
+  {
+    path: '/map',
+    name: 'Grid',
+    component: Grid
   }
 ]
 

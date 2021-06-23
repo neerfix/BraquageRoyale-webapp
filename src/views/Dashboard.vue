@@ -1,154 +1,128 @@
 <template>
   <div class="dashboard">
-    
-    <v-card
-      class="mx-auto"
-      elevation="2"
-    >
-      <v-list-item three-line>
-        <v-list-item-content>
-          <v-list-item-title class="text-h5 mb-1">{{ user.username }}</v-list-item-title>
-          <v-list-item-subtitle>{{ user.status }}</v-list-item-subtitle>
-          <div class="text-overline mt-3">
-            <div class="d-flex align-center flex-wrap justify-space-between">
-              <div><span class="text-primary">Rank : </span>{{ user.rank }}</div>
-              <div><span class="text-primary">Expérience : </span>{{ user.exp }}</div>
-            </div>
-          </div>
-        </v-list-item-content>
 
-        <v-list-item-avatar>
-          <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
-        </v-list-item-avatar>
-      </v-list-item>
-    </v-card>
-
-    <v-divider class="mt-5 mb-3"></v-divider>
-
-    <div>
-      <h4 class="mb-3">Parties en cours</h4>
-      <v-virtual-scroll :items="games" height="450" :item-height="240">
-        <template v-slot:default="{ item }">
-          <v-card class="mx-auto">
-            <v-img
-              class="white--text align-end"
-              height="125px"
-              :src="item.map.src"
-            >
-              <v-card-title>
-                <div class="overlay-title">
-                  {{ item.name }}
-                </div>
-              </v-card-title>
-            </v-img>
-
-            <v-card-subtitle class="pb-0" :class="{'text-primary font-weight-bold': item.isTurn}">
-              {{ item.isTurn ? 'À vous de jouer !' : 'En attente' }}
-            </v-card-subtitle>
-
-            <v-card-text class="text--primary">
-              <div>Carte : <span class="font-weight-bold">{{ item.map.name }}</span></div>
-              <div>Nombre de joueurs : <span class="font-weight-bold">{{ item.players }}</span></div>
-            </v-card-text>
-          </v-card>
-        </template>
-      </v-virtual-scroll>
-      
+    <div class="">
+      <v-btn @click="displayAllGame" small id="btn-game-all" :color="allGame ? 'success' : ''">
+        Toutes mes parties
+      </v-btn>
+      <v-btn @click="displayCurrentGames" small id="btn-game-current" class="ml-2" :color="gamesInProgress ? 'success' : ''">
+        Parties en cours
+      </v-btn>
+      <v-btn @click="displayAllInvitations" small id="btn-invitation_all" class="ml-2" :color="allInvitations ? 'success' : ''">
+        Mes invitations
+      </v-btn>
     </div>
+    <v-divider class="separator"></v-divider>
 
+    <AllGames v-if="allGame"/>
+    <GamesInProgress v-if="gamesInProgress"/>
+    <LobbyJoinGame v-if="allInvitations"/>
   </div>
 </template>
 
 <script>
-import VillageMap from '../assets/img/village-map.png'
+import axios from 'axios'
+import AllGames from '@/components/AllGames'
+import GamesInProgress from "@/views/GamesInProgress";
+import LobbyJoinGame from "@/components/lobby/LobbyJoinGame";
 
 export default {
   name: 'Dashboard',
+  components: {
+    AllGames,
+    GamesInProgress,
+    LobbyJoinGame
+  },
   data() {
     return {
+      allGame: false,
+      gamesInProgress: false,
+      allInvitations: false,
       user: {
-        username: 'Ynov',
-        rank: 'Gold 2',
-        exp: '128 032',
-        status: 'Joueur Pro - Vitality',
+        username: '',
+        rank: '',
+        exp: '',
+        status: '',
         avatar: ''
       },
-      games: [
-        {
-          name: 'Apex Legends',
-          map: {
-            name: 'Village',
-            src: VillageMap
-          },
-          players: 3,
-          isTurn: true
-        },
-        {
-          name: 'Worms',
-          map: {
-            name: 'Village',
-            src: VillageMap
-          },
-          players: 5,
-          isTurn: false
-        },
-        {
-          name: 'Apex Legends',
-          map: {
-            name: 'Village',
-            src: VillageMap
-          },
-          players: 3,
-          isTurn: true
-        },
-        {
-          name: '4 Worms',
-          map: {
-            name: 'Village',
-            src: VillageMap
-          },
-          players: 5,
-          isTurn: false
-        },
-        {
-          name: 'Apex Legends',
-          map: {
-            name: 'Village',
-            src: VillageMap
-          },
-          players: 3,
-          isTurn: true
-        },
-        {
-          name: 'Worms',
-          map: {
-            name: 'Village',
-            src: VillageMap
-          },
-          players: 5,
-          isTurn: false
-        },
-      ]
+      games: []
     }
   },
+  beforeCreate() {
+    if (!localStorage.getItem('idUser')) {
+      if (confirm("Vous devez être connecté !")) {
+        this.$router.go(this.$router.push('/auth'))
+      } else {
+        this.$router.go(this.$router.push('/'))
+      }
+    }
+  },
+  mounted() {
+    this.allGame = true;
+    this.gamesInProgress = false;
+    this.allInvitations = false;
+    this.getCurrentUser()
+    this.getUserGames(localStorage.getItem('idUser'));
+  },
+  methods: {
+    getCurrentUser() {
+      axios
+          .get("https://api.braquage-royale.xyz/users/" + localStorage.getItem('idUser'))
+          .then((resp) => {
+            this.user.username = resp.data.player.username
+            this.user.status = resp.data.status
+            this.user.rank = resp.data.player.rank
+            this.user.exp = resp.data.player.exp
+            this.user.avatar = resp.data.avatar
+          })
+    },
+    getUserGames(userId) {
+      let arrayOfGames = [];
+      axios
+          .get("https://api.braquage-royale.xyz/games/")
+          .then((resp) => {
+            resp.data.forEach(game => {
+              if (game.players[0].user_id === userId) {
+                arrayOfGames.push(game)
+              }
+            })
+            this.games = arrayOfGames;
+          })
+    },
+    displayAllGame() {
+      this.allGame = true;
+      this.gamesInProgress = false;
+      this.allInvitations = false;
+    },
+    displayCurrentGames() {
+      this.allGame = false;
+      this.gamesInProgress = true;
+      this.allInvitations = false;
+    },
+    displayAllInvitations() {
+      this.allGame = false;
+      this.gamesInProgress = false;
+      this.allInvitations = true;
+    },
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-::v-deep {
-  .text-overline {
-    line-height: 1 !important;
-    font-size: .65rem !important;
+
+.separator {
+  border-color: black !important;
+  box-shadow: 1px 3px 8px black;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+  #btn-game-current,
+  #btn-game-all,
+  #btn-invitation_all {
+    border: 2px solid black !important;
+    border-right: 4px solid black !important;
+    border-bottom: 4px solid black !important;
+    margin-top: 0.5em;
   }
-}
-.overlay-title {
-  background-color: #ebf1f5;
-  color: #000;
-  border-radius: 4px;
-  opacity: .75;
-  font-size: .875rem;
-  line-height: 2;
-  padding: 0 1rem;
-  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
-}
 </style>

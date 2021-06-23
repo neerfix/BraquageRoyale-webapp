@@ -22,3 +22,11 @@
     }),
   };
 </script>
+
+<style lang="scss" scoped>
+::v-deep {
+  .container {
+    height: 100%;
+  }
+}
+</style>
