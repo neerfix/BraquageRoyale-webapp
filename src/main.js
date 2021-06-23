@@ -9,6 +9,8 @@ import '/service-worker'
 import firebase from 'firebase/app'
 require('firebase/auth')
 
+import bankImageLogo from '@/assets/img/braquageroyale.png'
+
 // CSS / SCSS
 import './assets/scss/main.scss'
 import './assets/scss/game.scss'
@@ -42,28 +44,22 @@ if("serviceWorker" in navigator){
 }
 
 const checkIfPushIsEnabled = () => {
-    //---check if push notification permission has been denied by the user---
     if (Notification.permission === 'denied') {
         alert('User has blocked push notification.');
         return;
     }
-    //---check if push notification is supported or not---
     if (!('PushManager' in window)) {
         alert('Sorry, Push notification is ' + 'not supported on this browser.');
         return;
     }
-    //---get push notification subscription if serviceWorker is registered and ready---
     navigator.serviceWorker.ready
         .then(function (registration) {
             registration.pushManager.getSubscription()
                 .then(function (subscription) {
                     if (subscription) {
-                        //---user is currently subscribed to push---
-                        console.log('true', subscription);
+                        console.log(subscription);
                     }
                     else {
-                        //---user is not subscribed to push---
-                        console.log('false')
                         subscribeToPushNotification()
                     }
                 })
@@ -80,10 +76,15 @@ const subscribeToPushNotification = async () => {
             userVisibleOnly : true,
             applicationServerKey : urlBase64ToUint8Array('BIuKDAREB0mrLDkTimbP9c8egWqIoUGf_CKX2BW3FHTxLLAAv3MtjQOQ5LT0TTfxPvfRVv3LmIO1-h33PoUMUMM')
         });
-        await axios.post("http://localhost:5001/braquage-royale/us-central1/api/subscription",
+        await axios.post("https://api.braquage-royale.xyz/subscription",
             { sub : JSON.stringify(subscription) },
             { headers : { "content-type" : "application/json" }}
         );
+        await axios.get("https://api.braquage-royale.xyz/subscription")
+        return new Notification('Braquage Royal!', {
+            body: "Notification accepté",
+            icon: bankImageLogo,
+        })
     }
     catch(e){
         console.log("La souscription a été refusée");

@@ -107,8 +107,18 @@ export default {
   },
   mounted() {
     this.getAllActiveGames(localStorage.getItem('idUser'))
+      this.sendNotif()
   },
   methods: {
+      async sendNotif() {
+          navigator.serviceWorker.ready
+              .then(function (registration) {
+                  registration.pushManager.getSubscription()
+                      .then(async function(subscription) {
+                          await axios.post('https://api.braquage-royale.xyz/notification', { endpoint: subscription.endpoint })
+                      })
+              })
+      },
     getAllActiveGames(userId) {
       let arrayOfGames = [];
       axios
