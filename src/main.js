@@ -3,10 +3,10 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
+import axios from 'axios'
 import './registerServiceWorker'
 import '/service-worker'
 import firebase from 'firebase/app'
-import '@firebase/messaging'
 require('firebase/auth')
 
 // CSS / SCSS
@@ -32,31 +32,16 @@ firebase.auth().onAuthStateChanged(user => {
     store.dispatch('fetchUser', user)
 })
 
-const messaging = firebase.messaging();
-
-messaging.onMessage((payload) => {
-    console.log('Message received. ', payload)
-});
-
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/service-worker.js', {
-        scope: '/'
-    }).then(function(registration) {
-        console.log('ServiceWorker registration successful with scope: ', registration.scope);
-    }, function(err) {
-        console.log('ServiceWorker registration failed: ', err);
-    });
+if("serviceWorker" in navigator){
+    navigator.serviceWorker.register("/service-worker.js").then((regObject) => {
+        console.log("Registration done",regObject);
+    })
+        .catch((error) => {
+            console.error("Could not register service worker",error);
+        });
 }
 
-/*if ('Notification' in window) {
-    if (Notification.permission === "default") {
-        Notification.requestPermission().then((res) => {
-            console.log(res)
-        })
-    }
-}*/
-
-function checkIfPushIsEnabled() {
+const checkIfPushIsEnabled = () => {
     //---check if push notification permission has been denied by the user---
     if (Notification.permission === 'denied') {
         alert('User has blocked push notification.');
@@ -88,68 +73,37 @@ function checkIfPushIsEnabled() {
         });
 }
 
-function subscribeToPushNotification() {
-    navigator.serviceWorker.ready
-        .then(function(registration) {
-            if (!registration.pushManager) {
-                alert('This browser does not support push notification.');
-                return false;
-            }
-            registration.pushManager.subscribe(
-                {
-                    userVisibleOnly: true,
-                    applicationServerKey: 'BKILSlpjnfSxlL4vhUD8kKco_koWmvo-ZF4dvm39lhghcy-GKVYp5v8sQjj7gdseVC0QDXdB9vchUj2_JvLOmco'
-                }
-            )
-                .then(function (subscription) {
-                    console.log('Push notification subscribed.');
-                    console.log(subscription);
-                    sendSubscriptionIDToServer(subscription);
-                })
-                .catch(function (error) {
-                    console.error('Push notification subscription error: ', error);
-                });
-        })
+const subscribeToPushNotification = async () => {
+    const registration = await navigator.serviceWorker.ready
+    try {
+        const subscription = await registration.pushManager.subscribe({
+            userVisibleOnly : true,
+            applicationServerKey : urlBase64ToUint8Array('BIuKDAREB0mrLDkTimbP9c8egWqIoUGf_CKX2BW3FHTxLLAAv3MtjQOQ5LT0TTfxPvfRVv3LmIO1-h33PoUMUMM')
+        });
+        await axios.post("http://localhost:5001/braquage-royale/us-central1/api/subscription",
+            { sub : JSON.stringify(subscription) },
+            { headers : { "content-type" : "application/json" }}
+        );
+    }
+    catch(e){
+        console.log("La souscription a été refusée");
+    }
 }
 
-/*function unsubscribeFromPushNotification() {
-    navigator.serviceWorker.ready
-        .then(function(registration) {
-            registration.pushManager.getSubscription()
-                .then(function (subscription) {
-                    if(!subscription) {
-                        alert('Unable to unsubscribe from push ' + 'notification.');
-                        return;
-                    }
-                    subscription.unsubscribe()
-                        .then(function () {
-                            console.log('Push notification unsubscribed.');
-                            console.log(subscription);
-                        })
-                        .catch(function (error) {
-                            console.error(error);
-                        });
-                })
-                .catch(function (error) {
-                    console.error('Failed to unsubscribe push ' +'notification.');
-                });
-        })
-}*/
+const urlBase64ToUint8Array = (base64String) => {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding)
+        .replace(/-/g, '+')
+        .replace(/_/g, '/');
 
-function sendSubscriptionIDToServer(subscription) {
-    const subscriptionId = subscription.endpoint.split('fcm/send/')[1];
-    console.log("Subscription ID", subscriptionId);
-    fetch('http://localhost:4000/subscribers', {
-        method: 'post',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ subscriptionId: subscriptionId })
-    }).then(response => {
-        console.log(response)
-    });
- }
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+
+    for (let i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+};
 
 checkIfPushIsEnabled()
 
